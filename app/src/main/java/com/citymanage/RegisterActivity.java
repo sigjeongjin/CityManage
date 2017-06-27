@@ -17,8 +17,6 @@ import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity{
 
-
-
     private EditText snm;
     private EditText spw;
     private EditText respw;
@@ -27,13 +25,10 @@ public class RegisterActivity extends AppCompatActivity{
     private Button btns;
     private Button btnf;
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
 
         snm = (EditText) findViewById(R.id.snm);
         spw = (EditText) findViewById(R.id.spw);
@@ -42,11 +37,10 @@ public class RegisterActivity extends AppCompatActivity{
         hp = (EditText) findViewById(R.id.hp);
         btns = (Button) findViewById(R.id.btns);
         btnf = (Button) findViewById(R.id.btnf);
-    }
 
-        비밀번호가 일치하는지에 대한 검사
+        //비밀번호가 일치하는지에 대한 검사
         respw.addTextChangedListener(new TextWatcher() {
-//            @Override
+            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
@@ -136,5 +130,5 @@ public class RegisterActivity extends AppCompatActivity{
                 finish();
             }
         });
-
     }
+}

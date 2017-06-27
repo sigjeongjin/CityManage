@@ -22,7 +22,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCaW-MscyaNlRYs4K1oJjkseCO0mAAANA8" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,8 +30,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RegisterActivity"/>
 
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".SidemenuActivity"/>
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".WmMapActivity" />
         <activity android:name=".PushHistoryActivity" />

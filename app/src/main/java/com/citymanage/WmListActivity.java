@@ -41,11 +41,11 @@ public class WmListActivity extends AppCompatActivity {
 
         adapter = new WmAdapter();
 
-        adapter.addItem(new WmItem("박현진", "010-1000-1000", 23, R.drawable.muji01));
-        adapter.addItem(new WmItem("방규식", "010-2000-2000", 29, R.drawable.muji02));
-        adapter.addItem(new WmItem("박진주", "010-3000-3000", 29, R.drawable.muji03));
-        adapter.addItem(new WmItem("강현명", "010-4000-4000", 29, R.drawable.muji04));
-        adapter.addItem(new WmItem("김민정", "010-5000-5000", 26, R.drawable.muji05));
+//        adapter.addItem(new WmItem("박현진", "010-1000-1000", 23, R.drawable.muji01));
+//        adapter.addItem(new WmItem("방규식", "010-2000-2000", 29, R.drawable.muji02));
+//        adapter.addItem(new WmItem("박진주", "010-3000-3000", 29, R.drawable.muji03));
+//        adapter.addItem(new WmItem("강현명", "010-4000-4000", 29, R.drawable.muji04));
+//        adapter.addItem(new WmItem("김민정", "010-5000-5000", 26, R.drawable.muji05));
 
         listView.setAdapter(adapter);
 
@@ -59,7 +59,7 @@ public class WmListActivity extends AppCompatActivity {
                 String mobile = "010-1000-1000";
                 int age = 20;
 
-                adapter.addItem(new WmItem(name, mobile, age, R.drawable.muji01));
+                //adapter.addItem(new WmItem(name, mobile, age, R.drawable.muji01));
                 adapter.notifyDataSetChanged();
             }
         });

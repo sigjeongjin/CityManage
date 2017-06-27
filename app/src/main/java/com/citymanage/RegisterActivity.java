@@ -1,6 +1,5 @@
 package com.citymanage;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -57,11 +56,11 @@ public class RegisterActivity extends AppCompatActivity{
         btns = (Button) findViewById(R.id.btns);
         btnf = (Button) findViewById(R.id.btnf);
 
-        url.append("name=" + snm);
-        url.append("password" + spw);
-        url.append("repassword" + respw);
-        url.append("email" + sid);
-        url.append("phone" + hp);
+        url.append("name=" + snm.getText().toString());
+        url.append("&password=" + spw.getText().toString());
+        url.append("&repassword=" + respw.getText().toString());
+        url.append("&email=" + sid.getText().toString());
+        url.append("&phone=" + hp.getText().toString());
 
 
         //비밀번호가 일치하는지에 대한 검사

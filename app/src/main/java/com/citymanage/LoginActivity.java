@@ -85,8 +85,16 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(String string) {
                         parseJsonData(string);
 
+                        // if 문 삽입(200일때 , 400일때)
+                        Log.d("RESULTCODE","TEST");
+                        if(resultCode.equals("400")) {
+                            Toast.makeText(LoginActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
 
-
+                        }
+                        else if(resultCode.equals ("200")) {
+                            Intent intent = new Intent(getApplication(), MainActivity.class);
+                            startActivity(intent);
+                        }
 
                     }
                 }, new Response.ErrorListener() {
@@ -97,26 +105,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-
-
                 RequestQueue rQueue = Volley.newRequestQueue(LoginActivity.this);
                 rQueue.add(request);
-
-
-                // if 문 삽입(200일때 , 400일때)
-
-
-                Log.d("RESULTCODE","TEST");
-                if(resultCode.equals("400")) {
-                    Toast.makeText(LoginActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
-
-                }
-                else if(resultCode.equals ("200")) {
-
-                }
-
-                Intent intent = new Intent(getApplication(), MainActivity.class);
-                startActivity(intent);
             }
         });
         //회원가입 화면으로 전환

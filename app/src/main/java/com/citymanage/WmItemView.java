@@ -3,29 +3,21 @@ package com.citymanage;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-/**
- * Created by we25 on 2017-06-26.
- */
-
 public class WmItemView extends LinearLayout {
-    TextView textView;
-    TextView textView2;
-    TextView textView3;
-    ImageView imageView;
+    TextView addressText;
+    TextView waterQualityText;
+    TextView waterLevelText;
 
     public WmItemView(Context context) {
         super(context);
-
         init(context);
     }
 
     public WmItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         init(context);
     }
 
@@ -34,25 +26,26 @@ public class WmItemView extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.wm_item, this, true);
 
-        textView = (TextView) findViewById(R.id.textView);
-        textView2 = (TextView) findViewById(R.id.textView2);
-        textView3 = (TextView) findViewById(R.id.textView3);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        addressText = (TextView) findViewById(R.id.addressText);
+        waterQualityText = (TextView) findViewById(R.id.waterQualityText);
+        waterLevelText = (TextView) findViewById(R.id.waterLevelText);
     }
 
-    public void setName(String name) {
-        textView.setText(name);
+    public void setAddress(String address) {
+        addressText.setText(address);
     }
 
-    public void setMobile(String mobile) {
-        textView2.setText(mobile);
+    public void setWaterQuality(String waterQuality) {
+        waterQualityText.setText(waterQuality);
     }
 
-    public void setAge(int age) {
-        textView3.setText(String.valueOf(age));
+    public void setWaterLevel(String waterLevel) {
+        waterLevelText.setText(waterLevel);
     }
 
-    public void setImage(int resId) {
-        imageView.setImageResource(resId);
+    /*
+    public void setTest(int test) {
+        textView.setText(String.valueOf(test));
     }
+    */
 }

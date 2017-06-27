@@ -19,13 +19,18 @@ import org.json.JSONObject;
 
 public class PushHistoryActivity extends AppCompatActivity {
 
+    private final static String HOST = "http://192.168.0.230:3000";
+    private final static String PUSHHISTORY = "http://192.168.0.230:3000/pushHistory";
+    private final static String LOGIN = "http://192.168.0.230:3000/login";
+    private final static String REGISTER = "http://192.168.0.230:3000/register";
+
     ListView pushHistoryListView;
     PushHistoryAdapter adapter;
     CheckBox wmCheck;
 
     ProgressDialog dialog;
 
-    String url = "";
+    String url =
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

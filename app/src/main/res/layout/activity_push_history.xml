@@ -17,21 +17,21 @@
             android:text="수질" />
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/tmCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="쓰레기통" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/gmCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="도시가스" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/smCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -1,8 +1,10 @@
 package com.citymanage;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class WmListActivity extends AppCompatActivity {
@@ -20,6 +25,11 @@ public class WmListActivity extends AppCompatActivity {
     Button wmMapActivityGo;
     ListView listView;
     WmAdapter adapter;
+
+    String resultCode;
+    String url = "";
+    ProgressDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +90,7 @@ public class WmListActivity extends AppCompatActivity {
             }
         });
     }
+
     class WmAdapter extends BaseAdapter {
         ArrayList<WmItem> items = new ArrayList<WmItem>();
 
@@ -123,4 +134,28 @@ public class WmListActivity extends AppCompatActivity {
             return view;
         }
     }
+
+    void parseJsonData(String jsonString) {
+        try {
+            JSONObject object = new JSONObject(url);    // JSONObject에 객체를 저장
+
+            Log.d("RESULTCODE", "ListTest");
+
+            resultCode = object.getString("resultCode");
+
+
+//            JSONObject object = new JSONObject(jsonString);
+//            JSONArray fruitsArray = object.getJSONArray("fruits");
+//            ArrayList al = new ArrayList();
+//
+//            for(int i = 0; i < fruitsArray.length(); ++i) {
+//                al.add(fruitsArray.getString(i));
+//            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        dialog.dismiss();
+    }
+
 }

@@ -30,7 +30,7 @@ public class PushHistoryActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
 
-    String url =
+    String url = PUSHHISTORY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,12 @@ public class PushHistoryActivity extends AppCompatActivity {
             JSONObject object = new JSONObject(jsonString);
             String resultCode = object.getString("resultCode");
 
-            Log.d("REULTCODE", resultCode);
+            Log.d("RESULTCODE", resultCode);
+
+            int a = Integer.parseInt(resultCode);
+
+
+
 //            JSONObject object = new JSONObject(jsonString);
 //            JSONArray fruitsArray = object.getJSONArray("fruits");
 //            ArrayList al = new ArrayList();

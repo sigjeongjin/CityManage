@@ -22,7 +22,7 @@ public class WmInfoActivity extends AppCompatActivity {
         Intent intent = getIntent(); // 보내온 Intent를 얻는다
         addressText.setText(intent.getStringExtra("address"));
         waterQualityText.setText(intent.getStringExtra("waterQuality"));
-        waterLevelText.setText(intent.getStringExtra("waterQuality"));
+        waterLevelText.setText(intent.getStringExtra("waterLevel"));
 
     }
 }

@@ -14,13 +14,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class PushHistoryActivity extends AppCompatActivity {
 
     private final static String HOST = "http://192.168.0.230:3000";
-    private final static String PUSHHISTORY = "http://192.168.0.230:3000/pushHistory";
+    private final static String PUSHHISTORY = "http://192.168.0.230:3000/pushHistory?name=park";
     private final static String LOGIN = "http://192.168.0.230:3000/login";
     private final static String REGISTER = "http://192.168.0.230:3000/register";
 
@@ -31,6 +36,11 @@ public class PushHistoryActivity extends AppCompatActivity {
     ProgressDialog dialog;
 
     String url = PUSHHISTORY;
+
+    int ResultCode;
+
+    List<HashMap<String,String>> pushHistoryList = new ArrayList<HashMap<String, String>>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,14 @@ public class PushHistoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
+
+                pushHistoryListView = (ListView) findViewById(R.id.pushHistoryListView);
+                adapter = new PushHistoryAdapter(getApplicationContext());
+
+                for(int i = 0; i < pushHistoryList.size(); i ++ ) {
+                    adapter.addItem(new PushHistoryItem(pushHistoryList.get(i).get("title"),"contents"));
+                }
+                pushHistoryListView.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -56,69 +74,30 @@ public class PushHistoryActivity extends AppCompatActivity {
 
         RequestQueue rQueue = Volley.newRequestQueue(PushHistoryActivity.this);
         rQueue.add(request);
-
     }
 
     void parseJsonData(String jsonString) {
         try {
             JSONObject object = new JSONObject(jsonString);
-            String resultCode = object.getString("resultCode");
 
-            Log.d("RESULTCODE", resultCode);
+            JSONArray pushHistorArray = object.getJSONArray("pushHistoryList");
 
-            int a = Integer.parseInt(resultCode);
+            for(int i = 0; i < pushHistorArray.length(); i ++ ) {
 
+                HashMap<String,String> hashTemp = new HashMap<>();
 
+                String title = pushHistorArray.getJSONObject(i).getString("title");
+                String contents = pushHistorArray.getJSONObject(i).getString("contents");
 
-//            JSONObject object = new JSONObject(jsonString);
-//            JSONArray fruitsArray = object.getJSONArray("fruits");
-//            ArrayList al = new ArrayList();
-//
-//            for(int i = 0; i < fruitsArray.length(); ++i) {
-//                al.add(fruitsArray.getString(i));
-//            }
+                hashTemp.put("title",title);
+                hashTemp.put("contents",contents);
+
+                pushHistoryList.add(i,hashTemp);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         dialog.dismiss();
     }
-
-//        pushHistoryListView = (ListView) findViewById(R.id.pushHistoryListView);
-//
-//        adapter = new PushHistoryAdapter(getApplicationContext());
-//
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//        adapter.addItem(new PushHistoryItem("title","contents"));
-//
-//        pushHistoryListView.setAdapter(adapter);
-
 }

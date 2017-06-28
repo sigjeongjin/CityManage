@@ -11,14 +11,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/wmMapActivityGo"
+            android:id="@+id/wmListActivityGo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="수질관리" />
 
         <Button
-            android:id="@+id/tmMapActivityGo"
+            android:id="@+id/tmListActivityGo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,14 +31,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/gmMapActivityGo"
+            android:id="@+id/gmListActivityGo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="도시가스관리" />
 
         <Button
-            android:id="@+id/smMapActivityGo"
+            android:id="@+id/smListActivityGo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

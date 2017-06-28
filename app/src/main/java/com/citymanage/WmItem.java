@@ -1,56 +1,44 @@
 package com.citymanage;
 
 /**
- * Created by we25 on 2017-06-26.
+ * Created by minjeon on 2017-06-26.
  */
 
 public class WmItem {
-    String name;
-    String mobile;
-    int age;
-    int resId;
 
-    public WmItem(String name, String mobile) {
-        this.name = name;
-        this.mobile = mobile;
+    String address;        // 설치된 지역정보
+    String waterQuality;   // 수질 센서 (waterQuality)
+    String waterLevel;     // 수압 센서 (waterLevel)
+
+
+    public WmItem(String address) {
+        this.address = address;
     }
 
-    public WmItem(String name, String mobile, int age, int resId) {
-        this.name = name;
-        this.mobile = mobile;
-        this.age = age;
-        this.resId = resId;
+    public WmItem(String address, String waterQuality, String waterLevel) {
+        this.address = address;
+        this.waterQuality = waterQuality;
+        this.waterLevel = waterLevel;
     }
 
-    public int getAge() {
-        return age;
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public String getWaterQuality() {
+        return waterQuality;
+    }
+    public void setWaterQuality(String waterQuality) {
+        this.waterQuality = waterQuality;
     }
 
-    public int getResId() {
-        return resId;
+    public String getWaterLevel() {
+        return waterLevel;
     }
-
-    public void setResId(int resId) {
-        this.resId = resId;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setWaterLevel(String waterLevel) {
+        this.waterLevel = waterLevel;
     }
 }

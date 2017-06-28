@@ -1,8 +1,10 @@
 package com.citymanage;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,14 +14,22 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class WmListActivity extends AppCompatActivity {
-    EditText editText;
+    EditText addressInput;
 
     Button wmMapActivityGo;
     ListView listView;
     WmAdapter adapter;
+
+    String resultCode;
+    String url = "";
+    ProgressDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +51,21 @@ public class WmListActivity extends AppCompatActivity {
 
         adapter = new WmAdapter();
 
-//        adapter.addItem(new WmItem("박현진", "010-1000-1000", 23, R.drawable.muji01));
-//        adapter.addItem(new WmItem("방규식", "010-2000-2000", 29, R.drawable.muji02));
-//        adapter.addItem(new WmItem("박진주", "010-3000-3000", 29, R.drawable.muji03));
-//        adapter.addItem(new WmItem("강현명", "010-4000-4000", 29, R.drawable.muji04));
-//        adapter.addItem(new WmItem("김민정", "010-5000-5000", 26, R.drawable.muji05));
+        adapter.addItem(new WmItem("서울시 금천구", "정상", "정상"));
+        adapter.addItem(new WmItem("서울시 구로구", "비정상", "정상"));
+        adapter.addItem(new WmItem("서울시 관악구", "정상", "비정상"));
+
 
         listView.setAdapter(adapter);
 
-        editText = (EditText) findViewById(R.id.editText);
+        addressInput = (EditText) findViewById(R.id.addressInput);
 
-        Button button = (Button) findViewById(R.id.button);
+        Button button = (Button) findViewById(R.id.searchBtn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = editText.getText().toString();
+                String name = addressInput.getText().toString();
                 String mobile = "010-1000-1000";
-                int age = 20;
 
                 //adapter.addItem(new WmItem(name, mobile, age, R.drawable.muji01));
                 adapter.notifyDataSetChanged();
@@ -69,13 +77,12 @@ public class WmListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 WmItem item = (WmItem) adapter.getItem(position);
-                Toast.makeText(getApplicationContext(), "선택 : " + item.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "선택 : " + item.getAddress(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), WmInfoActivity.class);
 
-                intent.putExtra("name", adapter.items.get(position).name);
-                intent.putExtra("mobile", adapter.items.get(position).mobile);
-                intent.putExtra("age", adapter.items.get(position).age);
-                intent.putExtra("resId", adapter.items.get(position).resId);
+                intent.putExtra("address", adapter.items.get(position).address);
+                intent.putExtra("waterQuality", adapter.items.get(position).waterQuality);
+                intent.putExtra("waterLevel", adapter.items.get(position).waterLevel);
 
 
                 startActivityForResult(intent, 1001);
@@ -83,6 +90,7 @@ public class WmListActivity extends AppCompatActivity {
             }
         });
     }
+
     class WmAdapter extends BaseAdapter {
         ArrayList<WmItem> items = new ArrayList<WmItem>();
 
@@ -118,12 +126,36 @@ public class WmListActivity extends AppCompatActivity {
             }
 
             WmItem item = items.get(position);
-            view.setName(item.getName());
-            view.setMobile(item.getMobile());
-            view.setAge(item.getAge());
-            view.setImage(item.getResId());
+            view.setAddress(item.getAddress());
+            view.setWaterQuality(item.getWaterQuality());
+            view.setWaterLevel(item.getWaterLevel());
+
 
             return view;
         }
     }
+
+    void parseJsonData(String jsonString) {
+        try {
+            JSONObject object = new JSONObject(url);    // JSONObject에 객체를 저장
+
+            Log.d("RESULTCODE", "ListTest");
+
+            resultCode = object.getString("resultCode");
+
+
+//            JSONObject object = new JSONObject(jsonString);
+//            JSONArray fruitsArray = object.getJSONArray("fruits");
+//            ArrayList al = new ArrayList();
+//
+//            for(int i = 0; i < fruitsArray.length(); ++i) {
+//                al.add(fruitsArray.getString(i));
+//            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        dialog.dismiss();
+    }
+
 }

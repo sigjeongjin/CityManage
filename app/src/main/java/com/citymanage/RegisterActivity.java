@@ -31,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity{
 
 
     String resultCode;
+
     private EditText snm;
     private EditText spw;
     private EditText respw;
@@ -39,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity{
     private Button btns;
     private Button btnf;
 
+    //url 생성 192.168.0.230.3000 으로 register 관련 정보를 보냄
     StringBuilder url = new StringBuilder("http://192.168.0.230:3000/register?"); //?name=snm&spw=1234&respw=spw&sid=abc&hp=010
 
     ProgressDialog dialog;
@@ -53,13 +55,13 @@ public class RegisterActivity extends AppCompatActivity{
         respw = (EditText) findViewById(R.id.respw);
         sid = (EditText) findViewById(R.id.sid);
         hp = (EditText) findViewById(R.id.hp);
-        btns = (Button) findViewById(R.id.btns);
         btnf = (Button) findViewById(R.id.btnf);
 
+        // 192.168.0.230.3000 으로 register 관련 정보를 보냄
         url.append("name=" + snm.getText().toString());
+        url.append("&email=" + sid.getText().toString());
         url.append("&password=" + spw.getText().toString());
         url.append("&repassword=" + respw.getText().toString());
-        url.append("&email=" + sid.getText().toString());
         url.append("&phone=" + hp.getText().toString());
 
 
@@ -98,6 +100,7 @@ public class RegisterActivity extends AppCompatActivity{
         });
 
         //정보 등록 확인 부분
+        btns = (Button)findViewById(R.id.btns);
         btns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,9 +110,9 @@ public class RegisterActivity extends AppCompatActivity{
                     snm.requestFocus();
                     return;
                 }
-                //아이디 입력 확인
+                //이메일 입력 확인
                 if(sid.getText().toString().length() == 0 ) {
-                    Toast.makeText(RegisterActivity.this, "아이디를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "이메일을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     sid.requestFocus();
                     return;
                 }
@@ -141,26 +144,33 @@ public class RegisterActivity extends AppCompatActivity{
                     hp.requestFocus();
                     return;
                 }
+
+                //정보 전송중 메시지 출력
                 dialog = new ProgressDialog(RegisterActivity.this);
                 dialog.setMessage("Loading....");
                 dialog.show();
 
+
+                //정보를 보내고 받음
                 StringRequest request = new StringRequest(url.toString(), new Response.Listener<String>() {
                     @Override
                     public void onResponse(String string) {
                         parseJsonData(string);
 
                         // if 문 삽입(200일때 , 400일때)
+                        // 받는  정보가 400일 경우 정보가 정확하지 않음.
                         Log.d("RESULTCODE","TEST");
                         if(resultCode.equals("400")) {
                             Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
 
                         }
+
+                        //받는 정보가 200일 경우 로그인 액티비티 클래스로 전환
                         else if(resultCode.equals ("200")) {
                             Intent intent = new Intent(getApplication(), LoginActivity.class);
                             startActivity(intent);
                         }
-
+                // 정보통신이 제대로 되지 않는 경우
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -169,7 +179,7 @@ public class RegisterActivity extends AppCompatActivity{
                         dialog.dismiss();
                     }
                 });
-
+                // RequestQueue Queue = Volley.newRequestQueue(this); 정보의 전달
                 RequestQueue rQueue = Volley.newRequestQueue(RegisterActivity.this);
                 rQueue.add(request);
             }
@@ -188,11 +198,16 @@ public class RegisterActivity extends AppCompatActivity{
             }
         });
     }
+
     void parseJsonData(String jsonString) {
         try {
+            //새로운 json객체 생성
             JSONObject object = new JSONObject(jsonString);
 
             Log.d("RESULTCODE","TEST2");
+
+
+            //결과값을 받아옴
 
             resultCode = object.getString("resultCode");
 

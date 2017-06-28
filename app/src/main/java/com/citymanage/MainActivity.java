@@ -9,10 +9,10 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     Button btnPushHistoryActivityGo;
-    Button wmMapActivityGo;
-    Button gmMapActivityGo;
-    Button tmMapActivityGo;
-    Button smMapActivityGo;
+    Button wmListActivityGo;
+    Button gmListActivityGo;
+    Button tmListActivityGo;
+    Button smListActivityGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         //수질관리 화면으로 이동
-        wmMapActivityGo = (Button) findViewById(R.id.wmMapActivityGo);
+        wmListActivityGo = (Button) findViewById(R.id.wmListActivityGo);
 
-        wmMapActivityGo.setOnClickListener(new View.OnClickListener() {
+        wmListActivityGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WmMapActivity.class);
+                Intent intent = new Intent(getApplicationContext(), WmListActivity.class);
                 startActivity(intent);
             }
         });
@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //도시가스 관리 화면으로 이동
-        gmMapActivityGo = (Button) findViewById(R.id.gmMapActivityGo);
+        wmListActivityGo = (Button) findViewById(R.id.wmListActivityGo);
 
-        gmMapActivityGo.setOnClickListener(new View.OnClickListener() {
+        wmListActivityGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), GmMapActivity.class);

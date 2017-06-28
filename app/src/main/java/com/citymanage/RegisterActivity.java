@@ -167,6 +167,7 @@ public class RegisterActivity extends AppCompatActivity{
 
                         //받는 정보가 200일 경우 로그인 액티비티 클래스로 전환
                         else if(resultCode.equals ("200")) {
+                            Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplication(), LoginActivity.class);
                             startActivity(intent);
                         }

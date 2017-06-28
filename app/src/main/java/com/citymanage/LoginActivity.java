@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private  Button btnregister;
     CheckBox autoLogin;
     Button btnLogin;
+    Button checkbox;
     EditText email, password;
     String url = "http://192.168.0.230:3000/login?loginId=bang&pwd=1234";
 //    StringBuilder url2= "http";
@@ -133,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
     }
 
     void parseJsonData(String jsonString) {
@@ -158,6 +160,23 @@ public class LoginActivity extends AppCompatActivity {
 
         dialog.dismiss();
     }
+//    // 값 불러오기
+//      private void getPreferences(){
+//        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+//        pref.getString("autologin","");
+//    }
+//    //값 저장하기
+//    private void savePreferences(){
+//        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//        editor.putString("autologin", "1");
+//        editor.putString("id", "bang");
+//        editor.putString("password", "1234");
+//        editor.commit();
+//    }
+
+
+
 
 
 

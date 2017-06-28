@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,9 +28,12 @@ public class WmListActivity extends AppCompatActivity {
     WmAdapter adapter;
 
     String resultCode;
-    String url = "";
+    String url = "http://192.168.0.229:3000/wmList";
     ProgressDialog dialog;
 
+    String address;
+    String waterQuality;
+    String waterLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +52,14 @@ public class WmListActivity extends AppCompatActivity {
         });
 
         listView = (ListView) findViewById(R.id.listView);
-
+//
         adapter = new WmAdapter();
+//
+//        adapter.addItem(new WmItem("서울시 금천구", "정상", "정상"));
+//        adapter.addItem(new WmItem("서울시 구로구", "비정상", "정상"));
+//        adapter.addItem(new WmItem("서울시 관악구", "정상", "비정상"));
 
-        adapter.addItem(new WmItem("서울시 금천구", "정상", "정상"));
-        adapter.addItem(new WmItem("서울시 구로구", "비정상", "정상"));
-        adapter.addItem(new WmItem("서울시 관악구", "정상", "비정상"));
-
+        parseJsonData(url);
 
         listView.setAdapter(adapter);
 
@@ -136,13 +141,28 @@ public class WmListActivity extends AppCompatActivity {
     }
 
     void parseJsonData(String jsonString) {
+
+
         try {
-            JSONObject object = new JSONObject(url);    // JSONObject에 객체를 저장
+
+            JSONArray Object = new JSONArray(jsonString);
 
             Log.d("RESULTCODE", "ListTest");
 
-            resultCode = object.getString("resultCode");
+            //resultCode = object.getString("resultCode");
 
+            for(int i = 0 ; i < Object.length(); i++) {
+
+                JSONObject list= Object.getJSONObject("list");
+                address = list.getString("address");
+                waterQuality = list.getString("waterQuality");
+                waterLevel = list.getString("waterLevel");
+
+
+                adapter = new WmAdapter();
+
+                adapter.addItem(new WmItem(address, waterQuality, waterLevel));
+            }
 
 //            JSONObject object = new JSONObject(jsonString);
 //            JSONArray fruitsArray = object.getJSONArray("fruits");

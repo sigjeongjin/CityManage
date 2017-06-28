@@ -167,3 +167,72 @@ public class LoginActivity extends AppCompatActivity {
 
 }
 
+
+//    private Check Adk, UserIdChk, PwdChk, AutoChk;
+//    private boolean IsAdminIdChk, IsUserIdChk, IsPwdChk, IsAutoChk;
+
+
+//
+//    OnCreate(){
+//
+//
+//        AChk = (CheckBox) findViewById(R.id.Login_Admin_Code_Save_Selector);
+//        Uk = (CheckBox) findViewById(R.id.Login_User_Id_Save_Selector);
+//        Pk= (CheckBox) findViewById(R.id.Login_PassWord_Save_Selector);
+//        AuK= (CheckBox) findViewById(R.id.Login_Auto_Check);
+//
+//
+//        SharedPreferences pref = getSharedPreferences("Pref",
+//                Context.MODE_PRIVATE);
+//
+//
+//
+//        AChk .setChecked(pref.getBoolean("AChk ", false));
+//        UChk .setChecked(pref.getBoolean("UChk ", false));
+//        PChk.setChecked(pref.getBoolean("PChk", false));
+//        AuChK.setChecked(pref.getBoolean("AuChK", false));
+//
+//
+//
+//    }
+//
+//
+//
+//
+//
+//    onStop(){
+//
+//
+//
+//        SharedPreferences pref = getSharedPreferences("Pref",
+//                Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//
+//        editor.putString("admin", admin.getText().toString());
+//        editor.putString("id", user_id.getText().toString());
+//        editor.putString("passwd", passwd.getText().toString());
+//        editor.putBoolean("AdminIdChk", AChk .isChecked());
+//        editor.putBoolean("UserIdChk", UChk .isChecked());
+//        editor.putBoolean("PwdChk", PChk.isChecked());
+//        editor.putBoolean("AutoChk", AuChK.isChecked());
+//        editor.commit();
+//
+//    public static String get저장제목(Context context) {
+//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+//        return pref.getString("저장할키ID", "");
+//    }
+//    public static void set저장제목(Context context, String 저장시키고싶은값) {
+//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+//        if(!pref.getString("저장할키ID", "").toUpperCase().equals(저장시키고싶은값.toUpperCase())) {
+//            SharedPreferences.Editor edit = pref.edit();
+//            edit.putString("저장할키ID", 저장시키고싶은값.toUpperCase());
+//            edit.commit();
+//            //Log.i(getClass().getSimpleName(), "SharedPreferences Set : UserID = " + userId.toUpperCase());
+//        }
+
+
+
+
+
+
+

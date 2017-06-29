@@ -58,11 +58,11 @@
             android:text="PUSH이력화면" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/settingActivityGo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="설정화면(임시)" />
     </LinearLayout>
 
 </LinearLayout>

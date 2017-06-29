@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     Button gmListActivityGo;
     Button tmListActivityGo;
     Button smListActivityGo;
+    Button settingActivityGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), GmMapActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        settingActivityGo = (Button) findViewById(R.id.settingActivityGo);
+
+        settingActivityGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                 startActivity(intent);
             }
         });

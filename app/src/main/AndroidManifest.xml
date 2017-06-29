@@ -17,7 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3Bi6rtPt24vp1VB93_kjavLhrVuEVxJ8" />
@@ -29,17 +28,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".SidemenuActivity"/>
+        <activity android:name=".SidemenuActivity" />
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".WmMapActivity" />
         <activity android:name=".PushHistoryActivity" />
         <activity android:name=".GmMapActivity" />
         <activity android:name=".WmListActivity" />
-        <activity android:name=".WmInfoActivity"></activity>
+        <activity android:name=".WmInfoActivity" />
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

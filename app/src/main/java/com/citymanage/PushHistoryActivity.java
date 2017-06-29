@@ -22,24 +22,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+/**
+*
+* @author 박현진
+* @version 1.0.0
+* @since 2017-06-29 오전 10:59
+**/
+
 public class PushHistoryActivity extends AppCompatActivity {
+
+    CheckBox wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox;
 
     private final static String HOST = "http://192.168.0.230:3000";
     private final static String LOGIN = "http://192.168.0.230:3000/login";
     private final static String REGISTER = "http://192.168.0.230:3000/register";
 
-    String pushHistoryUrl = ApiUrlList.getPushHistoryUrl();
+    String pushHistoryUrl = ApiUrlList.getPushHistoryUrl(); //처음 리스트 호출 URL
 
-    ProgressDialog dialog;
+    ListView pushHistoryListView; //통신 후 받은 데이터 표현할 리스트
+    PushHistoryAdapter adapter; // 위의 리스트 adapter
 
-    ListView pushHistoryListView;
-    PushHistoryAdapter adapter;
-
-    CheckBox wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox;
-
-    int ResultCode;
+    ProgressDialog dialog; //프로그레스바 다이얼로그
 
     List<HashMap<String,String>> pushHistoryList = new ArrayList<HashMap<String, String>>();
+
+    int ResultCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,11 @@ public class PushHistoryActivity extends AppCompatActivity {
         tmCheckBox = (CheckBox) findViewById(R.id.tmCheckBox);
         gmCheckBox = (CheckBox) findViewById(R.id.gmCheckBox);
         smCheckBox = (CheckBox) findViewById(R.id.smCheckBox);
+
+        wmCheckBox.setTag("wm");
+        tmCheckBox.setTag("tm");
+        gmCheckBox.setTag("gm");
+        smCheckBox.setTag("sm");
 
         pushHistoryListView = (ListView) findViewById(R.id.pushHistoryListView);
 
@@ -86,7 +99,8 @@ public class PushHistoryActivity extends AppCompatActivity {
                 if(wmCheckBox.isChecked()){
                     StringBuilder sb = new StringBuilder(pushHistoryUrl);
 
-                    sb.append("?item=wm");
+//                  추후에 개발 (체크 박스 여러개 눌렸을경우 여러 아이템 동시 조회)
+//                    checkedSettingUrl(sb);
 
                     dialog = new ProgressDialog(PushHistoryActivity.this);
                     dialog.setMessage("Loading....");
@@ -95,8 +109,10 @@ public class PushHistoryActivity extends AppCompatActivity {
                     StringRequest pushHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
                         @Override
                         public void onResponse(String string) {
-                            adapter.clearItemAll();
-                            adapter.notifyDataSetChanged();
+
+                            //통신을 해서 데이터를 받아 오기전에 리스트뷰를 아무것도 없는 상태로 셋팅한다.
+                            adapter.clearItemAll(); //어댑터에 셋팅된 아이템 전부 삭제
+                            adapter.notifyDataSetChanged(); //어댑터 정보 갱신
 
                             parseJsonData(string);
 
@@ -122,6 +138,7 @@ public class PushHistoryActivity extends AppCompatActivity {
         });
     }
 
+    //통신 후 json 파싱
     void parseJsonData(String jsonString) {
         try {
             pushHistoryList.clear();
@@ -149,7 +166,21 @@ public class PushHistoryActivity extends AppCompatActivity {
         dialog.dismiss();
     }
 
-    public void checkBoxIsChecked(CheckBox pCheckBox) {
 
+    //나중에 체크 박스 여러개 체크 했을 경우에 구현 해야할 함수
+    public String checkedSettingUrl(StringBuilder pSb) {
+
+//        wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox
+        if(wmCheckBox.isChecked()) {
+            pSb.append("item=" + wmCheckBox.getTag());
+        } else if(tmCheckBox.isChecked()){
+            pSb.append("item2=" + tmCheckBox.getTag());
+        } else if(gmCheckBox.isChecked()) {
+            pSb.append("item3=" + gmCheckBox.getTag());
+        } else if(smCheckBox.isChecked()) {
+            pSb.append("item4=" + smCheckBox.getTag());
+        }
+
+        return pSb.toString();
     }
 }

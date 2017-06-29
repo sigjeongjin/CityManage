@@ -55,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
             EditText password = (EditText)findViewById(R.id.password);
             String pw = password.getText().toString();
 
+
+                //release때 주석 처리 해야함 (임시)
             email.setText("bang");
             password.setText("1234");
 

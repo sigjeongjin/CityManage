@@ -38,6 +38,10 @@ public class PushHistoryAdapter extends BaseAdapter {
         return position;
     }
 
+    public void clearItemAll() {
+        this.items.clear();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         PushHistoryItemView view = new PushHistoryItemView(context);

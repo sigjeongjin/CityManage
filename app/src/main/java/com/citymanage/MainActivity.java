@@ -41,15 +41,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //도시가스 관리 화면으로 이동
-        wmListActivityGo = (Button) findViewById(R.id.wmListActivityGo);
-
-        wmListActivityGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GmMapActivity.class);
-                startActivity(intent);
-            }
-        });
+//        wmListActivityGo = (Button) findViewById(R.id.wmListActivityGo);
+//
+//        wmListActivityGo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), GmMapActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         //쓰레기통 관리 화면으로 이동
 //        tmMapActivityGo = (Button) findViewById(R.id.tmMapActivityGo);
 //

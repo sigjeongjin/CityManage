@@ -12,9 +12,15 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +28,7 @@ import java.util.ArrayList;
 
 public class WmListActivity extends AppCompatActivity {
     EditText addressInput;
+    TextView textView;
 
     Button wmMapActivityGo;
     ListView listView;
@@ -30,10 +37,6 @@ public class WmListActivity extends AppCompatActivity {
     String resultCode;
     String url = "http://192.168.0.229:3000/wmList";
     ProgressDialog dialog;
-
-    String address;
-    String waterQuality;
-    String waterLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +54,39 @@ public class WmListActivity extends AppCompatActivity {
             }
         });
 
-        listView = (ListView) findViewById(R.id.listView);
-//
+        textView = (TextView) findViewById(R.id.textView);
         adapter = new WmAdapter();
-//
-//        adapter.addItem(new WmItem("서울시 금천구", "정상", "정상"));
-//        adapter.addItem(new WmItem("서울시 구로구", "비정상", "정상"));
-//        adapter.addItem(new WmItem("서울시 관악구", "정상", "비정상"));
 
-        parseJsonData(url);
+        listView = (ListView) findViewById(R.id.listView);
+//        dialog = new ProgressDialog(WmListActivity.this);
+//        dialog.setMessage("Loading....");
+//        dialog.show();
 
-        listView.setAdapter(adapter);
+
+        Log.i("STRING","TEST");
+
+        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String string) {
+                Log.i("onResponse","onResponse");
+                parseJsonData(string);
+
+
+                listView.setAdapter(adapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                //dialog.dismiss();
+            }
+        });
+
+        RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
+        rQueue.add(request);
+
+
+
 
         addressInput = (EditText) findViewById(R.id.addressInput);
 
@@ -89,9 +114,7 @@ public class WmListActivity extends AppCompatActivity {
                 intent.putExtra("waterQuality", adapter.items.get(position).waterQuality);
                 intent.putExtra("waterLevel", adapter.items.get(position).waterLevel);
 
-
                 startActivityForResult(intent, 1001);
-
             }
         });
     }
@@ -141,28 +164,29 @@ public class WmListActivity extends AppCompatActivity {
     }
 
     void parseJsonData(String jsonString) {
-
-
         try {
+            JSONObject object = new JSONObject(jsonString);
 
-            JSONArray Object = new JSONArray(jsonString);
+            Log.i("JSONOBJECT", object.toString());
 
-            Log.d("RESULTCODE", "ListTest");
-
-            //resultCode = object.getString("resultCode");
-
-            for(int i = 0 ; i < Object.length(); i++) {
-
-                JSONObject list= Object.getJSONObject("list");
-                address = list.getString("address");
-                waterQuality = list.getString("waterQuality");
-                waterLevel = list.getString("waterLevel");
-
-
-                adapter = new WmAdapter();
-
-                adapter.addItem(new WmItem(address, waterQuality, waterLevel));
-            }
+//            Log.d("RESULTCODE", "ListTest");
+//            resultCode = object.getString("resultCode");
+//
+//
+//            textView.setText(resultCode);
+//            JSONArray wmArray = object.getJSONArray("list");
+//
+//
+//
+//            for(int i = 0 ; i < wmArray.length(); i++) {
+//
+//                String address = wmArray.getJSONObject(i).getString("address");
+//                String waterQuality = wmArray.getJSONObject(i).getString("waterQuality");
+//                String waterLevel = wmArray.getJSONObject(i).getString("waterLevel");
+//
+//
+//                adapter.addItem(new WmItem(address, waterQuality, waterLevel));
+//            }
 
 //            JSONObject object = new JSONObject(jsonString);
 //            JSONArray fruitsArray = object.getJSONArray("fruits");
@@ -174,7 +198,6 @@ public class WmListActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         dialog.dismiss();
     }
 

@@ -43,8 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-
         Button btnLogin = (Button)findViewById(R.id.btnLogin) ;
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -54,6 +52,9 @@ public class LoginActivity extends AppCompatActivity {
                 EditText password = (EditText)findViewById(R.id.password);
                 String pw = password.getText().toString();
 
+
+                email.setText("bang");
+                password.setText("1234");
 
                 if(id.equals("") && pw.equals("")){
                     Toast.makeText(LoginActivity .this,"아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();

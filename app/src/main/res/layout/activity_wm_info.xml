@@ -18,6 +18,14 @@
 
 
         <TextView
+            android:id="@+id/sensorIdText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="sensorId"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15dp" />
+
+        <TextView
             android:id="@+id/addressText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

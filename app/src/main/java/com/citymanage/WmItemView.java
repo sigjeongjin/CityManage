@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class WmItemView extends LinearLayout {
+    TextView sensorIdText;
     TextView addressText;
     TextView waterQualityText;
     TextView waterLevelText;
@@ -26,14 +27,15 @@ public class WmItemView extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.wm_item, this, true);
 
+        sensorIdText = (TextView) findViewById(R.id.sensorIdText);
         addressText = (TextView) findViewById(R.id.addressText);
         waterQualityText = (TextView) findViewById(R.id.waterQualityText);
         waterLevelText = (TextView) findViewById(R.id.waterLevelText);
     }
 
-    public void setAddress(String address) {
-        addressText.setText(address);
-    }
+    public void setSensorId(String sensorId) { sensorIdText.setText(sensorId); }
+
+    public void setAddress(String address) { addressText.setText(address); }
 
     public void setWaterQuality(String waterQuality) {
         waterQualityText.setText(waterQuality);

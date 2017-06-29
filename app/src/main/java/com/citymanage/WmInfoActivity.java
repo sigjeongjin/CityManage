@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 public class WmInfoActivity extends AppCompatActivity {
+    TextView sensorIdText;
     TextView addressText;
     TextView waterQualityText;
     TextView waterLevelText;
@@ -15,11 +16,13 @@ public class WmInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wm_info);
 
+        sensorIdText = (TextView) findViewById(R.id.sensorIdText);
         addressText = (TextView) findViewById(R.id.addressText);
         waterQualityText = (TextView) findViewById(R.id.waterQualityText);
         waterLevelText = (TextView) findViewById(R.id.waterLevelText);
 
         Intent intent = getIntent(); // 보내온 Intent를 얻는다
+        sensorIdText.setText(intent.getStringExtra("sensorId"));
         addressText.setText(intent.getStringExtra("address"));
         waterQualityText.setText(intent.getStringExtra("waterQuality"));
         waterLevelText.setText(intent.getStringExtra("waterLevel"));

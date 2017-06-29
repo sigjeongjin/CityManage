@@ -52,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                 EditText password = (EditText)findViewById(R.id.password);
                 String pw = password.getText().toString();
 
-
                 email.setText("bang");
                 password.setText("1234");
 
@@ -85,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String string) {
                         parseJsonData(string);
-
                         // if 문 삽입(200일때 , 400일때)
                         Log.d("RESULTCODE","TEST");
                         if(resultCode.equals("400")) {

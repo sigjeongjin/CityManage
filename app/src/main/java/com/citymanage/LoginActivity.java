@@ -2,6 +2,7 @@ package com.citymanage;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,10 +27,14 @@ public class LoginActivity extends AppCompatActivity {
     //전역 변수 , result 코드 생성
     String resultCode;
 
+    //자동 로드인 준비
+    SharedPreferences setting;
+    SharedPreferences.Editor editor;
+
+
     private  Button btnregister;
-    CheckBox autoLogin;
+    CheckBox autologin;
     Button btnLogin;
-    Button checkbox;
     EditText email, password;
     String url = "http://192.168.0.230:3000/login?loginId=bang&pwd=1234";
 //    StringBuilder url2= "http";
@@ -137,9 +142,14 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+     }
 
 
-    }
+
+
+
+
+
 
     void parseJsonData(String jsonString) {
         try {
@@ -163,7 +173,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         dialog.dismiss();
-    }
+
+}
 //    // 값 불러오기
 //      private void getPreferences(){
 //        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
@@ -248,7 +259,48 @@ public class LoginActivity extends AppCompatActivity {
 //            edit.commit();
 //            //Log.i(getClass().getSimpleName(), "SharedPreferences Set : UserID = " + userId.toUpperCase());
 //        }
-
+//
+//
+// autologin = (CheckBox) findViewById(R.id.autologin);
+//         autologin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+//@Override
+////체크박스 호출 리스너
+//public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//        if(isChecked){
+//
+//        String ID = email.getText().toString();
+//
+//        String PW = password.getText().toString();
+//
+//
+//
+//        editor.putString("email", ID);
+//        editor.putString("password", PW);
+//        editor.putBoolean("autologin_enabled", true);
+//        editor.commit();
+//
+//        }else{
+////			editor.remove("ID");
+////			editor.remove("PW");
+////			editor.remove("Auto_Login_enabled");
+//
+//        editor.clear();
+//
+//        editor.commit();
+//
+//
+//        }
+//        //재접속시 아이디, 패스워드 유지
+//        if(setting.getBoolean("autologin_enabled", false)) {
+//
+//        email.setText(setting.getString("ID", ""));
+//        password.setText(setting.getString("PW", ""));
+//        autologin.setChecked(true);
+//        }
+//
+//        }
+//        });
 
 
 

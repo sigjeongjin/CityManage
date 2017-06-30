@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import java.util.ArrayList;
 
@@ -12,7 +14,7 @@ import java.util.ArrayList;
  */
 
 
-public class WmAdapter extends BaseAdapter {
+public class WmAdapter extends BaseAdapter implements Filterable {
     ArrayList<WmItem> items = new ArrayList<WmItem>();
     Context context;
 
@@ -42,6 +44,8 @@ public class WmAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         WmItemView view = new WmItemView(context);
+        //final Object object = WmItem.get(position);
+
 
 //        WmItemView view = null;
 
@@ -57,7 +61,35 @@ public class WmAdapter extends BaseAdapter {
         view.setWaterQuality(item.getWaterQuality());
         view.setWaterLevel(item.getWaterLevel());
 
-
         return view;
     }
+
+    @Override
+    public Filter getFilter() {
+        return null;
+    }
+
+    Filter addressFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            return null;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            // TODO Auto-generated method stub
+
+            ArrayList<String> temp_list = new ArrayList<String>();
+
+            Wm = (ArrayList<WmItem>) results.values; // 2) result 된 데이터를 받아온다
+
+            for(int i=0; i<call.size(); i++){
+
+                temp_list.add(call.get(i).getCall_name());
+
+
+            }
+    }
+
 }

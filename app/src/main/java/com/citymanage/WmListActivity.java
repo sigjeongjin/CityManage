@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,6 +41,8 @@ public class WmListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wm_list);
+
+        addressInput = (EditText) findViewById(R.id.addressInput);
 
         wmMapActivityGo = (Button) findViewById(R.id.wmMapActivityGo);
 
@@ -88,6 +92,24 @@ public class WmListActivity extends AppCompatActivity {
 
 
         addressInput = (EditText) findViewById(R.id.addressInput);
+        addressInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String searchText = addressInput.getText().toString();
+                adapter.fillter(searchText);
+            }
+        });
+
 
         Button button = (Button) findViewById(R.id.searchBtn);
         button.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +143,7 @@ public class WmListActivity extends AppCompatActivity {
 
 
     void parseJsonData(String jsonString) {
+
         try {
             JSONObject object = new JSONObject(jsonString);
 
@@ -138,11 +161,15 @@ public class WmListActivity extends AppCompatActivity {
                 String waterQuality = wmArray.getJSONObject(i).getString("waterQuality");
                 String waterLevel = wmArray.getJSONObject(i).getString("waterLevel");
 
+
                 adapter.addItem(new WmItem(sensorId, address, waterQuality, waterLevel));
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 //        dialog.dismiss();
     }
+
 }

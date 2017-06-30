@@ -80,6 +80,8 @@ public class WmListActivity extends AppCompatActivity {
         });
 
         RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
+        request.setShouldCache(false);
+        //listener.onRequestStarted();
         rQueue.add(request);
 
 

@@ -41,15 +41,15 @@ public class WmAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        //WmItemView view = new WmItemView(getApplicationContext());
+        WmItemView view = new WmItemView(context);
 
-        WmItemView view = null;
+//        WmItemView view = null;
 
-        if (convertView == null) {
-            view = new WmItemView(context);
-        } else {
-            view = (WmItemView) convertView;
-        }
+//        if (convertView == null) {
+//            view = new WmItemView(context);
+//        } else {
+//            view = (WmItemView) convertView;
+//        }
 
         WmItem item = items.get(position);
         view.setSensorId(item.getSensorId());

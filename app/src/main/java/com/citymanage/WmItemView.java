@@ -33,9 +33,13 @@ public class WmItemView extends LinearLayout {
         waterLevelText = (TextView) findViewById(R.id.waterLevelText);
     }
 
-    public void setSensorId(String sensorId) { sensorIdText.setText(sensorId); }
+    public void setSensorId(String address) {
+        sensorIdText.setText(address);
+    }
 
-    public void setAddress(String address) { addressText.setText(address); }
+    public void setAddress(String address) {
+        addressText.setText(address);
+    }
 
     public void setWaterQuality(String waterQuality) {
         waterQualityText.setText(waterQuality);

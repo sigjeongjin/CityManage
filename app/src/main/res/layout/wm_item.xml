@@ -14,10 +14,9 @@
         <TextView
             android:id="@+id/sensorIdText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="sensorId"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="15dp" />
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="sensorId" />
 
         <TextView
             android:id="@+id/addressText"
@@ -36,11 +35,11 @@
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="수질 : "
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="15dp" />
+                android:textSize="13dp"
+                android:text="수질 : " />
 
             <TextView
                 android:id="@+id/waterQualityText"
@@ -49,7 +48,7 @@
                 android:layout_weight="1"
                 android:text="waterQuality"
                 android:textColor="#0223e0"
-                android:textSize="15dp" />
+                android:textSize="13dp" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -58,7 +57,7 @@
                 android:layout_weight="1"
                 android:text="수온 : "
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="15dp" />
+                android:textSize="13dp" />
 
             <TextView
                 android:id="@+id/waterLevelText"
@@ -67,7 +66,7 @@
                 android:layout_weight="1"
                 android:text="waterLevel"
                 android:textColor="#4902d6"
-                android:textSize="15dp" />
+                android:textSize="13dp" />
 
         </LinearLayout>
 

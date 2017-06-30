@@ -1,11 +1,20 @@
 package com.citymanage;
 
+/**
+ * Created by minjeon on 2017-06-26.
+ */
+
 public class WmItem {
 
     String sensorId;
     String address;        // 설치된 지역정보
     String waterQuality;   // 수질 센서 (waterQuality)
     String waterLevel;     // 수압 센서 (waterLevel)
+
+
+    public WmItem(String address) {
+        this.address = address;
+    }
 
     public WmItem(String sensorId, String address, String waterQuality, String waterLevel) {
         this.sensorId = sensorId;

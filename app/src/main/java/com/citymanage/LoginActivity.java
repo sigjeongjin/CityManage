@@ -164,8 +164,5 @@ public class LoginActivity extends AppCompatActivity {
 
         dialog.dismiss();
     }
-
-
-
 }
 

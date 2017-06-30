@@ -2,10 +2,8 @@ package com.citymanage;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,23 +13,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-
 public class SettingActivity extends AppCompatActivity{
 
-    private final static int PICK_FROM_CAMERA = 0;
-    private final static int PICK_FROM_ALBUM = 1;
-    private final static int CROP_FROM_IMAGE = 2;
+    private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
+    private static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
+    private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
 
     private Uri mImageCaptureUri;
-    private ImageView iv_UserPhoto;
+    private ImageView iv_receipt;
     private String absoultePath;
 
     Switch autoLoginOnOffSwitch;
     Button passwordChangeButton;
     ImageView profileChangeImageView;
+
+    Uri photoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +41,12 @@ public class SettingActivity extends AppCompatActivity{
         profileChangeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        doTakeAlbumAction();
+                    selectAlbum();
                     }
                 };
 
@@ -68,93 +66,19 @@ public class SettingActivity extends AppCompatActivity{
         });
     }
 
+    public void selectAlbum() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent,PICK_FROM_ALBUM);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-
-        if(resultCode != RESULT_OK) return;
-
-        switch (requestCode){
-
-            case PICK_FROM_ALBUM : {
-                mImageCaptureUri = data.getData();
-
-            }
-
-            case PICK_FROM_CAMERA : {
-                Intent intent =new Intent("com.android.camera.action.CROP");
-                intent.setDataAndType(mImageCaptureUri,"image/*");
-
-                intent.putExtra("outputX",200);
-                intent.putExtra("outputY", 200);
-                intent.putExtra("aspecX",1);
-                intent.putExtra("aspecY",1);
-                intent.putExtra("scale",true);
-                startActivityForResult(intent, CROP_FROM_IMAGE);
-                break;
-            }
-
-            case CROP_FROM_IMAGE : {
-                if(resultCode != RESULT_OK) {
-                    return;
-                }
-
-                Log.i("BUNDLE",data.getDataString());
-
-                Bundle extras = data.getExtras();
-
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+
-                        "/SmartWheel" + System.currentTimeMillis() + ".jpg";
-
-                if(extras != null) {
-                    Bitmap photo = extras.getParcelable("mParcelledData");
-
-                    Log.i("STRING", extras.toString());
-                    iv_UserPhoto.setImageBitmap(photo);
-
-                    storeCropImage(photo, filePath);
-                    absoultePath = filePath;
-                    break;
-                }
-
-                File f = new File(mImageCaptureUri.getPath());
-
-                if(f.exists()){
-                    f.delete();
-                }
-            }
-        }
-    }
-
-    public void doTakeAlbumAction(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
-    }
-
-    private void storeCropImage(Bitmap bitmap, String filePath) {
-        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SmartWheel";
-        File directory_SmartWheel = new File(dirPath);
-
-        if(!directory_SmartWheel.exists()) directory_SmartWheel.mkdir();
-
-        File copyFile = new File(filePath);
-        BufferedOutputStream out = null;
-
-        try {
-
-            copyFile.createNewFile();
-            out = new BufferedOutputStream(new FileOutputStream(copyFile));
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
-
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(copyFile)));
-
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(resultCode == RESULT_OK) {
+            Log.i("REQUESTCODE",String.valueOf(requestCode));
+            Log.i("RESULTCODE",String.valueOf(resultCode));
         }
     }
 }

@@ -134,10 +134,8 @@ public class SettingActivity extends BaseActivity{
                         Uri dataUri = data.getData();
 
                         bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dataUri);
-                        Bitmap resized = Bitmap.createScaledBitmap(bm, 400, 300, false);
-
-//                        resized.
-//                        Log.i("resized",resized.get)
+                        Bitmap scaled = Bitmap.createScaledBitmap(bm, 400, 300, false);
+                        Bitmap resized = Bitmap.createBitmap(scaled,0,0,scaled.getWidth(),scaled.getHeight(),matrix,false);
 
                         profileChangeImageView.setImageBitmap(resized);
 

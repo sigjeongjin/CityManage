@@ -30,7 +30,6 @@ public class SettingActivity extends BaseActivity{
 
     private Uri mImageCaptureUri;
     private ImageView iv_receipt;
-    private String absoultePath;
 
     Switch autoLoginOnOffSwitch;
     Button passwordChangeButton;
@@ -107,35 +106,31 @@ public class SettingActivity extends BaseActivity{
 
     public void selectAlbum() {
 
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI); //인텐트에 사진 앨범을 쓰고, sd카드의 uri를 가저온다는것을 명시
         //사진을 여러개 선택할수 있도록 한다
-        intent.setType("image/*");
-        startActivityForResult(intent,PICK_FROM_ALBUM);
+        intent.setType("image/*"); //mime값이 이미지라는것을 명시
+        startActivityForResult(intent,PICK_FROM_ALBUM); //앨범에서 사진을 가져오면 key값과 함께 콜백을 받음
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.i("requestCode", String.valueOf(requestCode));
-
-        Log.i("resultCode", String.valueOf(resultCode));
-
         if(resultCode == RESULT_OK) {
 
             switch (requestCode) {
-                case PICK_FROM_ALBUM:
+                case PICK_FROM_ALBUM: //앨범에서 사진을 가져오는 콜백
 
                     try {
                         Matrix matrix = new Matrix();
-                        matrix.setRotate(90);
+                        matrix.setRotate(90); //사진을 90도로 회전시키기 위해 matrix설정
 
                         Bitmap bm = null;
                         Uri dataUri = data.getData();
 
-                        bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dataUri);
-                        Bitmap scaled = Bitmap.createScaledBitmap(bm, 400, 300, false);
-                        Bitmap resized = Bitmap.createBitmap(scaled,0,0,scaled.getWidth(),scaled.getHeight(),matrix,false);
+                        bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
+                        Bitmap scaled = Bitmap.createScaledBitmap(bm, 400, 300, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
+                        Bitmap resized = Bitmap.createBitmap(scaled,0,0,scaled.getWidth(),scaled.getHeight(),matrix,false); //크기가 조정된 사진의 회전 정보를 수정
 
                         profileChangeImageView.setImageBitmap(resized);
 
@@ -149,7 +144,7 @@ public class SettingActivity extends BaseActivity{
 
                     break;
 
-                case CANCLE_FROM_CONTENT:
+                case CANCLE_FROM_CONTENT: //앨범에서 취소 버튼을 눌렀을때 오는 콜백
                     break;
                 default:
                     break;

@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 
 public class WmListActivity extends AppCompatActivity {
     EditText addressInput;
@@ -38,42 +33,74 @@ public class WmListActivity extends AppCompatActivity {
     ListView listView;
     WmAdapter adapter;
 
-
     String resultCode;
-    String url = "http://192.168.0.229:3000/wmList";
+    String url;// = "http://192.168.0.229:3000/wmList";
     ProgressDialog dialog;
 
-
-    ArrayList<HashMap<String, String>> wmArrayList;
+    AddressSearchActivity ad = new AddressSearchActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wm_list);
 
-        searchBtn = (Button) findViewById(R.id.searchBtn);
+        textView = (TextView) findViewById(R.id.textView);
+        adapter = new WmAdapter(this);
+        listView = (ListView) findViewById(R.id.listView);
+
         addressInput = (EditText) findViewById(R.id.addressInput);
-        addressInput.addTextChangedListener(new TextWatcher() {
+        searchBtn = (Button) findViewById(R.id.searchBtn);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onClick(View v) {
+                String serarchInfo = addressInput.getText().toString();
+                Log.i("search", serarchInfo);
 
-            }
+                String aaa = ("http://192.168.0.229:3000/wmList?" + "address=" + "경기도안양시" +
+                        "&addressInfo=" + serarchInfo);
 
-            @Override
-            public void onTextChanged(CharSequence cs, int start, int before, int count) {
-                searchBtn.setOnClickListener(new View.OnClickListener() {
+//                String sbuURL1 = "경기도안양시";
+//                String sbuURL2 = serarchInfo;
+//                try {
+//                    sbuURL1 = URLEncoder.encode(sbuURL1 , "UTF-8");
+//                    sbuURL2 = URLEncoder.encode(serarchInfo , "UTF-8");
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                String aaa = ("http://192.168.0.229:3000/wmList?" + "address=" + sbuURL1 +
+//
+//                        "&addressInfo=" + sbuURL2);
+
+                url = aaa;
+                Log.i("search", url);
+                //        dialog = new ProgressDialog(WmListActivity.this);
+//        dialog.setMessage("Loading....");
+//        dialog.show();
+                Log.i("search1", url);
+                Log.i("STRING", "TEST");
+
+                StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+
                     @Override
-                    public void onClick(View v) {
-                        String Search = addressInput.getText().toString();
-                        WmListActivity.this.adapter.getFilter().filter(Search);
+                    public void onResponse(String string) {
+
+                        Log.i("onResponse", "onResponse");
+                        parseJsonData(string);
+                        listView.setAdapter(adapter);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
                     }
                 });
-            }
-
-            @Override
-            public void afterTextChanged(Editable edit) {
+                RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
+                rQueue.add(request);
             }
         });
+
 
         wmMapActivityGo = (Button) findViewById(R.id.wmMapActivityGo);
 
@@ -85,48 +112,11 @@ public class WmListActivity extends AppCompatActivity {
                 //finish();
             }
         });
-
-        textView = (TextView) findViewById(R.id.textView);
-        adapter = new WmAdapter(this);
-
-        //adapter = new WmAdapter();
-
-        listView = (ListView) findViewById(R.id.listView);
-
-//        dialog = new ProgressDialog(WmListActivity.this);
-//        dialog.setMessage("Loading....");
-//        dialog.show();
-
-
-        Log.i("STRING", "TEST");
-
-        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                Log.i("onResponse", "onResponse");
-
-
-                parseJsonData(string);
-
-
-                listView.setAdapter(adapter);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                //dialog.dismiss();
-            }
-        });
-
-        RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
-        rQueue.add(request);
     }
 
 
     void parseJsonData(String jsonString) {
-
-        wmArrayList = new ArrayList<HashMap<String, String>>();
+        //wmArrayList = new ArrayList<HashMap<String, String>>();
         try {
             JSONObject object = new JSONObject(jsonString);
 
@@ -138,7 +128,7 @@ public class WmListActivity extends AppCompatActivity {
             textView.setText(resultCode);
             JSONArray wmArray = object.getJSONArray("list");
 
-            for(int i = 0 ; i < wmArray.length(); i++) {
+            for (int i = 0; i < wmArray.length(); i++) {
                 String sensorId = wmArray.getJSONObject(i).getString("sensorId");
                 String address = wmArray.getJSONObject(i).getString("address");
                 String addressInfo = wmArray.getJSONObject(i).getString("addressInfo");
@@ -148,16 +138,6 @@ public class WmListActivity extends AppCompatActivity {
 
                 adapter.addItem(new WmItem(sensorId, address, addressInfo, waterQuality, waterLevel));
             }
-//            for (int i = 0; i < wmArray.length(); i++) {
-//                HashMap<String, String> map = new HashMap<String, String>();
-//
-//                map.put("sensorId", wmArray.getJSONObject(i).getString("sensorId"));
-//                map.put("address", wmArray.getJSONObject(i).getString("address"));
-//                map.put("waterQuality", wmArray.getJSONObject(i).getString("waterQuality"));
-//                map.put("waterLevel", wmArray.getJSONObject(i).getString("waterLevel"));
-//
-//                wmArrayList.add(map);
-//            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -165,5 +145,10 @@ public class WmListActivity extends AppCompatActivity {
 
 //        dialog.dismiss();
     }
-
 }
+
+
+
+
+
+

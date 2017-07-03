@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import java.util.ArrayList;
 
-public class WmAdapter extends BaseAdapter implements Filterable {
+public class WmAdapter extends BaseAdapter {
 
     // Declare Variables
     Context context;
@@ -72,55 +70,6 @@ public class WmAdapter extends BaseAdapter implements Filterable {
         view.setWaterLevel(wmItemList.getWaterLevel());
 
         return view;
-    }
-
-    Filter listFilter;
-
-    @Override
-    public Filter getFilter() {
-        if(listFilter == null) {
-            listFilter = new ListFilter();
-        }
-        return listFilter;
-    }
-
-    private class ListFilter extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-
-            FilterResults results = new FilterResults();
-
-            if (constraint == null || constraint.length() == 0) {
-                results.values = listViewItemList;
-                results.count = listViewItemList.size();
-            } else {
-
-                ArrayList<WmItem> itemList = new ArrayList<WmItem>();
-
-                for (WmItem item  : listViewItemList) {
-                    if(item.getAddressInfo().toUpperCase().contains(constraint.toString().toUpperCase()))
-                    {
-                        itemList.add(item);
-                    }
-                }
-
-                results.values = itemList;
-                results.count = itemList.size();
-
-            }
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredItemList = (ArrayList<WmItem>) results.values;
-
-            if (results.count > 0) {
-                notifyDataSetChanged();
-            } else {
-                notifyDataSetInvalidated();
-            }
-        }
     }
 }
 

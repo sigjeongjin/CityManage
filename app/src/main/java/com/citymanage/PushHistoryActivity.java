@@ -49,6 +49,8 @@ public class PushHistoryActivity extends AppCompatActivity {
 
     int ResultCode;
 
+    String url = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

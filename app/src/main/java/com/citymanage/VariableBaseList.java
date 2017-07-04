@@ -4,7 +4,7 @@ public class VariableBaseList {
     private String sensorId;  // 센서 ID
     private String city;      // 시/도
     private String state;     // 시/군/구
-    private String street ;      // 동/읍/면
+    private String town;      // 동/읍/면
 
     public String getSensorId() {
         return sensorId;
@@ -30,11 +30,11 @@ public class VariableBaseList {
         this.state = state;
     }
 
-    public String getStreet() {
-        return street;
+    public String getTown() {
+        return town;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setTown(String town) {
+        this.town = town;
     }
 }

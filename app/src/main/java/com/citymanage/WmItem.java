@@ -1,37 +1,26 @@
 package com.citymanage;
 
-        import com.google.gson.annotations.SerializedName;
-
 /**
- * WmItem 클래스
- *
- * @author devetude
+ * Created by minjeon on 2017-06-26.
  */
+
 public class WmItem {
 
-    @SerializedName("sensorId")
     String sensorId;
+    String address;        // 설치된 지역정보
+    String addressInfo;
+    String waterQuality;   // 수질 센서 (waterQuality)
+    String waterLevel;     // 수압 센서 (waterLevel)
 
-    @SerializedName("city")
-    String city;
 
-    @SerializedName("state")
-    String state;
+    public WmItem(String address) {
+        this.address = address;
+    }
 
-    @SerializedName("street")
-    String street;
-
-    @SerializedName("waterQuality")
-    String waterQuality;
-
-    @SerializedName("waterLevel")
-    String waterLevel;
-
-    public WmItem(String sensorId, String city, String state, String street, String waterQuality, String waterLevel) {
+    public WmItem(String sensorId, String address, String addressInfo, String waterQuality, String waterLevel) {
         this.sensorId = sensorId;
-        this.city = city;
-        this.state = state;
-        this.street = street;
+        this.address = address;
+        this.addressInfo = addressInfo;
         this.waterQuality = waterQuality;
         this.waterLevel = waterLevel;
     }
@@ -39,39 +28,27 @@ public class WmItem {
     public String getSensorId() {
         return sensorId;
     }
-
     public void setSensorId(String sensorId) {
         this.sensorId = sensorId;
     }
 
-    public String getCity() {
-        return city;
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public String getAddressInfo() {
+        return addressInfo;
     }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
+    public void setAddressInfo(String address) {
+        this.addressInfo = addressInfo;
     }
 
     public String getWaterQuality() {
         return waterQuality;
     }
-
     public void setWaterQuality(String waterQuality) {
         this.waterQuality = waterQuality;
     }
@@ -79,7 +56,6 @@ public class WmItem {
     public String getWaterLevel() {
         return waterLevel;
     }
-
     public void setWaterLevel(String waterLevel) {
         this.waterLevel = waterLevel;
     }

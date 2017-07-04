@@ -27,6 +27,8 @@ public class SettingActivity extends BaseActivity{
     private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
     private static final int autoLoginTrue = 1;
     private static final int autoLoginFalse = 0;
+    private static final int ALBUM_WIDTH = 400;
+    private static final int ALBUM_HEIGHT = 300;
 
     private Uri mImageCaptureUri;
     private ImageView iv_receipt;
@@ -129,8 +131,8 @@ public class SettingActivity extends BaseActivity{
                         Uri dataUri = data.getData();
 
                         bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
-                        Bitmap scaled = Bitmap.createScaledBitmap(bm, 400, 300, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
-                        Bitmap resized = Bitmap.createBitmap(scaled,0,0,scaled.getWidth(),scaled.getHeight(),matrix,false); //크기가 조정된 사진의 회전 정보를 수정
+                        Bitmap scaled = Bitmap.createScaledBitmap(bm, ALBUM_WIDTH, ALBUM_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
+                        Bitmap resized = Bitmap.createBitmap(scaled,0,0,ALBUM_WIDTH,ALBUM_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
 
                         profileChangeImageView.setImageBitmap(resized);
 

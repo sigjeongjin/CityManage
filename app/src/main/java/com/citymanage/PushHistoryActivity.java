@@ -2,7 +2,6 @@ package com.citymanage;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -30,26 +29,18 @@ import java.util.List;
 * @since 2017-06-29 오전 10:59
 **/
 
-public class PushHistoryActivity extends AppCompatActivity {
+public class PushHistoryActivity extends BaseActivity {
 
+    //wm : 수질    tm : 쓰레기통   gm : 도시가스   sm : 금연구역
     CheckBox wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox;
 
-    private final static String HOST = "http://192.168.0.230:3000";
-    private final static String LOGIN = "http://192.168.0.230:3000/login";
-    private final static String REGISTER = "http://192.168.0.230:3000/register";
-
-    String pushHistoryUrl = ApiUrlList.getPushHistoryUrl(); //처음 리스트 호출 URL
+    //super 클래스에서 pushhistoryurl 받아오기
+    String pushHistoryUrl = PUSH_HISTORY_HOST;
 
     ListView pushHistoryListView; //통신 후 받은 데이터 표현할 리스트
     PushHistoryAdapter adapter; // 위의 리스트 adapter
 
-    ProgressDialog dialog; //프로그레스바 다이얼로그
-
     List<HashMap<String,String>> pushHistoryList = new ArrayList<HashMap<String, String>>();
-
-    int ResultCode;
-
-    String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +93,7 @@ public class PushHistoryActivity extends AppCompatActivity {
                     StringBuilder sb = new StringBuilder(pushHistoryUrl);
 
 //                  추후에 개발 (체크 박스 여러개 눌렸을경우 여러 아이템 동시 조회)
-//                    checkedSettingUrl(sb);
+                    sb.append(checkedSettingUrl(sb));
 
                     dialog = new ProgressDialog(PushHistoryActivity.this);
                     dialog.setMessage("Loading....");
@@ -164,25 +155,33 @@ public class PushHistoryActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         dialog.dismiss();
     }
 
 
-    //나중에 체크 박스 여러개 체크 했을 경우에 구현 해야할 함수
     public String checkedSettingUrl(StringBuilder pSb) {
-
-//        wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox
+        //wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox
         if(wmCheckBox.isChecked()) {
+            tmCheckBox.setChecked(false);
+            gmCheckBox.setChecked(false);
+            smCheckBox.setChecked(false);
             pSb.append("item=" + wmCheckBox.getTag());
         } else if(tmCheckBox.isChecked()){
-            pSb.append("item2=" + tmCheckBox.getTag());
+            wmCheckBox.setChecked(false);
+            gmCheckBox.setChecked(false);
+            smCheckBox.setChecked(false);
+            pSb.append("item=" + tmCheckBox.getTag());
         } else if(gmCheckBox.isChecked()) {
-            pSb.append("item3=" + gmCheckBox.getTag());
+            wmCheckBox.setChecked(false);
+            tmCheckBox.setChecked(false);
+            smCheckBox.setChecked(false);
+            pSb.append("item=" + gmCheckBox.getTag());
         } else if(smCheckBox.isChecked()) {
-            pSb.append("item4=" + smCheckBox.getTag());
+            wmCheckBox.setChecked(false);
+            tmCheckBox.setChecked(false);
+            gmCheckBox.setChecked(false);
+            pSb.append("item=" + smCheckBox.getTag());
         }
-
         return pSb.toString();
     }
 }

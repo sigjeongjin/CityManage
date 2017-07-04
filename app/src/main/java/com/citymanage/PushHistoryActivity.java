@@ -29,10 +29,15 @@ import java.util.List;
 * @since 2017-06-29 오전 10:59
 **/
 
-public class PushHistoryActivity extends BaseActivity {
+public class PushHistoryActivity extends BaseActivity implements View.OnClickListener {
 
     //wm : 수질    tm : 쓰레기통   gm : 도시가스   sm : 금연구역
     CheckBox wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox;
+
+    static final String WM = "wm";
+    static final String TM = "tm";
+    static final String GM = "gm";
+    static final String SM = "sm";
 
     //super 클래스에서 pushhistoryurl 받아오기
     String pushHistoryUrl = PUSH_HISTORY_HOST;
@@ -47,15 +52,24 @@ public class PushHistoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_history);
 
+
+        /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
         wmCheckBox = (CheckBox) findViewById(R.id.wmCheckBox);
         tmCheckBox = (CheckBox) findViewById(R.id.tmCheckBox);
         gmCheckBox = (CheckBox) findViewById(R.id.gmCheckBox);
         smCheckBox = (CheckBox) findViewById(R.id.smCheckBox);
 
-        wmCheckBox.setTag("wm");
-        tmCheckBox.setTag("tm");
-        gmCheckBox.setTag("gm");
-        smCheckBox.setTag("sm");
+        wmCheckBox.setTag(WM);
+        tmCheckBox.setTag(TM);
+        gmCheckBox.setTag(GM);
+        smCheckBox.setTag(SM);
+
+        //인터페이스가 받을 수 있도록 listener 등록
+        wmCheckBox.setOnClickListener(this);
+        tmCheckBox.setOnClickListener(this);
+        gmCheckBox.setOnClickListener(this);
+        smCheckBox.setOnClickListener(this);
+        /** 체크 박스 셋팅 끝(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
 
         pushHistoryListView = (ListView) findViewById(R.id.pushHistoryListView);
 
@@ -70,7 +84,7 @@ public class PushHistoryActivity extends BaseActivity {
                 adapter = new PushHistoryAdapter(getApplicationContext());
 
                 for(int i = 0; i < pushHistoryList.size(); i ++ ) {
-                    adapter.addItem(new PushHistoryItem(pushHistoryList.get(i).get("title"),"contents"));
+                    adapter.addItem(new PushHistoryItem(pushHistoryList.get(i).get("title"),pushHistoryList.get(i).get("contents")));
                 }
                 pushHistoryListView.setAdapter(adapter);
             }
@@ -84,51 +98,45 @@ public class PushHistoryActivity extends BaseActivity {
 
         RequestQueue rQueue = Volley.newRequestQueue(PushHistoryActivity.this);
         rQueue.add(pushHistoryRequest);
+    }
 
-        wmCheckBox.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+
+        dialog = new ProgressDialog(PushHistoryActivity.this);
+        dialog.setMessage("Loading....");
+        dialog.show();
+
+        StringBuilder sb = new StringBuilder(pushHistoryUrl);
+
+        sb.append(checkedSettingUrl(v.getTag().toString()));
+
+        StringRequest pushHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
             @Override
-            public void onClick(View v) {
+            public void onResponse(String string) {
 
-                if(wmCheckBox.isChecked()){
-                    StringBuilder sb = new StringBuilder(pushHistoryUrl);
+                //통신을 해서 데이터를 받아 오기전에 리스트뷰를 아무것도 없는 상태로 셋팅한다.
+                adapter.clearItemAll(); //어댑터에 셋팅된 아이템 전부 삭제
+                adapter.notifyDataSetChanged(); //어댑터 정보 갱신
 
-//                  추후에 개발 (체크 박스 여러개 눌렸을경우 여러 아이템 동시 조회)
-                    sb.append(checkedSettingUrl(sb));
+                parseJsonData(string);
 
-                    dialog = new ProgressDialog(PushHistoryActivity.this);
-                    dialog.setMessage("Loading....");
-                    dialog.show();
-
-                    StringRequest pushHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String string) {
-
-                            //통신을 해서 데이터를 받아 오기전에 리스트뷰를 아무것도 없는 상태로 셋팅한다.
-                            adapter.clearItemAll(); //어댑터에 셋팅된 아이템 전부 삭제
-                            adapter.notifyDataSetChanged(); //어댑터 정보 갱신
-
-                            parseJsonData(string);
-
-                            for(int i = 0; i < pushHistoryList.size(); i ++ ) {
-                                adapter.addItem(new PushHistoryItem(pushHistoryList.get(i).get("title"),"contents"));
-                            }
-                            pushHistoryListView.setAdapter(adapter);
-
-                            pushHistoryListView.deferNotifyDataSetChanged();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    });
-
-                    RequestQueue rQueue = Volley.newRequestQueue(PushHistoryActivity.this);
-                    rQueue.add(pushHistoryItemRequest);
+                for(int i = 0; i < pushHistoryList.size(); i ++ ) {
+                    adapter.addItem(new PushHistoryItem(pushHistoryList.get(i).get("title"),pushHistoryList.get(i).get("contents")));
                 }
+                pushHistoryListView.setAdapter(adapter);
+
+                pushHistoryListView.deferNotifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
+        RequestQueue rQueue = Volley.newRequestQueue(PushHistoryActivity.this);
+        rQueue.add(pushHistoryItemRequest);
     }
 
     //통신 후 json 파싱
@@ -138,14 +146,14 @@ public class PushHistoryActivity extends BaseActivity {
 
             JSONObject object = new JSONObject(jsonString);
 
-            JSONArray pushHistorArray = object.getJSONArray("pushHistoryList");
+            JSONArray pushHistoryArray = object.getJSONArray("pushHistoryList");
 
-            for(int i = 0; i < pushHistorArray.length(); i ++ ) {
+            for(int i = 0; i < pushHistoryArray.length(); i ++ ) {
 
                 HashMap<String,String> hashTemp = new HashMap<>();
 
-                String title = pushHistorArray.getJSONObject(i).getString("title");
-                String contents = pushHistorArray.getJSONObject(i).getString("contents");
+                String title = pushHistoryArray.getJSONObject(i).getString("title");
+                String contents = pushHistoryArray.getJSONObject(i).getString("contents");
 
                 hashTemp.put("title",title);
                 hashTemp.put("contents",contents);
@@ -158,30 +166,31 @@ public class PushHistoryActivity extends BaseActivity {
         dialog.dismiss();
     }
 
+    public String checkedSettingUrl(String pCheckBoxTag) {
 
-    public String checkedSettingUrl(StringBuilder pSb) {
+        StringBuilder rItemSetting = new StringBuilder();
         //wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox
-        if(wmCheckBox.isChecked()) {
+        if(pCheckBoxTag.equals("wm")) {
             tmCheckBox.setChecked(false);
             gmCheckBox.setChecked(false);
             smCheckBox.setChecked(false);
-            pSb.append("item=" + wmCheckBox.getTag());
-        } else if(tmCheckBox.isChecked()){
+            rItemSetting.append("?item=" + wmCheckBox.getTag());
+        } else if(pCheckBoxTag.equals("tm")){
             wmCheckBox.setChecked(false);
             gmCheckBox.setChecked(false);
             smCheckBox.setChecked(false);
-            pSb.append("item=" + tmCheckBox.getTag());
-        } else if(gmCheckBox.isChecked()) {
+            rItemSetting.append("?item=" + tmCheckBox.getTag());
+        } else if(pCheckBoxTag.equals("gm")) {
             wmCheckBox.setChecked(false);
             tmCheckBox.setChecked(false);
             smCheckBox.setChecked(false);
-            pSb.append("item=" + gmCheckBox.getTag());
-        } else if(smCheckBox.isChecked()) {
+            rItemSetting.append("?item=" + gmCheckBox.getTag());
+        } else if(pCheckBoxTag.equals("sm")) {
             wmCheckBox.setChecked(false);
             tmCheckBox.setChecked(false);
             gmCheckBox.setChecked(false);
-            pSb.append("item=" + smCheckBox.getTag());
+            rItemSetting.append("?item=" + smCheckBox.getTag());
         }
-        return pSb.toString();
+        return rItemSetting.toString();
     }
 }

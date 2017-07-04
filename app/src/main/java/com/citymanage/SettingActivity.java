@@ -1,20 +1,14 @@
 package com.citymanage;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,77 +27,22 @@ public class SettingActivity extends BaseActivity{
     private Uri mImageCaptureUri;
     private ImageView iv_receipt;
 
-    Switch autoLoginOnOffSwitch;
-    Button passwordChangeButton;
-    ImageView profileChangeImageView;
-
     Uri photoUri;
+
+    Setting settingFragment;
+    PasswordConfirm passwordConfirmFragment;
+    PasswordChange passwordChangeFragment;
+
+    FragmentManager fm = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        autoLoginOnOffSwitch = (Switch) findViewById(R.id.autoLoginOnOffSwitch);
-        passwordChangeButton = (Button) findViewById(R.id.passwordChangeButton);
-        profileChangeImageView = (ImageView) findViewById(R.id.profileChangeImageView);
-
-        autoLoginOnOffSwitch.setChecked((0 == getAutoLogin()) ? false : true);
-
-        Log.i("autologin",String.valueOf(getAutoLogin()));
-
-        profileChangeImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    selectAlbum();
-                    }
-                };
-
-                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                };
-
-                new AlertDialog.Builder(SettingActivity.this)
-                        .setTitle("업로드할 이미지 선택")
-                        .setPositiveButton("앨범선택",albumListener)
-                        .setNegativeButton("취소",cancelListener)
-                        .show();
-            }
-        });
-
-        autoLoginOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(getAutoLogin() == 0) {
-                    setAutoLogin(1);
-                    buttonView.setChecked(true);
-                } else {
-                    setAutoLogin(0);
-                    buttonView.setChecked(false);
-                }
-            }
-        });
-    }
-
-    // 값 불러오기
-    private int getAutoLogin(){
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        return Integer.parseInt(pref.getString("autoLogin", "0"));
-    }
-
-    // 값 저장하기
-    private void setAutoLogin(int pAutoLogin){
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("autoLogin", String.valueOf(pAutoLogin));
-        editor.commit();
+        settingFragment = new Setting();
+        passwordConfirmFragment = new PasswordConfirm();
+        passwordChangeFragment = new PasswordChange();
     }
 
     public void selectAlbum() {
@@ -116,6 +55,8 @@ public class SettingActivity extends BaseActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.i("ACTIVITY RESULT","ACTIVITY RESULT");
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK) {
@@ -134,7 +75,7 @@ public class SettingActivity extends BaseActivity{
                         Bitmap scaled = Bitmap.createScaledBitmap(bm, ALBUM_WIDTH, ALBUM_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
                         Bitmap resized = Bitmap.createBitmap(scaled,0,0,ALBUM_WIDTH,ALBUM_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
 
-                        profileChangeImageView.setImageBitmap(resized);
+                        settingFragment.gProfileChangeIv.setImageBitmap(resized);
 
                     } catch (FileNotFoundException e) {
                         // TODO Auto-generated catch block
@@ -152,6 +93,16 @@ public class SettingActivity extends BaseActivity{
                     break;
             }
 
+        }
+    }
+
+    public void onFragmentChanged(int index) {
+        if (index == 0) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, passwordConfirmFragment).commit();
+        } else if (index == 1) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, passwordChangeFragment).commit();
+        } else if (index ==2) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, settingFragment).commit();
         }
     }
 

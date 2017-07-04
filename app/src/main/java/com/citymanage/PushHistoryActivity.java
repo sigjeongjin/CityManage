@@ -32,7 +32,7 @@ import java.util.List;
 public class PushHistoryActivity extends BaseActivity implements View.OnClickListener {
 
     //wm : 수질    tm : 쓰레기통   gm : 도시가스   sm : 금연구역
-    CheckBox wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox;
+    CheckBox gWmChk, gTmChk, gGmChk, gSmChk;
 
     static final String WM = "wm";
     static final String TM = "tm";
@@ -40,12 +40,12 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
     static final String SM = "sm";
 
     //super 클래스에서 pushhistoryurl 받아오기
-    String pushHistoryUrl = PUSH_HISTORY_HOST;
+    String gPushHistoryUrl = PUSH_HISTORY_HOST;
 
-    ListView pushHistoryListView; //통신 후 받은 데이터 표현할 리스트
+    ListView gPushHistoryLv; //통신 후 받은 데이터 표현할 리스트
     PushHistoryAdapter adapter; // 위의 리스트 adapter
 
-    List<HashMap<String,String>> pushHistoryList = new ArrayList<HashMap<String, String>>();
+    List<HashMap<String,String>> gListPushHistory = new ArrayList<HashMap<String, String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,39 +54,39 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
 
 
         /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
-        wmCheckBox = (CheckBox) findViewById(R.id.wmCheckBox);
-        tmCheckBox = (CheckBox) findViewById(R.id.tmCheckBox);
-        gmCheckBox = (CheckBox) findViewById(R.id.gmCheckBox);
-        smCheckBox = (CheckBox) findViewById(R.id.smCheckBox);
+        gWmChk = (CheckBox) findViewById(R.id.wmCheckBox);
+        gTmChk = (CheckBox) findViewById(R.id.tmCheckBox);
+        gGmChk = (CheckBox) findViewById(R.id.gmCheckBox);
+        gSmChk = (CheckBox) findViewById(R.id.smCheckBox);
 
-        wmCheckBox.setTag(WM);
-        tmCheckBox.setTag(TM);
-        gmCheckBox.setTag(GM);
-        smCheckBox.setTag(SM);
+        gWmChk.setTag(WM);
+        gTmChk.setTag(TM);
+        gGmChk.setTag(GM);
+        gSmChk.setTag(SM);
 
         //인터페이스가 받을 수 있도록 listener 등록
-        wmCheckBox.setOnClickListener(this);
-        tmCheckBox.setOnClickListener(this);
-        gmCheckBox.setOnClickListener(this);
-        smCheckBox.setOnClickListener(this);
+        gWmChk.setOnClickListener(this);
+        gTmChk.setOnClickListener(this);
+        gGmChk.setOnClickListener(this);
+        gSmChk.setOnClickListener(this);
         /** 체크 박스 셋팅 끝(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
 
-        pushHistoryListView = (ListView) findViewById(R.id.pushHistoryListView);
+        gPushHistoryLv = (ListView) findViewById(R.id.pushHistoryListView);
 
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringRequest pushHistoryRequest = new StringRequest(pushHistoryUrl, new Response.Listener<String>() {
+        StringRequest pushHistoryRequest = new StringRequest(gPushHistoryUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
                 adapter = new PushHistoryAdapter(getApplicationContext());
 
-                for(int i = 0; i < pushHistoryList.size(); i ++ ) {
-                    adapter.addItem(new PushHistoryItem(pushHistoryList.get(i).get("title"),pushHistoryList.get(i).get("contents")));
+                for(int i = 0; i < gListPushHistory.size(); i ++ ) {
+                    adapter.addItem(new PushHistoryItem(gListPushHistory.get(i).get("title"), gListPushHistory.get(i).get("contents")));
                 }
-                pushHistoryListView.setAdapter(adapter);
+                gPushHistoryLv.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -102,12 +102,11 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-
         dialog = new ProgressDialog(PushHistoryActivity.this);
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringBuilder sb = new StringBuilder(pushHistoryUrl);
+        StringBuilder sb = new StringBuilder(gPushHistoryUrl);
 
         sb.append(checkedSettingUrl(v.getTag().toString()));
 
@@ -121,12 +120,12 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
 
                 parseJsonData(string);
 
-                for(int i = 0; i < pushHistoryList.size(); i ++ ) {
-                    adapter.addItem(new PushHistoryItem(pushHistoryList.get(i).get("title"),pushHistoryList.get(i).get("contents")));
+                for(int i = 0; i < gListPushHistory.size(); i ++ ) {
+                    adapter.addItem(new PushHistoryItem(gListPushHistory.get(i).get("title"), gListPushHistory.get(i).get("contents")));
                 }
-                pushHistoryListView.setAdapter(adapter);
+                gPushHistoryLv.setAdapter(adapter);
 
-                pushHistoryListView.deferNotifyDataSetChanged();
+                gPushHistoryLv.deferNotifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -142,11 +141,11 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
     //통신 후 json 파싱
     void parseJsonData(String jsonString) {
         try {
-            pushHistoryList.clear();
+            gListPushHistory.clear();
 
             JSONObject object = new JSONObject(jsonString);
 
-            JSONArray pushHistoryArray = object.getJSONArray("pushHistoryList");
+            JSONArray pushHistoryArray = object.getJSONArray("gListPushHistory");
 
             for(int i = 0; i < pushHistoryArray.length(); i ++ ) {
 
@@ -158,7 +157,7 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
                 hashTemp.put("title",title);
                 hashTemp.put("contents",contents);
 
-                pushHistoryList.add(i,hashTemp);
+                gListPushHistory.add(i,hashTemp);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -169,27 +168,27 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
     public String checkedSettingUrl(String pCheckBoxTag) {
 
         StringBuilder rItemSetting = new StringBuilder();
-        //wmCheckBox, tmCheckBox, gmCheckBox, smCheckBox
+        //gWmChk, gTmChk, gGmChk, gSmChk
         if(pCheckBoxTag.equals("wm")) {
-            tmCheckBox.setChecked(false);
-            gmCheckBox.setChecked(false);
-            smCheckBox.setChecked(false);
-            rItemSetting.append("?item=" + wmCheckBox.getTag());
+            gTmChk.setChecked(false);
+            gGmChk.setChecked(false);
+            gSmChk.setChecked(false);
+            rItemSetting.append("?item=" + gWmChk.getTag());
         } else if(pCheckBoxTag.equals("tm")){
-            wmCheckBox.setChecked(false);
-            gmCheckBox.setChecked(false);
-            smCheckBox.setChecked(false);
-            rItemSetting.append("?item=" + tmCheckBox.getTag());
+            gWmChk.setChecked(false);
+            gGmChk.setChecked(false);
+            gSmChk.setChecked(false);
+            rItemSetting.append("?item=" + gTmChk.getTag());
         } else if(pCheckBoxTag.equals("gm")) {
-            wmCheckBox.setChecked(false);
-            tmCheckBox.setChecked(false);
-            smCheckBox.setChecked(false);
-            rItemSetting.append("?item=" + gmCheckBox.getTag());
+            gWmChk.setChecked(false);
+            gTmChk.setChecked(false);
+            gSmChk.setChecked(false);
+            rItemSetting.append("?item=" + gGmChk.getTag());
         } else if(pCheckBoxTag.equals("sm")) {
-            wmCheckBox.setChecked(false);
-            tmCheckBox.setChecked(false);
-            gmCheckBox.setChecked(false);
-            rItemSetting.append("?item=" + smCheckBox.getTag());
+            gWmChk.setChecked(false);
+            gTmChk.setChecked(false);
+            gGmChk.setChecked(false);
+            rItemSetting.append("?item=" + gSmChk.getTag());
         }
         return rItemSetting.toString();
     }

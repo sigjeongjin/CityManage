@@ -31,11 +31,8 @@ public class SettingActivity extends AppCompatActivity{
 
     public void onFragmentChanged(int index) {
         if (index == 0) {
-            Log.i("index","0");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, settingFragment, "setting").commit();
         } else if (index == 1) {
-            Log.i("index","1");
-
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction tr =  fm.beginTransaction();
             tr.replace(R.id.container, passwordConfirmFragment,"confirm");
@@ -43,7 +40,6 @@ public class SettingActivity extends AppCompatActivity{
             tr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
             tr.commit();
         } else if (index ==2) {
-            Log.i("index","2");
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction tr =  fm.beginTransaction();
             tr.replace(R.id.container, passwordChangeFragment,"change");
@@ -51,7 +47,6 @@ public class SettingActivity extends AppCompatActivity{
             tr.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             tr.commit();
         } else if(index == 4) {
-            Log.i("INDEX","4");
             FragmentManager fm = getSupportFragmentManager();
             fm.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }

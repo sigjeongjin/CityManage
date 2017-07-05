@@ -43,8 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-
         // 로그인 버튼 url로 보낸 정보가 맞는경우  메인화면으로 전환
         Button btnLogin = (Button)findViewById(R.id.btnLogin) ;
         btnLogin.setOnClickListener(new Button.OnClickListener() {

@@ -8,8 +8,10 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -19,7 +21,7 @@ import android.widget.Switch;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class SettingActivity extends BaseActivity{
+public class SettingActivity extends AppCompatActivity {
 
     private static final int CANCLE_FROM_CONTENT = 0;
     private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
@@ -39,18 +41,23 @@ public class SettingActivity extends BaseActivity{
 
     Uri photoUri;
 
+    SideNavigationDrower sideNavigationDrower;
+    DrawerLayout myDrawerLayout;
+
+    private ActionBarDrawerToggle mDrawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        sideNavigationDrower = (SideNavigationDrower) findViewById(R.id.top);
 
         autoLoginOnOffSwitch = (Switch) findViewById(R.id.autoLoginOnOffSwitch);
         passwordChangeButton = (Button) findViewById(R.id.passwordChangeButton);
         profileChangeImageView = (ImageView) findViewById(R.id.profileChangeImageView);
 
         autoLoginOnOffSwitch.setChecked((0 == getAutoLogin()) ? false : true);
-
-        Log.i("autologin",String.valueOf(getAutoLogin()));
 
         profileChangeImageView.setOnClickListener(new View.OnClickListener() {
             @Override

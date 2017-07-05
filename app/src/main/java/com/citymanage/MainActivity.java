@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     Button gmListActivityGo;
     Button tmListActivityGo;
     Button smListActivityGo;
+    Button settingActivityGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        settingActivityGo = (Button) findViewById(R.id.settingActivityGo);
+
+        settingActivityGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(intent);
+            }
+        });
         //쓰레기통 관리 화면으로 이동
 //        tmMapActivityGo = (Button) findViewById(R.id.tmMapActivityGo);
 //
@@ -73,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
     }
+
     //메뉴 생성
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //           return true;
 //    }
+
 }
 
 

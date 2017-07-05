@@ -61,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
             EditText password = (EditText)findViewById(R.id.password);
             String pw = password.getText().toString();
 
+
+                //release때 주석 처리 해야함 (임시)
             email.setText("bang");
             password.setText("1234");
 
@@ -155,10 +157,9 @@ public class LoginActivity extends AppCompatActivity {
         try {
             JSONObject object = new JSONObject(jsonString);
 
-            Log.d("RESULTCODE","TEST2");
+            Log.d("RESULTCODE", "TEST2");
 
             resultCode = object.getString("resultCode");
-
 
 
 //            JSONObject object = new JSONObject(jsonString);
@@ -173,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         dialog.dismiss();
+    }
 
 }
 //    // 값 불러오기
@@ -195,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-}
+
 
 
 //    private Check Adk, UserIdChk, PwdChk, AutoChk;

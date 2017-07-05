@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.citymanage">
 
+    <!--파일 읽기,쓰기 권한-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--파일 읽기,쓰기 권한-->
+
     <!-- Android mapView LIB -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -17,7 +22,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3Bi6rtPt24vp1VB93_kjavLhrVuEVxJ8" />
@@ -29,17 +33,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".SidemenuActivity"/>
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".WmMapActivity" />
         <activity android:name=".PushHistoryActivity" />
         <activity android:name=".GmMapActivity" />
         <activity android:name=".WmListActivity" />
-        <activity android:name=".WmInfoActivity"></activity>
+        <activity android:name=".WmInfoActivity" />
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

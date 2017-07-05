@@ -145,7 +145,9 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
 
             JSONObject object = new JSONObject(jsonString);
 
-            JSONArray pushHistoryArray = object.getJSONArray("gListPushHistory");
+            JSONArray pushHistoryArray = object.getJSONArray("pushHistoryList");
+
+
 
             for(int i = 0; i < pushHistoryArray.length(); i ++ ) {
 

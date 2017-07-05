@@ -1,5 +1,6 @@
 package com.citymanage;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,20 +9,22 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity{
+
+
 
     private static final int CANCLE_FROM_CONTENT = 0;
     private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
@@ -42,16 +45,21 @@ public class SettingActivity extends AppCompatActivity {
     Uri photoUri;
 
     SideNavigationDrower sideNavigationDrower;
-    DrawerLayout myDrawerLayout;
-
-    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        sideNavigationDrower = (SideNavigationDrower) findViewById(R.id.top);
+        LinearLayout container = (LinearLayout) findViewById(R.id.top);
+
+        LayoutInflater mInflater = (LayoutInflater) getApplicationContext()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View mCustomView = mInflater.inflate(R.layout.activity_side,container,true);
+
+        sideNavigationDrower = (SideNavigationDrower)mCustomView.findViewById(R.id.drawer_layout);
+
 
         autoLoginOnOffSwitch = (Switch) findViewById(R.id.autoLoginOnOffSwitch);
         passwordChangeButton = (Button) findViewById(R.id.passwordChangeButton);

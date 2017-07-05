@@ -23,8 +23,10 @@ public class SideNavigationDrower extends DrawerLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        widthMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY);
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.EXACTLY);
+        widthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

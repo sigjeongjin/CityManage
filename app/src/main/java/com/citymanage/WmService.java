@@ -7,15 +7,10 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-/**
- * Created by we25 on 2017-07-04.
- */
-
-public class WmAPI {
+public class WmService extends WmAPIAdapter {
 
     /**
      * Retrofit 객체를 가져오는 메소드
-     *
      * @param context
      * @return
      */
@@ -25,9 +20,9 @@ public class WmAPI {
     }
 
     // SignAPI 인터페이스
-    public interface SignAPI {
+    public interface WmAPI {
         /**
-         * 회원가입 메소드
+         * WmManger Method
          *
          * @param sensorId
          * @param city
@@ -39,8 +34,8 @@ public class WmAPI {
          * @return
          */
         @FormUrlEncoded
-        @POST(APIUrl.SIGN_UP_URL)
-        Call<WmData> up(
+        @POST(ApiUrlList.WM_LIST_URL)
+        Call<WmData> wm(
                 @Field("sensorId") String sensorId,
                 @Field("city") String city,
                 @Field("state") String state,
@@ -50,7 +45,7 @@ public class WmAPI {
         );
 
         /**
-         * 로그인 메소드
+         * address Method
          *
          * @param city
          * @param state
@@ -58,8 +53,8 @@ public class WmAPI {
          * @return
          */
         @FormUrlEncoded
-        @POST(APIUrl.SIGN_IN_URL)
-        Call<WmData> in(
+        @POST(ApiUrlList.ADRRESS_URL)
+        Call<WmData> address(
                 @Field("city") String city,
                 @Field("state") String state,
                 @Field("street") String street

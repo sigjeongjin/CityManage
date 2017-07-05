@@ -1,30 +1,17 @@
 package com.citymanage;
 
-        import com.google.gson.annotations.SerializedName;
-
-/**
+        /**
  * WmItem 클래스
  *
- * @author devetude
+ * @author
  */
 public class WmItem {
 
-    @SerializedName("sensorId")
     String sensorId;
-
-    @SerializedName("city")
     String city;
-
-    @SerializedName("state")
     String state;
-
-    @SerializedName("street")
     String street;
-
-    @SerializedName("waterQuality")
     String waterQuality;
-
-    @SerializedName("waterLevel")
     String waterLevel;
 
     public WmItem(String sensorId, String city, String state, String street, String waterQuality, String waterLevel) {

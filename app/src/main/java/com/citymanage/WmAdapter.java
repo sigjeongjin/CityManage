@@ -64,8 +64,8 @@ public class WmAdapter extends BaseAdapter {
 
         WmItem wmItemList = filteredItemList.get(position);
         view.setSensorId(wmItemList.getSensorId());
-        view.setAddress(wmItemList.getAddress());
-        view.setAddressInfo(wmItemList.getAddressInfo());
+//        view.setAddress(wmItemList.getAddress());
+//        view.setAddressInfo(wmItemList.getAddressInfo());
         view.setWaterQuality(wmItemList.getWaterQuality());
         view.setWaterLevel(wmItemList.getWaterLevel());
 

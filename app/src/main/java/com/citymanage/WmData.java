@@ -2,84 +2,40 @@ package com.citymanage;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * WmData class
  *
- * @author devetude
+ * @author
  */
 public class WmData {
+    @SerializedName("resultCode")
+    public String resultCode;
+
+    @SerializedName("wmInfo")
+    public List<WmInfo> wmInfo;
+
+    public class WmInfo {
         @SerializedName("sensorId")
-        String sensorId;
+        public String sensorId;
 
         @SerializedName("city")
-        String city;
+        public String city;
 
         @SerializedName("state")
-        String state;
+        public String state;
 
         @SerializedName("street")
-        String street;
+        public String street;
 
         @SerializedName("waterQuality")
-        String waterQuality;
+        public String waterQuality;
 
         @SerializedName("waterLevel")
-        String waterLevel;
-
-        public WmData(String sensorId, String city, String state, String street, String waterQuality, String waterLevel) {
-            this.sensorId = sensorId;
-            this.city = city;
-            this.state = state;
-            this.street = street;
-            this.waterQuality = waterQuality;
-            this.waterLevel = waterLevel;
-        }
-
-        public String getSensorId() {
-            return sensorId;
-        }
-
-        public void setSensorId(String sensorId) {
-            this.sensorId = sensorId;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public String getStreet() {
-            return street;
-        }
-
-        public void setStreet(String street) {
-            this.street = street;
-        }
-
-        public String getWaterQuality() {
-            return waterQuality;
-        }
-
-        public void setWaterQuality(String waterQuality) {
-            this.waterQuality = waterQuality;
-        }
-
-        public String getWaterLevel() {
-            return waterLevel;
-        }
-
-        public void setWaterLevel(String waterLevel) {
-            this.waterLevel = waterLevel;
-        }
+        public String waterLevel;
     }
+
+    @SerializedName("array")
+    public String array;
+}

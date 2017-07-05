@@ -226,6 +226,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         dialog.dismiss();
     }
+
 }
 //    protected void onActivityResult(int requestCode,
 //                                    int resultCode,
@@ -247,6 +248,13 @@ public class RegisterActivity extends AppCompatActivity {
 //        }
 //    }
 //}
+//   갤러리에서 이미지를 가져오는 부분
+//    private void getPhotoFromGallery(){
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//        startActivityForResult(intent, PICK_FROM_GALLERY);
+//
+//    }
 
 
 
@@ -363,12 +371,6 @@ public class RegisterActivity extends AppCompatActivity {
 //    }
 //}
 //
-//
-//
-//
-//
-//
-//
 //}
-//
+
 

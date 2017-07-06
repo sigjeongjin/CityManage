@@ -49,7 +49,6 @@ public class TmListAdapter extends BaseAdapter {
         TmListItem item = items.get(position);
         view.setAddressInfo(item.getAddressInfo());
         view.setSensorId(item.getSensorId());
-        view.setPushDescripTion(item.getPushDescription());
         return view;
     }
 }

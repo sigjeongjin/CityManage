@@ -7,7 +7,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import static com.citymanage.R.id.addressInfoTv;
-import static com.citymanage.R.id.pushDescriptionTv;
 import static com.citymanage.R.id.sensorIdTv;
 
 /**
@@ -17,7 +16,6 @@ import static com.citymanage.R.id.sensorIdTv;
 public class TmListItemView extends LinearLayout {
     TextView addressInfo;
     TextView sensorId;
-    TextView pushDescription;
 
     public TmListItemView(Context context) {
         super(context);
@@ -32,11 +30,10 @@ public class TmListItemView extends LinearLayout {
 
     public void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.push_history_item, this, true);
+        inflater.inflate(R.layout.tm_list_item, this, true);
 
         addressInfo = (TextView) findViewById(addressInfoTv);
         sensorId = (TextView) findViewById(sensorIdTv);
-        pushDescription = (TextView) findViewById(pushDescriptionTv);
     }
 
     public void setAddressInfo(String pAddressInfo) {
@@ -45,9 +42,5 @@ public class TmListItemView extends LinearLayout {
 
     public void setSensorId(String pSensorId) {
         this.sensorId.setText(pSensorId);
-    }
-
-    public void setPushDescripTion(String pPushDescription) {
-        this.pushDescription.setText(pPushDescription);
     }
 }

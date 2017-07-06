@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.common.Module;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,9 +57,9 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
 
-            EditText email = (EditText)findViewById(R.id.email);
+            final EditText email = (EditText)findViewById(R.id.email);
             String id = email.getText().toString();
-            EditText password = (EditText)findViewById(R.id.password);
+            final EditText password = (EditText)findViewById(R.id.password);
             String pw = password.getText().toString();
 
 
@@ -106,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                     parseJsonData(string);
 
                     // 코드를 400으로 받은경우 메세지 출력
-                    Log.d("RESULTCODE","TEST");
                     if(resultCode.equals("400")) {
                         Toast.makeText(LoginActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
 
@@ -116,6 +116,8 @@ public class LoginActivity extends AppCompatActivity {
                     else if(resultCode.equals ("200")) {
                         Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplication(), MainActivity.class);
+                        Module.setRecordId(getApplicationContext(),email.getText().toString());
+                        Module.setRecordPwd(getApplicationContext(), password.getText().toString());
                         startActivity(intent);
                     }
 
@@ -124,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                    Log.i("VOLLEY ERROR", volleyError.toString());
                     dialog.dismiss();
                 }
             });

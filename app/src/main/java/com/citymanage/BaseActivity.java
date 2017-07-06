@@ -18,10 +18,11 @@ public class BaseActivity extends AppCompatActivity {
     private static final int autoLoginFalse = 0;
     private static final int ALBUM_WIDTH = 400;
     private static final int ALBUM_HEIGHT = 300;
-    public static  final String HOST = "http://192.168.0.230:3000";
-    public static  final String LOGIN = "http://192.168.0.230:3000/login";
-    public static  final String REGISTER = "http://192.168.0.230:3000/register";
-    public static  final String PUSH_HISTORY_HOST = "http://192.168.0.230:3000/pushHistory";
+    public static final String HOST = "http://192.168.0.230:3000";
+    public static final String LOGIN = "http://192.168.0.230:3000/login";
+    public static final String REGISTER = "http://192.168.0.230:3000/register";
+    public static final String PUSH_HISTORY_HOST = "http://192.168.0.230:3000/pushHistory";
+
 
     /* 프로그램 실행 후 필요한 상수 값들 정의 끝 */
 

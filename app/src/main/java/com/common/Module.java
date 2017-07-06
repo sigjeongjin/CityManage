@@ -22,6 +22,18 @@ public class Module extends AppCompatActivity{
         return  pref.getString("id","");
     }
 
+    static public void setRecordPwd (Context context,String pPwd) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("pwd", String.valueOf(pPwd));
+        editor.commit();
+    }
+
+    static public String getRecordPwd (Context context) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        return  pref.getString("pwd","");
+    }
+
         // 값 불러오기
     static public int getAutoLogin(Context context){
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);

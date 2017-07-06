@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -37,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     String resultCode;
 
     private static final int PICK_FROM_CAMERA = 1;
-    private static final int PICK_FROM_GALLERY = 2;
+    private static final int PICK_FROM_ALBUM = 2;
     // 기본값
     private boolean imageDraw = false;
     private ImageView imgview;
@@ -90,13 +91,31 @@ public class RegisterActivity extends AppCompatActivity {
                 intent.putExtra("aspectX", 0);
                 intent.putExtra("aspectY", 0);
                 intent.putExtra("outputX", 200);
-                intent.putExtra("outputY", 150);
+                intent.putExtra("outputY", 250);
 
                 try {
                     intent.putExtra("return-data", true);
                     startActivityForResult(intent, PICK_FROM_CAMERA);
             }catch (ActivityNotFoundException e) {
                 }
+
+            }
+        });
+
+        buttonGallery.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent, PICK_FROM_ALBUM);
+
+                intent.setType("image/*");
+                intent.putExtra("crop", "true");
+                intent.putExtra("aspectX", 0);
+                intent.putExtra("aspectY", 0);
+                intent.putExtra("outputX", 200);
+                intent.putExtra("outputY", 250);
+
 
             }
         });
@@ -246,8 +265,10 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,
                                     int resultCode,
                                     Intent data) {
+
+        Bundle extras;
         if (requestCode == PICK_FROM_CAMERA) {
-            Bundle extras = data.getExtras();
+            extras = data.getExtras();
             if (extras != null) {
                 Bitmap photo = extras.getParcelable("data");
                 imgview.setImageBitmap(photo);
@@ -256,11 +277,22 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         }
-        if (requestCode == PICK_FROM_GALLERY) {
-            Bundle extras2 = data.getExtras();
-            if (extras2 != null) {
-                Bitmap photo = extras2.getParcelable("data");
-                imgview.setImageBitmap(photo);
+        if (requestCode == PICK_FROM_ALBUM) {
+            extras = data.getExtras();
+            if (extras != null) {
+
+                Bitmap bm = null;
+                Uri dataUri = data.getData();
+
+                try {
+                    bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
+//                    Bitmap scaled = Bitmap.createScaledBitmap(bm, ALBUM_WIDTH, ALBUM_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
+//                    Bitmap resized = Bitmap.createBitmap(scaled,0,0,ALBUM_WIDTH,ALBUM_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                imgview.setImageBitmap(bm);
                 imageDraw = true;
             }
         }

@@ -9,40 +9,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/allCheckBox"
+        <EditText
+            android:id="@+id/editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="모두" />
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
 
-        <CheckBox
-            android:id="@+id/wmCheckBox"
+        <Button
+            android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="수질" />
+            android:text="Button" />
 
-        <CheckBox
-            android:id="@+id/tmCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="쓰레기통" />
-
-        <CheckBox
-            android:id="@+id/gmCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="도시가스" />
-
-        <CheckBox
-            android:id="@+id/smCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="금연구역" />
     </LinearLayout>
 
     <LinearLayout

@@ -41,7 +41,9 @@
         <activity android:name=".GmMapActivity" />
         <activity android:name=".WmListActivity" />
         <activity android:name=".WmInfoActivity" />
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".TmListActivity" />
+        <activity android:name=".TmMapActivity" />
+        <activity android:name=".SettingActivity" />
     </application>
 
 </manifest>

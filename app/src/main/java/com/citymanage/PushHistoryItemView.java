@@ -6,12 +6,17 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import static com.citymanage.R.id.addressInfoTv;
+import static com.citymanage.R.id.pushDescriptionTv;
+import static com.citymanage.R.id.sensorIdTv;
+
 /**
  * Created by we25 on 2017-06-26.
  */
 
 public class PushHistoryItemView extends LinearLayout {
-    TextView pushTitle;
+    TextView addressInfo;
+    TextView sensorId;
     TextView pushDescription;
 
     public PushHistoryItemView(Context context) {
@@ -29,15 +34,20 @@ public class PushHistoryItemView extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.push_history_item, this, true);
 
-        pushTitle = (TextView) findViewById(R.id.pushTitle);
-        pushDescription = (TextView) findViewById(R.id.pushDescription);
+        addressInfo = (TextView) findViewById(addressInfoTv);
+        sensorId = (TextView) findViewById(sensorIdTv);
+        pushDescription = (TextView) findViewById(pushDescriptionTv);
     }
 
-    public void setPushTitle(String name) {
-        pushTitle.setText(name);
+    public void setAddressInfo(String pAddressInfo) {
+        this.addressInfo.setText(pAddressInfo);
     }
 
-    public void setpushDescription(String mobile) {
-        pushDescription.setText(mobile);
+    public void setSensorId(String pSensorId) {
+        this.sensorId.setText(pSensorId);
+    }
+
+    public void setPushDescripTion(String pPushDescription) {
+        this.pushDescription.setText(pPushDescription);
     }
 }

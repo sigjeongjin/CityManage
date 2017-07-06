@@ -1,9 +1,12 @@
 package com.citymanage;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -32,6 +36,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     String resultCode;
 
+    private static final int PICK_FROM_CAMERA = 1;
+    private static final int PICK_FROM_GALLERY = 2;
+    // 기본값
+    private boolean imageDraw = false;
+    private ImageView imgview;
     private EditText snm;
     private EditText spw;
     private EditText respw;
@@ -63,6 +72,34 @@ public class RegisterActivity extends AppCompatActivity {
         url.append("&password=" + spw.getText().toString());
         url.append("&repassword=" + respw.getText().toString());
         url.append("&phone=" + hp.getText().toString());
+
+        imgview = (ImageView) findViewById(R.id.imageView1);
+        Button buttonCamera = (Button) findViewById(R.id.btn_take_camera);
+        Button buttonGallery = (Button) findViewById(R.id.btn_select_gallery);
+
+        buttonCamera.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //카메라 호출
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+
+                //이미지 사이즈 변경
+                intent.putExtra("crop", "true");
+                intent.putExtra("aspectX", 0);
+                intent.putExtra("aspectY", 0);
+                intent.putExtra("outputX", 200);
+                intent.putExtra("outputY", 150);
+
+                try {
+                    intent.putExtra("return-data", true);
+                    startActivityForResult(intent, PICK_FROM_CAMERA);
+            }catch (ActivityNotFoundException e) {
+                }
+
+            }
+        });
 
 
         //비밀번호가 일치하는지에 대한 검사
@@ -104,6 +141,13 @@ public class RegisterActivity extends AppCompatActivity {
         btns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //사진 입력 확인
+                if(imageDraw == false){
+                    Toast.makeText(RegisterActivity.this, "사진을 등록해 주세요.", Toast.LENGTH_SHORT).show();
+                    imgview.requestFocus();
+                    return;
+                }
                 //이름 입력 확인
                 if (snm.getText().toString().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
@@ -199,8 +243,30 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data) {
+        if (requestCode == PICK_FROM_CAMERA) {
+            Bundle extras = data.getExtras();
+            if (extras != null) {
+                Bitmap photo = extras.getParcelable("data");
+                imgview.setImageBitmap(photo);
+                //내부값.
+                imageDraw = true;
 
-    void parseJsonData(String jsonString) {
+            }
+        }
+        if (requestCode == PICK_FROM_GALLERY) {
+            Bundle extras2 = data.getExtras();
+            if (extras2 != null) {
+                Bitmap photo = extras2.getParcelable("data");
+                imgview.setImageBitmap(photo);
+                imageDraw = true;
+            }
+        }
+    }
+
+                void parseJsonData(String jsonString) {
         try {
             //새로운 json객체 생성
             JSONObject object = new JSONObject(jsonString);

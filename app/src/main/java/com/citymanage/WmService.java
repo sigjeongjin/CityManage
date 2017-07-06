@@ -2,6 +2,8 @@ package com.citymanage;
 
 import android.content.Context;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -33,9 +35,11 @@ public class WmService extends WmAPIAdapter {
 
          * @return
          */
+//        @GET(ApiUrlList.WM_LIST_URL)
+//        Call<WmData>
         @FormUrlEncoded
         @POST(ApiUrlList.WM_LIST_URL)
-        Call<WmData> wm(
+        Call<List<WmInfo>> wm(
                 @Field("sensorId") String sensorId,
                 @Field("city") String city,
                 @Field("state") String state,

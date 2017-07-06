@@ -9,12 +9,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class WmListActivity extends AppCompatActivity {
+    WmData wmData;
     EditText addressInput;
     TextView textView;
 
@@ -41,18 +44,21 @@ public class WmListActivity extends AppCompatActivity {
         adapter = new WmAdapter(this);
         listView = (ListView) findViewById(R.id.listView);
 
-        WmService.getRetrofit(getApplicationContext()).wm("sensorId", "city", "state", "street", "waterQuality", "waterLevel").enqueue(new Callback<WmData>() {
+        WmService.getRetrofit(getApplicationContext()).wm("", "", "", "", "", "").enqueue(new Callback<WmInfo>() {
             @Override
-            public void onResponse(Call<WmData> call, Response<WmData> response) {
-                Log.d("sensorId", response.body().sensorId);
-                Log.d("city", response.body().city);
-                Log.d("state", response.body().state);
-                Log.d("street", response.body().street);
-                Log.d("waterQuality", response.body().waterQuality);
+            public void onResponse(Call<WmInfo> call, Response<WmInfo> response) {
+
                 Log.d("WmData", "가져오기 성공");
+
+  //              Log.d("sensorId", response.body().);
+//                Log.d("city", response.body().city);
+//                Log.d("state", response.body().state);
+//                Log.d("street", response.body().street);
+//                Log.d("waterQuality", response.body().waterQuality);
+//                Log.d("WmData", "가져오기 성공");
             }
             @Override
-            public void onFailure(Call<WmData> call, Throwable t) {
+            public void onFailure(Call<WmInfo> call, Throwable t) {
                 Log.d("WmData", "가져오기 실패");
             }
         });

@@ -1,5 +1,6 @@
 package com.citymanage;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,31 +12,22 @@ import java.util.List;
  */
 public class WmData {
     @SerializedName("resultCode")
+    @Expose
     public String resultCode;
 
     @SerializedName("wmInfo")
+    @Expose
     public List<WmInfo> wmInfo;
 
-    public class WmInfo {
-        @SerializedName("sensorId")
-        public String sensorId;
+    public List<WmInfo> getWmInfo() {
+        return wmInfo;
+    }
 
-        @SerializedName("city")
-        public String city;
-
-        @SerializedName("state")
-        public String state;
-
-        @SerializedName("street")
-        public String street;
-
-        @SerializedName("waterQuality")
-        public String waterQuality;
-
-        @SerializedName("waterLevel")
-        public String waterLevel;
+    public void setWmInfo(List<WmInfo> wmInfo) {
+        this.wmInfo = wmInfo;
     }
 
     @SerializedName("array")
+    @Expose
     public String array;
 }

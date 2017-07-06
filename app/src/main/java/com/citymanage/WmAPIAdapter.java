@@ -10,9 +10,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * WmAPIAdapter 클래스
- *
- * @autor devetude
+ * WmAPIAdapter class
  */
 public class WmAPIAdapter {
     /**

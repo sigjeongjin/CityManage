@@ -3,7 +3,6 @@ package com.citymanage;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -39,17 +38,13 @@ public class TmMapActivity extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
-        Log.i("googlemap1","googlemap1");
-
         mapFragment = (SupportMapFragment) getSupportFragmentManager().
                        findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);  // 메인 쓰레드에서 호출되어야 메인스레드에서 콜백이 실행
-        Log.i("googlemap2","googlemap2");
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "GoogleMap is ready.");
         map = googleMap;
 
         // sensor 위치 변수값

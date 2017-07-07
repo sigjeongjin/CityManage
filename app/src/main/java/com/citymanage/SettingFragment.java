@@ -2,7 +2,6 @@ package com.citymanage;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
@@ -19,11 +18,12 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 
+import com.common.Module;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by we25 on 2017-07-04.
@@ -53,7 +53,7 @@ public class SettingFragment extends Fragment {
         gPwdConfirmGoBtn = (Button) rootView.findViewById(R.id.gPwdConfirmGoBtn);
         gProfileChangeIv = (ImageView) rootView.findViewById(R.id.profileChangeIv);
 
-        gAutoLoginOnOffSw.setChecked((0 == getAutoLogin()) ?  false : true);
+        gAutoLoginOnOffSw.setChecked((0 == Module.getAutoLogin(getContext())) ?  false : true);
 
         gProfileChangeIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,11 +84,11 @@ public class SettingFragment extends Fragment {
         gAutoLoginOnOffSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(getAutoLogin() == 0) {
-                    setAutoLogin(1);
+                if(Module.getAutoLogin(getContext()) == 0) {
+                    Module.setAutoLogin(getContext(),1);
                     buttonView.setChecked(true);
                 } else {
-                    setAutoLogin(0);
+                    Module.setAutoLogin(getContext(),0);
                     buttonView.setChecked(false);
                 }
             }
@@ -104,21 +104,6 @@ public class SettingFragment extends Fragment {
 
         return rootView;
     }
-
-    // 값 불러오기
-    private int getAutoLogin(){
-        SharedPreferences pref = ((SettingActivity)getActivity()).getSharedPreferences("pref", MODE_PRIVATE);
-        return Integer.parseInt(pref.getString("autoLogin", "0"));
-    }
-
-    // 값 저장하기
-    private void setAutoLogin(int pAutoLogin){
-        SharedPreferences pref = ((SettingActivity)getActivity()).getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("autoLogin", String.valueOf(pAutoLogin));
-        editor.commit();
-    }
-
     public void selectAlbum() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI); //인텐트에 사진 앨범을 쓰고, sd카드의 uri를 가저온다는것을 명시
         //사진을 여러개 선택할수 있도록 한다

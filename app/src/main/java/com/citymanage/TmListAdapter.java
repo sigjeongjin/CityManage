@@ -11,11 +11,11 @@ import java.util.ArrayList;
  * Created by we25 on 2017-06-26.
  */
 
-public class PushHistoryAdapter extends BaseAdapter {
-    ArrayList<PushHistoryItem> items = new ArrayList<PushHistoryItem>();
+public class TmListAdapter extends BaseAdapter {
+    ArrayList<TmListItem> items = new ArrayList<TmListItem>();
     Context context;
 
-    public PushHistoryAdapter(Context context) {
+    public TmListAdapter(Context context) {
         this.context = context;
     }
 
@@ -24,7 +24,7 @@ public class PushHistoryAdapter extends BaseAdapter {
         return items.size();
     }
 
-    public void addItem(PushHistoryItem item) {
+    public void addItem(TmListItem item) {
         items.add(item);
     }
 
@@ -44,12 +44,11 @@ public class PushHistoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        PushHistoryItemView view = new PushHistoryItemView(context);
+        TmListItemView view = new TmListItemView(context);
 
-        PushHistoryItem item = items.get(position);
+        TmListItem item = items.get(position);
         view.setAddressInfo(item.getAddressInfo());
         view.setSensorId(item.getSensorId());
-        view.setPushDescripTion(item.getPushDescription());
         return view;
     }
 }

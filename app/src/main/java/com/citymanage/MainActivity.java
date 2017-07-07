@@ -62,16 +62,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         //쓰레기통 관리 화면으로 이동
-//        tmMapActivityGo = (Button) findViewById(R.id.tmMapActivityGo);
-//
-//        tmMapActivityGo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), TmMapActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        tmListActivityGo = (Button) findViewById(R.id.tmListActivityGo);
+
+        tmListActivityGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TmListActivity.class);
+                startActivity(intent);
+            }
+        });
         //금연구역 관리 화면으로 이동
 //        smMapActivityGo = (Button) findViewById(R.id.smMapActivityGo);
 //

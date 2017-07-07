@@ -2,17 +2,15 @@ package com.citymanage;
 
 /**
  * Created by we25 on 2017-06-26.
- */
+ **/
 
-public class PushHistoryItem {
+public class TmListItem {
     String addressInfo;
     String sensorId;
-    String pushDescription;
 
-    public PushHistoryItem(String pAddressInfo, String pSensorId, String pPushDescription) {
+    public TmListItem(String pAddressInfo, String pSensorId) {
         this.addressInfo = pAddressInfo;
         this.sensorId = pSensorId;
-        this.pushDescription = pPushDescription;
     }
 
     public String getAddressInfo() {
@@ -31,11 +29,4 @@ public class PushHistoryItem {
         this.sensorId = sensorId;
     }
 
-    public String getPushDescription() {
-        return pushDescription;
-    }
-
-    public void setPushDescripTion(String pushDescription) {
-        this.pushDescription = pushDescription;
-    }
 }

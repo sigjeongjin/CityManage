@@ -9,40 +9,29 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/allCheckBox"
+        <EditText
+            android:id="@+id/streetFindEv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="모두" />
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="동/읍/면" />
 
-        <CheckBox
-            android:id="@+id/wmCheckBox"
+        <Button
+            android:id="@+id/searchBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="수질" />
+            android:text="찾기" />
 
-        <CheckBox
-            android:id="@+id/tmCheckBox"
+        <Button
+            android:id="@+id/tmMapActivityGoBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="쓰레기통" />
+            android:text="맵" />
 
-        <CheckBox
-            android:id="@+id/gmCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="도시가스" />
-
-        <CheckBox
-            android:id="@+id/smCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="금연구역" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,7 +40,7 @@
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/pushHistoryListView"
+            android:id="@+id/tmLv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

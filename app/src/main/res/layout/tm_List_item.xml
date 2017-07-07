@@ -21,12 +21,4 @@
         android:text="센서ID"
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/pushDescriptionTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="PUSH내용"
-        android:textSize="24sp" />
-
 </LinearLayout>

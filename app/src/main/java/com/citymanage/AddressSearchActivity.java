@@ -1,75 +1,138 @@
 package com.citymanage;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class AddressSearchActivity extends AppCompatActivity {
 
-   // SharedPreferences city;
+      String url = "http://192.168.0.229:3000/cityList";
+    List<HashMap<String, String>> cityList = new ArrayList<HashMap<String, String>>();
+    List<String> cityNameList = new ArrayList<>();
+    Spinner citySp;
+    Spinner spinner2;
 
-    WmVariableList wmVal = new WmVariableList();
-
-    EditText addressText1;
-    EditText addressText2;
-
-    Button choiceButton;
+    Button choiceBtn;
     String citySearch;
-
-    //String url = "http://192.168.0.229:3000/wmList?address=서울시 금천구&addressInfo=가산동";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_search);
 
-        addressText1 = (EditText) findViewById(R.id.addressText1);
-        addressText2 = (EditText) findViewById(R.id.addressText2);
+        citySp = (Spinner) findViewById(R.id.citySp);
 
-        System.out.println("ㅎㅎㅎ");
-        System.out.println((1111|0001)|0000);
-        savePreferences();
-      //  getPreferences();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, cityNameList);
 
-//        System.out.println(city.getString("city" , ""));
-//        System.out.println(city.getString("city"+1 , ""));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySp.setAdapter(adapter);
 
-        choiceButton = (Button) findViewById(R.id.choiceButton);
-        choiceButton.setOnClickListener(new View.OnClickListener() {
+//        dialog.setMessage("Loading....");
+//        dialog.show();
+        Log.i("search1", url);
+        Log.i("STRING", "TEST");
+
+        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+
             @Override
-            public void onClick(View v) {
+            public void onResponse(String string) {
+                parseJsonData(string);
+                Log.i("onResponse", "onResponse");
 
-                citySearch = addressText1.getText().toString();
-                Log.i("City", citySearch);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                //dialog.dismiss();
+            }
+        });
+        RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
+        rQueue.add(request);
+
+        // 아이템 선택 이벤트 처리
+        citySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            // 아이템이 선택되었을 때 호출됨
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
 
+                String cityCode = cityList.get(position).get("cityCode");
 
-                Intent intent = new Intent(getApplicationContext(), WmListActivity.class);
-                startActivity(intent);
+                StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String string) {
+                        parseJsonData(string);
+                        Log.i("onResponse", "onResponse");
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
+                    }
+                });
+
+            }
+
+            // 아무것도 선택되지 않았을 때 호출됨
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
 
-    //private void SavePreferencesCitycode
-    public void getPreferences() {
-        SharedPreferences city = getSharedPreferences("city", 0);
-        city.getString("city"+ 1 , "");
-        city.getString("city"+ 2 , "");
-        System.out.println(city.getString("city"+1 , ""));
-        System.out.println(city.getString("city"+2 , ""));
-    }
+    void parseJsonData(String jsonString) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
 
-    public void savePreferences() {
-        SharedPreferences city = getSharedPreferences("city", 0);
-        SharedPreferences.Editor editor = city.edit();
-        editor.putString("city"+ 1 , "서울시|0001");
-        editor.putString("city"+ 2 , "경기도|0002");
-        editor.commit();
+            Log.i("JSONARRAY", jsonObject.toString());
+
+            JSONArray jsonArray = jsonObject.getJSONArray("address");
+
+            for (int i = 0; i < jsonArray.length(); i++){
+                String city = jsonArray.getJSONObject(i).getString("city");
+                String cityCode = jsonArray.getJSONObject(i).getString("cityCode");
+                Log.i("city", city);
+                Log.i("cityCode", cityCode);
+                HashMap<String,String> cityInfo = new HashMap<>();
+                cityInfo.put("city", city);
+                cityInfo.put("cityCode", cityCode);
+
+                cityNameList.add(i,city);
+                cityList.add(i, cityInfo);
+            }
+
+            Log.i("cityList", cityList.toString());
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        dialog.dismiss();
     }
 }
 

@@ -6,7 +6,9 @@ package com.citymanage;
 
 public class WmItem {
 
+    String sensorId;
     String address;        // 설치된 지역정보
+    String addressInfo;
     String waterQuality;   // 수질 센서 (waterQuality)
     String waterLevel;     // 수압 센서 (waterLevel)
 
@@ -15,10 +17,19 @@ public class WmItem {
         this.address = address;
     }
 
-    public WmItem(String address, String waterQuality, String waterLevel) {
+    public WmItem(String sensorId, String address, String addressInfo, String waterQuality, String waterLevel) {
+        this.sensorId = sensorId;
         this.address = address;
+        this.addressInfo = addressInfo;
         this.waterQuality = waterQuality;
         this.waterLevel = waterLevel;
+    }
+
+    public String getSensorId() {
+        return sensorId;
+    }
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 
     public String getAddress() {
@@ -26,6 +37,13 @@ public class WmItem {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getAddressInfo() {
+        return addressInfo;
+    }
+    public void setAddressInfo(String address) {
+        this.addressInfo = addressInfo;
     }
 
     public String getWaterQuality() {

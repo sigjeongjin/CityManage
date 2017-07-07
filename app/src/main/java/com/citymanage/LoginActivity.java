@@ -22,6 +22,7 @@ import com.common.Module;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
 
-    private  Button btnregister;
+    private Button btnregister;
     CheckBox autologin;
     Button btnLogin;
     EditText email, password;
@@ -50,9 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-
-        // 로그인 버튼 url로 보낸 정보가 맞는경우  메인화면으로 전환
         Button btnLogin = (Button)findViewById(R.id.btnLogin) ;
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -62,10 +60,9 @@ public class LoginActivity extends AppCompatActivity {
             final EditText password = (EditText)findViewById(R.id.password);
             String pw = password.getText().toString();
 
-
-                //release때 주석 처리 해야함 (임시)
             email.setText("bang");
             password.setText("1234");
+
 
             //아이디와 비밀번호가 공백일때 출력메세지
             if(id.equals("") && pw.equals("")){
@@ -92,13 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity .this,"비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            //정보 전송중 메시지 출력
-
-            dialog = new ProgressDialog(LoginActivity.this);
-            dialog.setMessage("Loading....");
-            dialog.show();
-
 
             //정보를 보내고 받음.
             StringRequest request = new StringRequest(url, new Response.Listener<String>() {
@@ -135,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
             rQueue.add(request);
             }
         });
+
         //회원가입 화면으로 전환
         btnregister = (Button) findViewById(R.id.btnregister);
         btnregister.setOnClickListener(new Button.OnClickListener(){

@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //도시가스 관리 화면으로 이동
+
         wmListActivityGo = (Button) findViewById(R.id.wmListActivityGo);
 
         wmListActivityGo.setOnClickListener(new View.OnClickListener() {

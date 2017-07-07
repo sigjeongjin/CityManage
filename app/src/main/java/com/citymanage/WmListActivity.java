@@ -6,35 +6,106 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 
 public class WmListActivity extends AppCompatActivity {
     EditText addressInput;
+    TextView textView;
 
     Button wmMapActivityGo;
+    Button searchBtn;
+
     ListView listView;
     WmAdapter adapter;
 
     String resultCode;
-    String url = "";
+    String url;// = "http://192.168.0.229:3000/wmList";
     ProgressDialog dialog;
 
+    AddressSearchActivity ad = new AddressSearchActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wm_list);
+
+        textView = (TextView) findViewById(R.id.textView);
+        adapter = new WmAdapter(this);
+        listView = (ListView) findViewById(R.id.listView);
+
+        addressInput = (EditText) findViewById(R.id.addressInput);
+        searchBtn = (Button) findViewById(R.id.searchBtn);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AddressSearchActivity aa = new AddressSearchActivity();
+                //aa.savePreferences();
+                String test = aa.getPreferenceaa();
+                System.out.println(test);
+//                String serarchInfo = addressInput.getText().toString();
+//                Log.i("search", serarchInfo);
+//
+//                String aaa = ("http://192.168.0.229:3000/wmList?" + "address=" + "경기도안양시" +
+//                        "&addressInfo=" + serarchInfo);
+//
+//                String sbuURL1 = "경기도안양시";
+//                String sbuURL2 = serarchInfo;
+//                try {
+//                    sbuURL1 = URLEncoder.encode(sbuURL1 , "UTF-8");
+//                    sbuURL2 = URLEncoder.encode(serarchInfo , "UTF-8");
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
+////
+//                String bbb = ("http://192.168.0.229:3000/wmList?" + "address=" + sbuURL1 +
+//
+//                        "&addressInfo=" + sbuURL2);
+//
+//                url = bbb;
+//                Log.i("search", url);
+                //        dialog = new ProgressDialog(WmListActivity.this);
+//        dialog.setMessage("Loading....");
+//        dialog.show();
+                Log.i("search1", url);
+                Log.i("STRING", "TEST");
+
+                StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String string) {
+
+                        Log.i("onResponse", "onResponse");
+                        parseJsonData(string);
+                        listView.setAdapter(adapter);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
+                    }
+                });
+                RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
+                rQueue.add(request);
+            }
+        });
+
 
         wmMapActivityGo = (Button) findViewById(R.id.wmMapActivityGo);
 
@@ -46,116 +117,43 @@ public class WmListActivity extends AppCompatActivity {
                 //finish();
             }
         });
-
-        listView = (ListView) findViewById(R.id.listView);
-
-        adapter = new WmAdapter();
-
-        adapter.addItem(new WmItem("서울시 금천구", "정상", "정상"));
-        adapter.addItem(new WmItem("서울시 구로구", "비정상", "정상"));
-        adapter.addItem(new WmItem("서울시 관악구", "정상", "비정상"));
-
-
-        listView.setAdapter(adapter);
-
-        addressInput = (EditText) findViewById(R.id.addressInput);
-
-        Button button = (Button) findViewById(R.id.searchBtn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = addressInput.getText().toString();
-                String mobile = "010-1000-1000";
-
-                //adapter.addItem(new WmItem(name, mobile, age, R.drawable.muji01));
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        // liseView click --> WminfoActivity
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                WmItem item = (WmItem) adapter.getItem(position);
-                Toast.makeText(getApplicationContext(), "선택 : " + item.getAddress(), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), WmInfoActivity.class);
-
-                intent.putExtra("address", adapter.items.get(position).address);
-                intent.putExtra("waterQuality", adapter.items.get(position).waterQuality);
-                intent.putExtra("waterLevel", adapter.items.get(position).waterLevel);
-
-
-                startActivityForResult(intent, 1001);
-
-            }
-        });
     }
 
-    class WmAdapter extends BaseAdapter {
-        ArrayList<WmItem> items = new ArrayList<WmItem>();
-
-        @Override
-        public int getCount() {
-            return items.size();
-        }
-
-        public void addItem(WmItem item) {
-            items.add(item);
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return items.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup viewGroup) {
-            //WmItemView view = new WmItemView(getApplicationContext());
-
-            WmItemView view = null;
-
-            if (convertView == null) {
-                view = new WmItemView(getApplicationContext());
-            } else {
-                view = (WmItemView) convertView;
-            }
-
-            WmItem item = items.get(position);
-            view.setAddress(item.getAddress());
-            view.setWaterQuality(item.getWaterQuality());
-            view.setWaterLevel(item.getWaterLevel());
-
-
-            return view;
-        }
-    }
 
     void parseJsonData(String jsonString) {
+        //wmArrayList = new ArrayList<HashMap<String, String>>();
         try {
-            JSONObject object = new JSONObject(url);    // JSONObject에 객체를 저장
+            JSONObject object = new JSONObject(jsonString);
 
+            Log.i("JSONOBJECT", object.toString());
             Log.d("RESULTCODE", "ListTest");
 
             resultCode = object.getString("resultCode");
 
+            textView.setText(resultCode);
+            JSONArray wmArray = object.getJSONArray("list");
 
-//            JSONObject object = new JSONObject(jsonString);
-//            JSONArray fruitsArray = object.getJSONArray("fruits");
-//            ArrayList al = new ArrayList();
-//
-//            for(int i = 0; i < fruitsArray.length(); ++i) {
-//                al.add(fruitsArray.getString(i));
-//            }
+            for (int i = 0; i < wmArray.length(); i++) {
+                String sensorId = wmArray.getJSONObject(i).getString("sensorId");
+                String address = wmArray.getJSONObject(i).getString("address");
+                String addressInfo = wmArray.getJSONObject(i).getString("addressInfo");
+                String waterQuality = wmArray.getJSONObject(i).getString("waterQuality");
+                String waterLevel = wmArray.getJSONObject(i).getString("waterLevel");
+
+
+                adapter.addItem(new WmItem(sensorId, address, addressInfo, waterQuality, waterLevel));
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        dialog.dismiss();
+//        dialog.dismiss();
     }
-
 }
+
+
+
+
+
+

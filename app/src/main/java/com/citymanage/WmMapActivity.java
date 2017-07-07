@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+// i
 public class WmMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "SmMapActivity";

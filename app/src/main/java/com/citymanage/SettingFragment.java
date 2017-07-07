@@ -53,7 +53,7 @@ public class SettingFragment extends Fragment {
         gPwdConfirmGoBtn = (Button) rootView.findViewById(R.id.gPwdConfirmGoBtn);
         gProfileChangeIv = (ImageView) rootView.findViewById(R.id.profileChangeIv);
 
-        gAutoLoginOnOffSw.setChecked((0 == getAutoLogin()) ? false : true);
+        gAutoLoginOnOffSw.setChecked((0 == getAutoLogin()) ?  false : true);
 
         gProfileChangeIv.setOnClickListener(new View.OnClickListener() {
             @Override

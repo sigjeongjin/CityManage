@@ -1,9 +1,13 @@
 package com.citymanage;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -12,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -27,11 +32,16 @@ import org.json.JSONObject;
  * Created by we25 on 2017-06-27.
  */
 
-public class RegisterActivity extends AppCompatActivity{
+public class RegisterActivity extends AppCompatActivity {
 
 
     String resultCode;
 
+    private static final int PICK_FROM_CAMERA = 1;
+    private static final int PICK_FROM_ALBUM = 2;
+    // 기본값
+    private boolean imageDraw = false;
+    private ImageView imgview;
     private EditText snm;
     private EditText spw;
     private EditText respw;
@@ -64,6 +74,52 @@ public class RegisterActivity extends AppCompatActivity{
         url.append("&repassword=" + respw.getText().toString());
         url.append("&phone=" + hp.getText().toString());
 
+        imgview = (ImageView) findViewById(R.id.imageView1);
+        Button buttonCamera = (Button) findViewById(R.id.btn_take_camera);
+        Button buttonGallery = (Button) findViewById(R.id.btn_select_gallery);
+
+        buttonCamera.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //카메라 호출
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+
+                //이미지 사이즈 변경
+                intent.putExtra("crop", "true");
+                intent.putExtra("aspectX", 0);
+                intent.putExtra("aspectY", 0);
+                intent.putExtra("outputX", 200);
+                intent.putExtra("outputY", 250);
+
+                try {
+                    intent.putExtra("return-data", true);
+                    startActivityForResult(intent, PICK_FROM_CAMERA);
+            }catch (ActivityNotFoundException e) {
+                }
+
+            }
+        });
+
+        buttonGallery.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent, PICK_FROM_ALBUM);
+
+                intent.setType("image/*");
+                intent.putExtra("crop", "true");
+                intent.putExtra("aspectX", 0);
+                intent.putExtra("aspectY", 0);
+                intent.putExtra("outputX", 200);
+                intent.putExtra("outputY", 250);
+
+
+            }
+        });
+
 
         //비밀번호가 일치하는지에 대한 검사
         respw.addTextChangedListener(new TextWatcher() {
@@ -79,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity{
                 String confirm = respw.getText().toString();
 
                 // 패스워드가 일치하는 경우 녹색 표시
-                if( password.equals(confirm) ) {
+                if (password.equals(confirm)) {
                     spw.setBackgroundColor(Color.GREEN);
                     respw.setBackgroundColor(Color.GREEN);
 
@@ -100,38 +156,45 @@ public class RegisterActivity extends AppCompatActivity{
         });
 
         //정보 등록 확인 부분
-        btns = (Button)findViewById(R.id.btns);
+        btns = (Button) findViewById(R.id.btns);
         btns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //사진 입력 확인
+                if(imageDraw == false){
+                    Toast.makeText(RegisterActivity.this, "사진을 등록해 주세요.", Toast.LENGTH_SHORT).show();
+                    imgview.requestFocus();
+                    return;
+                }
                 //이름 입력 확인
-                if(snm.getText().toString().length() == 0 ) {
+                if (snm.getText().toString().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     snm.requestFocus();
                     return;
                 }
                 //이메일 입력 확인
-                if(sid.getText().toString().length() == 0 ) {
+                if (sid.getText().toString().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "이메일을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     sid.requestFocus();
                     return;
                 }
 
                 //비밀번호 입력 확인
-                if(spw.getText().toString().length() == 0 ) {
+                if (spw.getText().toString().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "비밀번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     spw.requestFocus();
                     return;
                 }
                 //같은 비밀번호 입력 확인
-                if(respw.getText().toString().length() == 0 ) {
+                if (respw.getText().toString().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "똑같은 비밀번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     respw.requestFocus();
                     return;
                 }
 
                 //비밀번호가 서로 일치하는지 확인.
-                if( !spw.getText().toString().equals(respw.getText().toString()) ) {
+                if (!spw.getText().toString().equals(respw.getText().toString())) {
                     Toast.makeText(RegisterActivity.this, "비밀번호가 일치하지 않습니다!", Toast.LENGTH_SHORT).show();
                     spw.setText("");
                     respw.setText("");
@@ -139,7 +202,7 @@ public class RegisterActivity extends AppCompatActivity{
                     return;
                 }
                 //핸드폰 번호 입력 확인
-                if(hp.getText().toString().length() == 0 ) {
+                if (hp.getText().toString().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "핸드폰 번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     hp.requestFocus();
                     return;
@@ -159,19 +222,19 @@ public class RegisterActivity extends AppCompatActivity{
 
                         // if 문 삽입(200일때 , 400일때)
                         // 받는  정보가 400일 경우 정보가 정확하지 않음.
-                        Log.d("RESULTCODE","TEST");
-                        if(resultCode.equals("400")) {
+                        Log.d("RESULTCODE", "TEST");
+                        if (resultCode.equals("400")) {
                             Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
 
                         }
 
                         //받는 정보가 200일 경우 로그인 액티비티 클래스로 전환
-                        else if(resultCode.equals ("200")) {
+                        else if (resultCode.equals("200")) {
                             Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplication(), LoginActivity.class);
                             startActivity(intent);
                         }
-                // 정보통신이 제대로 되지 않는 경우
+                        // 정보통신이 제대로 되지 않는 경우
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -192,26 +255,60 @@ public class RegisterActivity extends AppCompatActivity{
 //                finish();
 
         //취소 버튼시 화면을 종료하고 로그인 화면으로 돌아감.
-        btnf.setOnClickListener(new View.OnClickListener(){
+        btnf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
     }
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data) {
 
-    void parseJsonData(String jsonString) {
+        Bundle extras;
+        if (requestCode == PICK_FROM_CAMERA) {
+            extras = data.getExtras();
+            if (extras != null) {
+                Bitmap photo = extras.getParcelable("data");
+                imgview.setImageBitmap(photo);
+                //내부값.
+                imageDraw = true;
+
+            }
+        }
+        if (requestCode == PICK_FROM_ALBUM) {
+            extras = data.getExtras();
+            if (extras != null) {
+
+                Bitmap bm = null;
+                Uri dataUri = data.getData();
+
+                try {
+                    bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
+//                    Bitmap scaled = Bitmap.createScaledBitmap(bm, ALBUM_WIDTH, ALBUM_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
+//                    Bitmap resized = Bitmap.createBitmap(scaled,0,0,ALBUM_WIDTH,ALBUM_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                imgview.setImageBitmap(bm);
+                imageDraw = true;
+            }
+        }
+    }
+
+                void parseJsonData(String jsonString) {
         try {
             //새로운 json객체 생성
             JSONObject object = new JSONObject(jsonString);
 
-            Log.d("RESULTCODE","TEST2");
+            Log.d("RESULTCODE", "TEST2");
 
 
             //결과값을 받아옴
 
             resultCode = object.getString("resultCode");
-
 
 
 //            JSONObject object = new JSONObject(jsonString);
@@ -228,5 +325,150 @@ public class RegisterActivity extends AppCompatActivity{
         dialog.dismiss();
     }
 
-
 }
+//    protected void onActivityResult(int requestCode,
+//                                    int resultCode,
+//                                    Intent data) {
+//
+//        if (requestCode == PICK_FROM_CAMERA) {
+//            Bundle extras = data.getExtras();
+//            if (extras != null) {
+//                Bitmap photo = extras.getParcelable("data");
+//                imgview.setImageBitmap(photo);
+//            }
+//        }
+//        if (requestCode == PICK_FROM_GALLERY) {
+//            Bundle extras2 = data.getExtras();
+//            if (extras2 != null) {
+//                Bitmap photo = extras2.getParcelable("data");
+//                imgview.setImageBitmap(photo);
+//            }
+//        }
+//    }
+//}
+//   갤러리에서 이미지를 가져오는 부분
+//    private void getPhotoFromGallery(){
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//        startActivityForResult(intent, PICK_FROM_GALLERY);
+//
+//    }
+
+
+
+
+
+
+
+
+
+
+//package com.example.android.myapplication;
+//
+//        import android.content.Intent;
+//        import android.database.Cursor;
+//        import android.graphics.Bitmap;
+//        import android.graphics.BitmapFactory;
+//        import android.media.ExifInterface;
+//        import android.net.Uri;
+//        import android.os.Bundle;
+//        import android.provider.MediaStore;
+//        import android.support.annotation.Nullable;
+//        import android.support.v7.app.AppCompatActivity;
+//
+//        import java.io.IOException;
+//
+//        import static android.R.attr.path;
+//
+//public class MainActivity extends AppCompatActivity {
+//
+//    private static final int CAMERA_CODE = 0;
+//    private static final int GALLERY_CODE = 1;
+//
+//    @Override
+//    protected void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//
+//    private void SelectPhoto() {
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        startActivityForResult(intent, CAMERA_CODE);
+//    }
+//
+//    @Override
+//    private void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK) {
+//
+//            switch (requestCode) {
+//
+//                case GALLERY_CODE:
+//                    SendPicture(data);
+//                    break;
+//                case CAMERA_CODE:
+//                    SendPicture(data); //카메라에서 가져오기
+//                    break;
+//
+//                default:
+//                    break;
+//
+//            }
+//        }
+//    }
+//
+//    private void SendPicture(Intent data) {
+//        Uri imgUri = data.getData();
+//        String imagePath = getRealPathFromURI(imgUri); // path 경로
+//        ExifInterface exif = null;
+//        try {
+//            exif = new ExifInterface(imagePath);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+//        int exifDegree = exifOrientationToDegrees(exifOrientation);
+//
+//        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);//경로를 통해 비트맵으로 전환
+//        iv_receipt.setImageBitmap(rotate(bitmap, exifDegree));//이미지 뷰에 비트맵 넣기
+//
+//    }
+//
+//    ExifInterface exif = null;
+//    try
+//
+//    {
+//        exif = new ExifInterface(path);
+//    } catch(
+//    IOException e)
+//
+//    {
+//        e.printStackTrace();
+//    }
+//
+//    int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+//    int exifDegree = exifOrientationToDegrees(exifOrientation);
+//
+//    public int exifOrientationToDegrees(int exifOrientation) {
+//        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+//            return 90;
+//        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+//            return 180;
+//        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+//            return 270;
+//        }
+//        return 0;
+//    }
+//
+//    public String getRealPathFromURI(Uri contentUri) {
+//        String[] proj = {MediaStore.Images.Media.DATA};
+//        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+//        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//        cursor.moveToFirst();
+//        return cursor.getString(column_index);
+//
+//    }
+//}
+//
+//}
+
+

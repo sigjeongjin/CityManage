@@ -1,6 +1,5 @@
 package com.citymanage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,8 +11,7 @@ import android.widget.EditText;
 
 public class AddressSearchActivity extends AppCompatActivity {
 
-    private SharedPreferences city;
-   // private Editor editor;
+   // SharedPreferences city;
 
     WmVariableList wmVal = new WmVariableList();
 
@@ -33,11 +31,11 @@ public class AddressSearchActivity extends AppCompatActivity {
         addressText1 = (EditText) findViewById(R.id.addressText1);
         addressText2 = (EditText) findViewById(R.id.addressText2);
 
-//        System.out.println("ㅎㅎㅎ");
+        System.out.println("ㅎㅎㅎ");
         System.out.println((1111|0001)|0000);
-        savePreferences(getApplicationContext());
-        getPreferences(getApplicationContext());
-//
+        savePreferences();
+      //  getPreferences();
+
 //        System.out.println(city.getString("city" , ""));
 //        System.out.println(city.getString("city"+1 , ""));
 
@@ -45,38 +43,34 @@ public class AddressSearchActivity extends AppCompatActivity {
         choiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WmListActivity.class);
+
                 citySearch = addressText1.getText().toString();
                 Log.i("City", citySearch);
+
+
+
+                Intent intent = new Intent(getApplicationContext(), WmListActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-
     //private void SavePreferencesCitycode
-    public void getPreferences(Context context) {
-        this.city = context.getSharedPreferences("city", Context.MODE_PRIVATE);
+    public void getPreferences() {
+        SharedPreferences city = getSharedPreferences("city", 0);
         city.getString("city"+ 1 , "");
         city.getString("city"+ 2 , "");
         System.out.println(city.getString("city"+1 , ""));
         System.out.println(city.getString("city"+2 , ""));
     }
 
-    public void savePreferences(Context context) {
-        //SharedPreferences city = getSharedPreferences("city", Context.MODE_PRIVATE);
-        //SharedPreferences.Editor editor = city.edit();
-//        this.city = context.getSharedPreferences("city", Context.MODE_PRIVATE);
-//        editor.putString("city"+ 1 , "서울시|0001");
-//        editor.putString("city"+ 2 , "경기도|0002");
-//        editor.commit();
+    public void savePreferences() {
+        SharedPreferences city = getSharedPreferences("city", 0);
+        SharedPreferences.Editor editor = city.edit();
+        editor.putString("city"+ 1 , "서울시|0001");
+        editor.putString("city"+ 2 , "경기도|0002");
+        editor.commit();
     }
-
-    public String getPreferenceaa() {
-        //SharedPreferences city = getSharedPreferences("city", MODE_PRIVATE);
-        return city.getString("city"+ 1 , "");
-    }
-
 }
 
 

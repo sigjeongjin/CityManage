@@ -89,7 +89,9 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity .this,"비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            dialog = new ProgressDialog(LoginActivity.this);
+            dialog.setMessage("Loading....");
+            dialog.show();
             //정보를 보내고 받음.
             StringRequest request = new StringRequest(url, new Response.Listener<String>() {
                 @Override

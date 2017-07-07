@@ -53,12 +53,17 @@ public class WmListActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String serarchInfo = addressInput.getText().toString();
-                Log.i("search", serarchInfo);
 
-                String aaa = ("http://192.168.0.229:3000/wmList?" + "address=" + "경기도안양시" +
-                        "&addressInfo=" + serarchInfo);
-
+                AddressSearchActivity aa = new AddressSearchActivity();
+                //aa.savePreferences();
+                String test = aa.getPreferenceaa();
+                System.out.println(test);
+//                String serarchInfo = addressInput.getText().toString();
+//                Log.i("search", serarchInfo);
+//
+//                String aaa = ("http://192.168.0.229:3000/wmList?" + "address=" + "경기도안양시" +
+//                        "&addressInfo=" + serarchInfo);
+//
 //                String sbuURL1 = "경기도안양시";
 //                String sbuURL2 = serarchInfo;
 //                try {
@@ -67,13 +72,13 @@ public class WmListActivity extends AppCompatActivity {
 //                } catch (UnsupportedEncodingException e) {
 //                    e.printStackTrace();
 //                }
-//
-//                String aaa = ("http://192.168.0.229:3000/wmList?" + "address=" + sbuURL1 +
+////
+//                String bbb = ("http://192.168.0.229:3000/wmList?" + "address=" + sbuURL1 +
 //
 //                        "&addressInfo=" + sbuURL2);
-
-                url = aaa;
-                Log.i("search", url);
+//
+//                url = bbb;
+//                Log.i("search", url);
                 //        dialog = new ProgressDialog(WmListActivity.this);
 //        dialog.setMessage("Loading....");
 //        dialog.show();

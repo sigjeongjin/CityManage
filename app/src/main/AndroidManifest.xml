@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.citymanage">
 
-    <!--파일 읽기,쓰기 권한-->
+    <!-- 파일 읽기,쓰기 권한 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--파일 읽기,쓰기 권한-->
+    <!-- 파일 읽기,쓰기 권한 -->
+
 
     <!-- Android mapView LIB -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -44,6 +45,7 @@
         <activity android:name=".TmListActivity" />
         <activity android:name=".TmMapActivity" />
         <activity android:name=".SettingActivity" />
+        <activity android:name=".TmInfoActivity"></activity>
     </application>
 
 </manifest>

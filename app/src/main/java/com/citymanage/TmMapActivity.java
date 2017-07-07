@@ -18,20 +18,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class TmMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private static final String TAG = "SmMapActivity";
+    private static final String TAG = "TmMapActivity";
     SupportMapFragment mapFragment;
     GoogleMap map;
 
-    Button wmListActivityGo;
+    Button tmListActivityGoBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wm_map);
+        setContentView(R.layout.activity_tm_map);
 
-        wmListActivityGo = (Button) findViewById(R.id.wmListActivityGo);
+        tmListActivityGoBtn = (Button) findViewById(R.id.tmListActivityGoBtn);
 
-        wmListActivityGo.setOnClickListener(new View.OnClickListener() {
+        tmListActivityGoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TmListActivity.class);
@@ -39,9 +39,12 @@ public class TmMapActivity extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
+        Log.i("googlemap1","googlemap1");
+
         mapFragment = (SupportMapFragment) getSupportFragmentManager().
                        findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);  // 메인 쓰레드에서 호출되어야 메인스레드에서 콜백이 실행
+        Log.i("googlemap2","googlemap2");
     }
 
     @Override
@@ -77,7 +80,7 @@ public class TmMapActivity extends AppCompatActivity implements OnMapReadyCallba
                 Toast.makeText(getApplicationContext(),
                         marker.getTitle() + " 클릭했음"
                         , Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), WmInfoActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
                 startActivity(intent);
                 return false;
             }

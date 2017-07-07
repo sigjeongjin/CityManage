@@ -28,6 +28,8 @@ import java.util.List;
 
 public class TmListActivity extends BaseActivity {
 
+    final static String SENSORID = "sensorId";
+
     String resultCode;
 
     TmListAdapter adapter; // 위의 리스트 adapter
@@ -77,8 +79,13 @@ public class TmListActivity extends BaseActivity {
         rQueue.add(pushHistoryRequest);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
+                dialog = new ProgressDialog(TmListActivity.this);
+                dialog.setMessage("Loading....");
+                dialog.show();
 
                 StringBuilder sb = new StringBuilder(TM_LIST_URL);
                 String strStreet = streetFindEv.getText().toString();
@@ -130,7 +137,9 @@ public class TmListActivity extends BaseActivity {
         tmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("list item clicked","list item clicked");
+                Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
+                intent.putExtra(SENSORID,mListHashTm.get(position).get(SENSORID));
+                startActivity(intent);
             }
         });
     }

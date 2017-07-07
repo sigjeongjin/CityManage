@@ -23,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final String REGISTER = "http://192.168.0.230:3000/register";
     public static final String PUSH_HISTORY_HOST = "http://192.168.0.230:3000/pushHistory";
     public static final String TM_LIST_URL = "http://192.168.0.230:3000/tmList";
+    public static final String TM_INFO_URL = "http://192.168.0.230:3000/tmInfo";
 
 
     /* 프로그램 실행 후 필요한 상수 값들 정의 끝 */

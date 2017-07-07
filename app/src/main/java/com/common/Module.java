@@ -46,19 +46,4 @@ public class Module extends AppCompatActivity{
         editor.putInt("autoLogin",pAutoLogin);
         editor.commit();
     }
-
-//    static String getRecordId () {
-//
-//    }
-//
-//
-
-//
-//    // 값 저장하기
-//    private void setAutoLogin(int pAutoLogin){
-//        SharedPreferences pref = ((SettingActivity)getActivity()).getSharedPreferences("pref", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = pref.edit();
-//        editor.putString("autoLogin", String.valueOf(pAutoLogin));
-//        editor.commit();
-//    }
 }

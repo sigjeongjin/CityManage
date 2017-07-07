@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +38,8 @@ public class SettingFragment extends Fragment {
     private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
     private static final int autoLoginTrue = 1;
     private static final int autoLoginFalse = 0;
-    private static final int ALBUM_WIDTH = 400;
-    private static final int ALBUM_HEIGHT = 300;
+    private static final int IMAGE_WIDTH = 400;
+    private static final int IMAGE_HEIGHT = 300;
 
     Switch gAutoLoginOnOffSw;
     Button gPwdConfirmGoBtn;
@@ -59,6 +60,13 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callCamera();
+                    }
+                };
+
                 DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -73,8 +81,12 @@ public class SettingFragment extends Fragment {
                     }
                 };
 
+
+
+
                 new AlertDialog.Builder(getContext())
                         .setTitle("업로드할 이미지 선택")
+                        .setNeutralButton("카메라선택",cameraListener)
                         .setPositiveButton("앨범선택",albumListener)
                         .setNegativeButton("취소",cancelListener)
                         .show();
@@ -111,6 +123,24 @@ public class SettingFragment extends Fragment {
         startActivityForResult(intent,PICK_FROM_ALBUM); //앨범에서 사진을 가져오면 key값과 함께 콜백을 받음
     }
 
+    public void callCamera() {
+
+        Log.i("callCamera", "callCamera");
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+
+        //이미지 사이즈 변경
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 0);
+        intent.putExtra("aspectY", 0);
+        intent.putExtra("outputX", IMAGE_WIDTH);
+        intent.putExtra("outputY", IMAGE_HEIGHT);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, PICK_FROM_CAMERA);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -129,8 +159,8 @@ public class SettingFragment extends Fragment {
                         Uri dataUri = data.getData();
 
                         bm = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
-                        Bitmap scaled = Bitmap.createScaledBitmap(bm, ALBUM_WIDTH, ALBUM_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
-                        Bitmap resized = Bitmap.createBitmap(scaled,0,0,ALBUM_WIDTH,ALBUM_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
+                        Bitmap scaled = Bitmap.createScaledBitmap(bm, IMAGE_WIDTH, IMAGE_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
+                        Bitmap resized = Bitmap.createBitmap(scaled,0,0, IMAGE_WIDTH, IMAGE_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
 
                         gProfileChangeIv.setImageBitmap(resized);
 
@@ -146,6 +176,13 @@ public class SettingFragment extends Fragment {
 
                 case CANCLE_FROM_CONTENT: //앨범에서 취소 버튼을 눌렀을때 오는 콜백
                     break;
+
+                case PICK_FROM_CAMERA :
+                    Bundle extras = data.getExtras();
+                    if (extras != null) {
+                        Bitmap photo = extras.getParcelable("data");
+                        gProfileChangeIv.setImageBitmap(photo);
+                    }
                 default:
                     break;
             }
@@ -153,3 +190,28 @@ public class SettingFragment extends Fragment {
         }
     }
 }
+
+
+//buttonCamera.setOnClickListener(new View.OnClickListener(){
+//@Override
+//public void onClick(View v) {
+//        //카메라 호출
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+//        MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+//
+//        //이미지 사이즈 변경
+//        intent.putExtra("crop", "true");
+//        intent.putExtra("aspectX", 0);
+//        intent.putExtra("aspectY", 0);
+//        intent.putExtra("outputX", 200);
+//        intent.putExtra("outputY", 250);
+//
+//        try {
+//        intent.putExtra("return-data", true);
+//        startActivityForResult(intent, PICK_FROM_CAMERA);
+//        }catch (ActivityNotFoundException e) {
+//        }
+//
+//        }
+//        });

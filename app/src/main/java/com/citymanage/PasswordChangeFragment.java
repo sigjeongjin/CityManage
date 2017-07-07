@@ -47,8 +47,6 @@ public class PasswordChangeFragment extends Fragment {
                         .setTitle("비밀번호 변경 완료")
                         .setPositiveButton("확인",confirmListener)
                         .show();
-
-
             }
         });
 

@@ -25,7 +25,6 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-
     //전역 변수 , result 코드 생성
     String resultCode;
 
@@ -54,12 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         Button btnLogin = (Button)findViewById(R.id.btnLogin) ;
         email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
-
-        if(Module.getAutoLogin(getApplicationContext()) == 1) {
-            autoLoginChk.setChecked(true);
-            email.setText(Module.getRecordId(getApplicationContext()));
-            password.setText(Module.getRecordPwd(getApplicationContext()));
-        }
 
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -139,6 +132,18 @@ public class LoginActivity extends AppCompatActivity {
             rQueue.add(request);
             }
         });
+
+        //자동 로그인 가능 하도록 셋팅
+        if(Module.getAutoLogin(getApplicationContext()) == 1 && Module.getRecordId(getApplicationContext()) != ""
+                && Module.getRecordPwd(getApplicationContext()) != "") {
+            autoLoginChk.setChecked(true);
+            email.setText(Module.getRecordId(getApplicationContext()));
+            password.setText(Module.getRecordPwd(getApplicationContext()));
+
+            Log.i("onclick","onclick");
+            btnLogin.callOnClick();
+            Log.i("onclick","onclick");
+        }
 
         //회원가입 화면으로 전환
         btnregister = (Button) findViewById(R.id.btnregister);

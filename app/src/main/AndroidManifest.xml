@@ -27,7 +27,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3Bi6rtPt24vp1VB93_kjavLhrVuEVxJ8" />
 
-        <activity android:name=".WmMapActivity">WmMapActivity
+        <activity android:name=".LoginActivity">LoginActivity
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,6 +43,7 @@
         <activity android:name=".GmMapActivity" />
         <activity android:name=".WmListActivity" />
         <activity android:name=".WmInfoActivity" />
+        <activity android:name=".WmMapActivity" />
         <activity android:name=".TmListActivity" />
         <activity android:name=".TmMapActivity" />
         <activity android:name=".SettingActivity" />

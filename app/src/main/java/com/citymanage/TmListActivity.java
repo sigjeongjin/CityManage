@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -82,8 +83,6 @@ public class TmListActivity extends BaseActivity {
                 StringBuilder sb = new StringBuilder(TM_LIST_URL);
                 String strStreet = streetFindEv.getText().toString();
 
-                Log.i("STRING STREET LENGHT ", String.valueOf(strStreet.length()));
-
                 try {
                     if(strStreet.length() > 0) {
                         sb.append("?find=");
@@ -92,8 +91,6 @@ public class TmListActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                Log.i("URL TEST", sb.toString());
 
                 StringRequest pushHistoryRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
                     @Override
@@ -127,6 +124,13 @@ public class TmListActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TmMapActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        tmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("list item clicked","list item clicked");
             }
         });
     }

@@ -41,28 +41,30 @@ public class LoginActivity extends AppCompatActivity {
     String url = "http://192.168.0.230:3000/login?loginId=bang&pwd=1234";
 //    StringBuilder url2= "http";
 
-
     ProgressDialog dialog;
 
-
+    CheckBox autoLoginChk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        autoLoginChk = (CheckBox) findViewById(R.id.autoLoginChk);
         Button btnLogin = (Button)findViewById(R.id.btnLogin) ;
+        email = (EditText)findViewById(R.id.email);
+        password = (EditText)findViewById(R.id.password);
+
+        if(Module.getAutoLogin(getApplicationContext()) == 1) {
+            autoLoginChk.setChecked(true);
+            email.setText(Module.getRecordId(getApplicationContext()));
+            password.setText(Module.getRecordPwd(getApplicationContext()));
+        }
+
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-
-            final EditText email = (EditText)findViewById(R.id.email);
             String id = email.getText().toString();
-            final EditText password = (EditText)findViewById(R.id.password);
             String pw = password.getText().toString();
-
-            email.setText("bang");
-            password.setText("1234");
-
 
             //아이디와 비밀번호가 공백일때 출력메세지
             if(id.equals("") && pw.equals("")){
@@ -90,6 +92,10 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
+            dialog = new ProgressDialog(LoginActivity.this);
+            dialog.setMessage("Loading....");
+            dialog.show();
+
             //정보를 보내고 받음.
             StringRequest request = new StringRequest(url, new Response.Listener<String>() {
                 @Override
@@ -106,8 +112,16 @@ public class LoginActivity extends AppCompatActivity {
                     else if(resultCode.equals ("200")) {
                         Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplication(), MainActivity.class);
+
                         Module.setRecordId(getApplicationContext(),email.getText().toString());
                         Module.setRecordPwd(getApplicationContext(), password.getText().toString());
+
+                        if(autoLoginChk.isChecked()){
+                            Module.setAutoLogin(getApplicationContext(),1);
+                        } else {
+                            Module.setAutoLogin(getApplicationContext(),0);
+                        }
+
                         startActivity(intent);
                     }
 
@@ -135,33 +149,14 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
      }
-
-
-
-
-
-
-
 
     void parseJsonData(String jsonString) {
         try {
             JSONObject object = new JSONObject(jsonString);
 
-            Log.d("RESULTCODE", "TEST2");
-
             resultCode = object.getString("resultCode");
 
-
-//            JSONObject object = new JSONObject(jsonString);
-//            JSONArray fruitsArray = object.getJSONArray("fruits");
-//            ArrayList al = new ArrayList();
-//
-//            for(int i = 0; i < fruitsArray.length(); ++i) {
-//                al.add(fruitsArray.getString(i));
-//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -170,135 +165,3 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 }
-//    // 값 불러오기
-//      private void getPreferences(){
-//        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-//        pref.getString("autologin","");
-//    }
-//    //값 저장하기
-//    private void savePreferences(){
-//        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = pref.edit();
-//        editor.putString("autologin", "1");
-//        editor.putString("id", "bang");
-//        editor.putString("password", "1234");
-//        editor.commit();
-//    }
-
-
-
-
-
-
-
-
-
-//    private Check Adk, UserIdChk, PwdChk, AutoChk;
-//    private boolean IsAdminIdChk, IsUserIdChk, IsPwdChk, IsAutoChk;
-
-
-//
-//    OnCreate(){
-//
-//
-//        AChk = (CheckBox) findViewById(R.id.Login_Admin_Code_Save_Selector);
-//        Uk = (CheckBox) findViewById(R.id.Login_User_Id_Save_Selector);
-//        Pk= (CheckBox) findViewById(R.id.Login_PassWord_Save_Selector);
-//        AuK= (CheckBox) findViewById(R.id.Login_Auto_Check);
-//
-//
-//        SharedPreferences pref = getSharedPreferences("Pref",
-//                Context.MODE_PRIVATE);
-//
-//
-//
-//        AChk .setChecked(pref.getBoolean("AChk ", false));
-//        UChk .setChecked(pref.getBoolean("UChk ", false));
-//        PChk.setChecked(pref.getBoolean("PChk", false));
-//        AuChK.setChecked(pref.getBoolean("AuChK", false));
-//
-//
-//
-//    }
-//
-//
-//
-//
-//
-//    onStop(){
-//
-//
-//
-//        SharedPreferences pref = getSharedPreferences("Pref",
-//                Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = pref.edit();
-//
-//        editor.putString("admin", admin.getText().toString());
-//        editor.putString("id", user_id.getText().toString());
-//        editor.putString("passwd", passwd.getText().toString());
-//        editor.putBoolean("AdminIdChk", AChk .isChecked());
-//        editor.putBoolean("UserIdChk", UChk .isChecked());
-//        editor.putBoolean("PwdChk", PChk.isChecked());
-//        editor.putBoolean("AutoChk", AuChK.isChecked());
-//        editor.commit();
-//
-//    public static String get저장제목(Context context) {
-//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-//        return pref.getString("저장할키ID", "");
-//    }
-//    public static void set저장제목(Context context, String 저장시키고싶은값) {
-//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-//        if(!pref.getString("저장할키ID", "").toUpperCase().equals(저장시키고싶은값.toUpperCase())) {
-//            SharedPreferences.Editor edit = pref.edit();
-//            edit.putString("저장할키ID", 저장시키고싶은값.toUpperCase());
-//            edit.commit();
-//            //Log.i(getClass().getSimpleName(), "SharedPreferences Set : UserID = " + userId.toUpperCase());
-//        }
-//
-//
-// autologin = (CheckBox) findViewById(R.id.autologin);
-//         autologin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-//@Override
-////체크박스 호출 리스너
-//public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//
-//        if(isChecked){
-//
-//        String ID = email.getText().toString();
-//
-//        String PW = password.getText().toString();
-//
-//
-//
-//        editor.putString("email", ID);
-//        editor.putString("password", PW);
-//        editor.putBoolean("autologin_enabled", true);
-//        editor.commit();
-//
-//        }else{
-////			editor.remove("ID");
-////			editor.remove("PW");
-////			editor.remove("Auto_Login_enabled");
-//
-//        editor.clear();
-//
-//        editor.commit();
-//
-//
-//        }
-//        //재접속시 아이디, 패스워드 유지
-//        if(setting.getBoolean("autologin_enabled", false)) {
-//
-//        email.setText(setting.getString("ID", ""));
-//        password.setText(setting.getString("PW", ""));
-//        autologin.setChecked(true);
-//        }
-//
-//        }
-//        });
-
-
-
-
-
-

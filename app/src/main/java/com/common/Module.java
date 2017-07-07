@@ -37,7 +37,14 @@ public class Module extends AppCompatActivity{
         // 값 불러오기
     static public int getAutoLogin(Context context){
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
-        return Integer.parseInt(pref.getString("autoLogin", "0"));
+        return pref.getInt("autoLogin", 0);
+    }
+
+    static public void setAutoLogin(Context context, int pAutoLogin) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("autoLogin",pAutoLogin);
+        editor.commit();
     }
 
 //    static String getRecordId () {

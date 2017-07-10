@@ -13,16 +13,16 @@ import static com.citymanage.R.id.sensorIdTv;
  * Created by we25 on 2017-06-26.
  */
 
-public class TmListItemView extends LinearLayout {
+public class WmListItemView extends LinearLayout {
     TextView addressInfo;
     TextView sensorId;
 
-    public TmListItemView(Context context) {
+    public WmListItemView(Context context) {
         super(context);
         init(context);
     }
 
-    public TmListItemView(Context context, AttributeSet attrs) {
+    public WmListItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context);

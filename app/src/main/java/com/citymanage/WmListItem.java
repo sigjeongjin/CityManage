@@ -4,11 +4,11 @@ package com.citymanage;
  * Created by we25 on 2017-06-26.
  **/
 
-public class TmListItem {
+public class WmListItem {
     String addressInfo;
     String sensorId;
 
-    public TmListItem(String pAddressInfo, String pSensorId) {
+    public WmListItem(String pAddressInfo, String pSensorId) {
         this.addressInfo = pAddressInfo;
         this.sensorId = pSensorId;
     }

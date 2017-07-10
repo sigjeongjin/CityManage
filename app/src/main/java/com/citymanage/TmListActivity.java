@@ -61,7 +61,7 @@ public class TmListActivity extends BaseActivity {
                 adapter = new TmListAdapter(getApplicationContext());
 
                 for(int i = 0; i < mListHashTm.size(); i ++ ) {
-                    adapter.addItem(new TmListItem(mListHashTm.get(i).get("addressInfo"),
+                    adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
                             mListHashTm.get(i).get("sensorId")));
                 }
                 tmListView.setAdapter(adapter);
@@ -106,7 +106,7 @@ public class TmListActivity extends BaseActivity {
                         adapter = new TmListAdapter(getApplicationContext());
 
                         for(int i = 0; i < mListHashTm.size(); i ++ ) {
-                            adapter.addItem(new TmListItem(mListHashTm.get(i).get("addressInfo"),
+                            adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
                                     mListHashTm.get(i).get("sensorId")));
                         }
                         tmListView.setAdapter(adapter);

@@ -54,6 +54,12 @@ public class LoginActivity extends AppCompatActivity {
         email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
 
+        if(Module.getAutoLogin(getApplicationContext()) == 1) {
+            autoLoginChk.setChecked(true);
+            email.setText(Module.getRecordId(getApplicationContext()));
+            password.setText(Module.getRecordPwd(getApplicationContext()));
+        }
+
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
             String id = email.getText().toString();

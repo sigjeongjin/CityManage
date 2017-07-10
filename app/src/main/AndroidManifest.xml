@@ -26,19 +26,17 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3Bi6rtPt24vp1VB93_kjavLhrVuEVxJ8" />
-
         <activity android:name=".LoginActivity">LoginActivity
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"/>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".FavoritesActivity" />
-        <activity android:name=".AddressSearchActivity" />
         <activity android:name=".PushHistoryActivity" />
         <activity android:name=".GmMapActivity" />
         <activity android:name=".WmListActivity" />

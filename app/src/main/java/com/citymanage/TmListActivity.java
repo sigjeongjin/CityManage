@@ -125,7 +125,6 @@ public class TmListActivity extends BaseActivity {
             }
         });
 
-
         tmMapActivityGoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,9 +136,11 @@ public class TmListActivity extends BaseActivity {
         tmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
-                intent.putExtra(SENSORID,mListHashTm.get(position).get(SENSORID));
-                startActivity(intent);
+
+            Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
+            intent.putExtra(SENSORID,mListHashTm.get(position).get(SENSORID));
+            startActivity(intent);
+
             }
         });
     }

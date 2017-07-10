@@ -1,39 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/addressText1"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="117dp"
-        android:ems="10"
-        android:hint="시 / 도"
-        android:inputType="textPersonName" />
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/addressText2"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/cityTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="City"
+            android:textSize="20dp"/>
+
+        <Spinner
+            android:id="@+id/citySp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textSize="12pt"
+            android:textColor="#000000"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/addressText1"
-        android:layout_alignStart="@+id/addressText1"
-        android:layout_below="@+id/addressText1"
-        android:layout_marginTop="45dp"
-        android:ems="10"
-        android:hint="시 / 군 / 구"
-        android:inputType="textPersonName" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/choiceButton"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/stateTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="State"
+            android:textSize="20dp"/>
+
+        <Spinner
+            android:id="@+id/stateSp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/addressText2"
-        android:layout_alignStart="@+id/addressText2"
-        android:layout_below="@+id/addressText2"
-        android:layout_marginTop="48dp"
-        android:text="선택" />
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/choiceBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선택" />
+    </LinearLayout>
+
+</LinearLayout>

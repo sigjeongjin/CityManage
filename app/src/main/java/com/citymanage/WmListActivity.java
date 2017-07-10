@@ -1,7 +1,9 @@
 package com.citymanage;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,6 +39,7 @@ public class WmListActivity extends AppCompatActivity {
     String url;// = "http://192.168.0.229:3000/wmList";
     ProgressDialog dialog;
 
+Context context;
     AddressSearchActivity ad = new AddressSearchActivity();
 
     @Override
@@ -48,16 +51,17 @@ public class WmListActivity extends AppCompatActivity {
         adapter = new WmAdapter(this);
         listView = (ListView) findViewById(R.id.listView);
 
+        SharedPreferences city = getSharedPreferences("city", 0);
+        System.out.println(city.getString("city"+1 , ""));
+        System.out.println(city.getString("city"+2 , ""));
+
         addressInput = (EditText) findViewById(R.id.addressInput);
         searchBtn = (Button) findViewById(R.id.searchBtn);
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                AddressSearchActivity aa = new AddressSearchActivity();
-                //aa.savePreferences();
-                String test = aa.getPreferenceaa();
-                System.out.println(test);
+
 //                String serarchInfo = addressInput.getText().toString();
 //                Log.i("search", serarchInfo);
 //

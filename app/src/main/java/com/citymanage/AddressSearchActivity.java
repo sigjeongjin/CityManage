@@ -26,11 +26,12 @@ import java.util.List;
 
 public class AddressSearchActivity extends AppCompatActivity {
 
-      String url = "http://192.168.0.229:3000/cityList";
+    String url = "http://192.168.0.229:3000/cityList";
     List<HashMap<String, String>> cityList = new ArrayList<HashMap<String, String>>();
-    List<String> cityNameList = new ArrayList<>();
+    List<String> cityNameList = new ArrayList<String>();
+    String [] cityNameTest;
     Spinner citySp;
-    Spinner spinner2;
+    Spinner stateSp;
 
     Button choiceBtn;
     String citySearch;
@@ -41,23 +42,36 @@ public class AddressSearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_address_search);
 
         citySp = (Spinner) findViewById(R.id.citySp);
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("4");
+        list.add("5");
+        String[] list2 = new String[2];
+        list2[0] = "안녕";
+        list2[1] = "하세요";
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, cityNameList);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        citySp.setAdapter(adapter);
-
+        Log.i("list2", list2.toString());
 //        dialog.setMessage("Loading....");
 //        dialog.show();
-        Log.i("search1", url);
-        Log.i("STRING", "TEST");
+        Log.i("Url", url);
 
         StringRequest request = new StringRequest(url, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(String string) {
-                parseJsonData(string);
+            public void onResponse(String pString) {
+                parseJsonData(pString);
                 Log.i("onResponse", "onResponse");
+
+                Log.i("cityNameTest4", cityNameTest[0]);
+
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_spinner_item,cityNameTest);
+
+//                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cityNameList);
+//                //simple_spinner_item
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                citySp.setAdapter(adapter);
 
             }
         }, new Response.ErrorListener() {
@@ -70,36 +84,21 @@ public class AddressSearchActivity extends AppCompatActivity {
         RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
         rQueue.add(request);
 
-        // 아이템 선택 이벤트 처리
         citySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            // 아이템이 선택되었을 때 호출됨
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(AddressSearchActivity.this,"선택된 아이템 : "+citySp.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
 
-
-                String cityCode = cityList.get(position).get("cityCode");
-
-                StringRequest request = new StringRequest(url, new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String string) {
-                        parseJsonData(string);
-                        Log.i("onResponse", "onResponse");
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                        //dialog.dismiss();
-                    }
-                });
-
+//                String text = (String) citySp.getSelectedItem().toString();
+//                System.out.println(text);
+//                Log.i("test", "선택");
+//                String cityCode = cityList.get(position).toString();
+//                cityList.get(position).get("cityCode").toString();
+//                Log.i("cityCode", cityCode);
             }
 
-            // 아무것도 선택되지 않았을 때 호출됨
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -112,8 +111,9 @@ public class AddressSearchActivity extends AppCompatActivity {
             Log.i("JSONARRAY", jsonObject.toString());
 
             JSONArray jsonArray = jsonObject.getJSONArray("address");
-
+            cityNameTest = new String[jsonArray.length()];
             for (int i = 0; i < jsonArray.length(); i++){
+
                 String city = jsonArray.getJSONObject(i).getString("city");
                 String cityCode = jsonArray.getJSONObject(i).getString("cityCode");
                 Log.i("city", city);
@@ -122,12 +122,14 @@ public class AddressSearchActivity extends AppCompatActivity {
                 cityInfo.put("city", city);
                 cityInfo.put("cityCode", cityCode);
 
+                cityNameTest[i] = city;
                 cityNameList.add(i,city);
                 cityList.add(i, cityInfo);
             }
 
-            Log.i("cityList", cityList.toString());
-
+            Log.i("cityNameTest", cityNameTest[0]);
+            Log.i("cityNameTest", cityNameTest[1]);
+            Log.i("cityNameTest", cityNameTest[2]);
 
         } catch (JSONException e) {
             e.printStackTrace();

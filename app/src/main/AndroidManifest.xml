@@ -28,7 +28,7 @@
             android:value="AIzaSyA3Bi6rtPt24vp1VB93_kjavLhrVuEVxJ8" />
 
 
-        <activity android:name=".AddressSearchActivity">AddressSearchActivity
+        <activity android:name=".AddressSearchActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

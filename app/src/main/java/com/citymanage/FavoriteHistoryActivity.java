@@ -79,29 +79,29 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringRequest favoriteHistoryRequest = new StringRequest(gFavoriteHistoryUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                parseJsonData(string);
-                adapter = new FavoriteHistoryAdapter(getApplicationContext());
-
-                for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
-                    adapter.addItem(new FavoriteHistoryItem(gListFavoriteHistory.get(i).get("addressInfo"),
-                            gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("favoriteDescription")));
-                }
-                gFavoriteHistoryLv.setAdapter(adapter);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-
-        RequestQueue rQueue = Volley.newRequestQueue(FavoriteHistoryActivity.this);
-        rQueue.add(favoriteHistoryRequest);
-    }
+//        StringRequest favoriteHistoryRequest = new StringRequest(gFavoriteHistoryUrl, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String string) {
+//                parseJsonData(string);
+//                adapter = new FavoriteHistoryAdapter(getApplicationContext());
+//
+//                for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
+//                    adapter.addItem(new FavoriteHistoryItem(gListFavoriteHistory.get(i).get("addressInfo"),
+//                            gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("favoriteDescription")));
+//                }
+//                gFavoriteHistoryLv.setAdapter(adapter);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        RequestQueue rQueue = Volley.newRequestQueue(FavoriteHistoryActivity.this);
+//        rQueue.add(favoriteHistoryRequest);
+}
 
     @Override
     public void onClick(View v) {

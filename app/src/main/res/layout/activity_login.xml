@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:paddingRight="20dp">
 
 
         <EditText
@@ -35,7 +35,6 @@
             android:hint="비밀번호"
             android:inputType="textPassword"
             android:padding="10dp" />
-
 
 
         <Button

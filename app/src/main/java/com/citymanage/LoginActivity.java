@@ -5,18 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.common.Module;
 
 import org.json.JSONException;
@@ -91,51 +85,54 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            dialog = new ProgressDialog(LoginActivity.this);
-            dialog.setMessage("Loading....");
-            dialog.show();
+                Intent intent = new Intent(getApplication(), AddressSearchActivity.class);
+                startActivity(intent);
 
-            //정보를 보내고 받음.
-            StringRequest request = new StringRequest(url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String string) {
-                    parseJsonData(string);
+//            dialog = new ProgressDialog(LoginActivity.this);
+//            dialog.setMessage("Loading....");
+//            dialog.show();
 
-                    // 코드를 400으로 받은경우 메세지 출력
-                    if(resultCode.equals("400")) {
-                        Toast.makeText(LoginActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    //코드를 200으로 받은경우 메세지 출력 및 실행
-                    else if(resultCode.equals ("200")) {
-                        Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplication(), AddressSearchActivity.class);
-
-                        Module.setRecordId(getApplicationContext(),email.getText().toString());
-                        Module.setRecordPwd(getApplicationContext(), password.getText().toString());
-
-                        if(autoLoginChk.isChecked()){
-                            Module.setAutoLogin(getApplicationContext(),1);
-                        } else {
-                            Module.setAutoLogin(getApplicationContext(),0);
-                        }
-
-                        startActivity(intent);
-                    }
-
-                }
-                //통신이 되지 않는 경우
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    Log.i("VOLLEY ERROR", volleyError.toString());
-                    dialog.dismiss();
-                }
-            });
-                // RequestQueue Queue = Volley.newRequestQueue(this); 정보의 전달
-                RequestQueue rQueue = Volley.newRequestQueue(LoginActivity.this);
-            rQueue.add(request);
+//            //정보를 보내고 받음.
+//            StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+//                @Override
+//                public void onResponse(String string) {
+//                    parseJsonData(string);
+//
+//                    // 코드를 400으로 받은경우 메세지 출력
+//                    if(resultCode.equals("400")) {
+//                        Toast.makeText(LoginActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//
+//                    //코드를 200으로 받은경우 메세지 출력 및 실행
+//                    else if(resultCode.equals ("200")) {
+//                        Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(getApplication(), AddressSearchActivity.class);
+//
+//                        Module.setRecordId(getApplicationContext(),email.getText().toString());
+//                        Module.setRecordPwd(getApplicationContext(), password.getText().toString());
+//
+//                        if(autoLoginChk.isChecked()){
+//                            Module.setAutoLogin(getApplicationContext(),1);
+//                        } else {
+//                            Module.setAutoLogin(getApplicationContext(),0);
+//                        }
+//
+//                        startActivity(intent);
+//                    }
+//
+//                }
+//                //통신이 되지 않는 경우
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError volleyError) {
+//                    Log.i("VOLLEY ERROR", volleyError.toString());
+//                    dialog.dismiss();
+//                }
+//            });
+//                // RequestQueue Queue = Volley.newRequestQueue(this); 정보의 전달
+//                RequestQueue rQueue = Volley.newRequestQueue(LoginActivity.this);
+//            rQueue.add(request);
             }
         });
 

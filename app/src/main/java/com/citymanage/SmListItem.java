@@ -12,7 +12,7 @@ public class SmListItem {
         this.addressInfo = pAddressInfo;
         this.sensorId = pSensorId;
     }
-
+    //네트워크의 주소정보를 가져옴
     public String getAddressInfo() {
         return addressInfo;
     }

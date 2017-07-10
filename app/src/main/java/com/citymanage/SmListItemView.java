@@ -28,6 +28,7 @@ public class SmListItemView extends LinearLayout {
         init(context);
     }
 
+    //정보 구별
     public void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.sm_list_item, this, true);

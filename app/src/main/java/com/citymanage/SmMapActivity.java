@@ -13,7 +13,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class SmMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -92,23 +91,23 @@ public class SmMapActivity extends AppCompatActivity implements OnMapReadyCallba
         LatLng bSensorlocation = new LatLng(37.423144, 126.908034);
         LatLng cSensorlocation = new LatLng(37.586906, 126.703245);
 
-        aSensor =  map.addMarker(new MarkerOptions()
-                .position(aSensorlocation)
-                .title("수질A")
-        );
-        aSensor.showInfoWindow();
-
-        bSensor =  map.addMarker(new MarkerOptions()
-                .position(bSensorlocation)
-                .title("수질B")
-        );
-        bSensor.showInfoWindow();
-
-        cSensor =  map.addMarker(new MarkerOptions()
-                .position(cSensorlocation)
-                .title("수질C")
-        );
-        cSensor.showInfoWindow();
+//        aSensor =  map.addMarker(new MarkerOptions()
+//                .position(aSensorlocation)
+//                .title("수질A")
+//        );
+//        aSensor.showInfoWindow();
+//
+//        bSensor =  map.addMarker(new MarkerOptions()
+//                .position(bSensorlocation)
+//                .title("수질B")
+//        );
+//        bSensor.showInfoWindow();
+//
+//        cSensor =  map.addMarker(new MarkerOptions()
+//                .position(cSensorlocation)
+//                .title("수질C")
+//        );
+//        cSensor.showInfoWindow();
     }
 
 }

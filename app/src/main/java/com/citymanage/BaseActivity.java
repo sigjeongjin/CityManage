@@ -23,8 +23,10 @@ public class BaseActivity extends AppCompatActivity {
     public static final String REGISTER = "http://192.168.0.230:3000/register";
     public static final String PUSH_HISTORY_HOST = "http://192.168.0.230:3000/pushHistory";
     public static final String TM_LIST_URL = "http://192.168.0.230:3000/tmList";
+    public static final String SM_LIST_URL = "http://192.168.0.230:3000/smList";
     public static final String FAVORITE_HISTORY_HOST = "http://192.168.0.230:3000/favoriteHistory"; // 즐찾 추가
     public static final String TM_INFO_URL = "http://192.168.0.230:3000/tmInfo";
+    public static final String SM_INFO_URL = "http://192.168.0.230:3000/smInfo";
 //>>>>>>> 64628926c47133802b147a9e939607d7ee4ab5f0
 
 

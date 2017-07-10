@@ -75,15 +75,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //금연구역 관리 화면으로 이동
-//        smMapActivityGo = (Button) findViewById(R.id.smMapActivityGo);
-//
-//        smMapActivityGo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), SmMapActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        smListActivityGo = (Button) findViewById(R.id.smListActivityGo);
+
+        smListActivityGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SmListActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

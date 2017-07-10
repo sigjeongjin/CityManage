@@ -81,8 +81,8 @@ Context context;
 //
 //                        "&addressInfo=" + sbuURL2);
 //
-//                url = bbb;
-//                Log.i("search", url);
+//                cityUrl = bbb;
+//                Log.i("search", cityUrl);
                 //        dialog = new ProgressDialog(WmListActivity.this);
 //        dialog.setMessage("Loading....");
 //        dialog.show();

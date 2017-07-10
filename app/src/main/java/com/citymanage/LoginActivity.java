@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                     //코드를 200으로 받은경우 메세지 출력 및 실행
                     else if(resultCode.equals ("200")) {
                         Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplication(), MainActivity.class);
+                        Intent intent = new Intent(getApplication(), AddressSearchActivity.class);
 
                         Module.setRecordId(getApplicationContext(),email.getText().toString());
                         Module.setRecordPwd(getApplicationContext(), password.getText().toString());
@@ -146,9 +146,7 @@ public class LoginActivity extends AppCompatActivity {
             email.setText(Module.getRecordId(getApplicationContext()));
             password.setText(Module.getRecordPwd(getApplicationContext()));
 
-            Log.i("onclick","onclick");
             btnLogin.callOnClick();
-            Log.i("onclick","onclick");
         }
 
         //회원가입 화면으로 전환

@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     ImageView gProfilShot;
 
-    //url 생성 192.168.0.230.3000 으로 register 관련 정보를 보냄
+    //cityUrl 생성 192.168.0.230.3000 으로 register 관련 정보를 보냄
     StringBuilder url = new StringBuilder("http://192.168.0.230:3000/register?"); //?name=snm&spw=1234&respw=spw&sid=abc&hp=010
 
     ProgressDialog dialog;

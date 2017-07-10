@@ -48,10 +48,8 @@
         <activity android:name=".TmInfoActivity"/>
         <activity android:name=".SmInfoActivity"/>
         <activity android:name=".SmListActivity"/>
-        <activity android:name=".SmMapActivity">
-
-        </activity>
-
+        <activity android:name=".SmMapActivity" />
+        <activity android:name=".AddressSearchActivity"/>
     </application>
 
 </manifest>

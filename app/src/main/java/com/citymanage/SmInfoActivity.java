@@ -29,15 +29,14 @@ public class SmInfoActivity extends AppCompatActivity {
     TextView locationTv;
     TextView installDayTv;
     TextView fireSensorInfoTv;
-    TextView stinkSensorInfoTv;
-    TextView garbageSensorInfoTv;
+    TextView smokeSensorInfoTv;
+
 
     String strSensorId;
     String strLocation;
     String installDay;
     String fireSensorInfo;
-    String stinkSensorInfo;
-    String garbageSensorInfo;
+    String smokeSensorInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +47,8 @@ public class SmInfoActivity extends AppCompatActivity {
         locationTv          = (TextView) findViewById(R.id.locationTv);
         installDayTv        = (TextView) findViewById(R.id.installDayTv);
         fireSensorInfoTv    = (TextView) findViewById(R.id.fireSensorInfoTv);
-        stinkSensorInfoTv   = (TextView) findViewById(R.id.stinkSensorInfoTv);
-        garbageSensorInfoTv = (TextView) findViewById(R.id.garbageSensorInfoTv);
+        smokeSensorInfoTv   = (TextView) findViewById(R.id.smokeSensorInfoTv);
+
 
         Intent intent = getIntent();
         String sensorId = intent.getStringExtra(SENSORID);
@@ -71,8 +70,8 @@ public class SmInfoActivity extends AppCompatActivity {
                 locationTv.setText(strLocation);
                 installDayTv.setText(installDay);
                 fireSensorInfoTv.setText(fireSensorInfo);
-                stinkSensorInfoTv.setText(stinkSensorInfo);
-                garbageSensorInfoTv.setText(garbageSensorInfo);
+                smokeSensorInfoTv.setText(smokeSensorInfo);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -98,8 +97,8 @@ public class SmInfoActivity extends AppCompatActivity {
             strLocation = object.getString("addressInfo");
             installDay = object.getString("installDay");
             fireSensorInfo = object.getString("fireSensorInfo");
-            stinkSensorInfo = object.getString("stinkSensorInfo");
-            garbageSensorInfo = object.getString("garbageSensorInfo");
+            smokeSensorInfo = object.getString("smokeSensorInfo");
+
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,9 +1,5 @@
 package com.citymanage;
 
-/**
- * Created by minjeongkim on 2017-06-30.
- */
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +7,11 @@ import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 
-public class WmListAdapter extends BaseAdapter {
+/**
+ * Created by we25 on 2017-06-26.
+ */
 
+public class WmListAdapter extends BaseAdapter {
     ArrayList<WmListItem> items = new ArrayList<WmListItem>();
     Context context;
 
@@ -53,4 +52,3 @@ public class WmListAdapter extends BaseAdapter {
         return view;
     }
 }
-

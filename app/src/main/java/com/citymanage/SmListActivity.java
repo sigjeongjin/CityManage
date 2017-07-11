@@ -40,7 +40,6 @@ public class SmListActivity extends SideNaviBaseActivity {
     ListView smListView;
     EditText streetFindEv;
     Button searchBtn;
-    Button smMapActivityGoBtn;
 
     List<HashMap<String,String>> mListHashSm = new ArrayList<HashMap<String, String>>();
 
@@ -51,7 +50,6 @@ public class SmListActivity extends SideNaviBaseActivity {
         super.setupToolbar();
         setTitle(R.string.sm_title);
 
-        smMapActivityGoBtn = (Button) findViewById(R.id.smMapActivityGoBtn);
         smListView = (ListView) findViewById(R.id.smLv);
         streetFindEv = (EditText) findViewById(R.id.streetFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
@@ -128,15 +126,6 @@ public class SmListActivity extends SideNaviBaseActivity {
 
                 RequestQueue rQueue = Volley.newRequestQueue(SmListActivity.this);
                 rQueue.add(pushHistoryRequest);
-            }
-        });
-
-
-        smMapActivityGoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SmMapActivity.class);
-                startActivity(intent);
             }
         });
 

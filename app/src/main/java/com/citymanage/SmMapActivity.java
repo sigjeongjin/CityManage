@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,24 +21,12 @@ public class SmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
     SupportMapFragment mapFragment;
     GoogleMap map;
 
-    Button smListActivityGoBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sm_map);
         super.setupToolbar();
         setTitle(R.string.sm_title);
-
-        smListActivityGoBtn = (Button) findViewById(R.id.smListActivityGoBtn);
-
-        smListActivityGoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SmListActivity.class);
-                startActivity(intent);
-            }
-        });
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().
                        findFragmentById(R.id.map);

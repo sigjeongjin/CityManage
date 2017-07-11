@@ -11,26 +11,24 @@
 
         <EditText
             android:id="@+id/streetFindEv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_margin="15dp"
             android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="동/읍/면" />
+            android:hint="동/읍/면"
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/searchBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="찾기" />
-
-        <Button
-            android:id="@+id/gmMapActivityGoBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="맵" />
+            style="@style/ButtonStyleNxt"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="3"
+            android:text="검색" />
 
     </LinearLayout>
 
@@ -42,7 +40,14 @@
         <ListView
             android:id="@+id/gmLv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="341dp"
+            android:background="#ffffff" />
+
+        <Button
+            android:id="@+id/gmMapActivityGoBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="맵" />
     </LinearLayout>
 
 </LinearLayout>

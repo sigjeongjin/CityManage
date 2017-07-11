@@ -96,10 +96,10 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
      */
     private void goToNavDrawerItem(int item) {
         switch (item) {
-            case R.id.nav_home:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
+//            case R.id.nav_home:
+//                startActivity(new Intent(this, MainActivity.class));
+//                finish();
+//                break;
             case R.id.nav_favorite:
                 startActivity(new Intent(this, FavoriteActivity.class));
                 finish();
@@ -110,6 +110,28 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
                 break;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingActivity.class));
+                finish();
+                break;
+            case R.id.nav_wm:
+                startActivity(new Intent(this, WmListActivity.class));
+                finish();
+                break;
+            case R.id.nav_tm:
+                startActivity(new Intent(this, TmListActivity.class));
+                finish();
+                break;
+            case R.id.nav_gm:
+                startActivity(new Intent(this, GmListActivity.class));
+                finish();
+                break;
+            case R.id.nav_sm:
+                startActivity(new Intent(this, SmListActivity.class));
+                finish();
+                break;
+            case R.id.nav_logout:
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.putExtra("logout","logout");
+                startActivity(intent);
                 finish();
                 break;
         }

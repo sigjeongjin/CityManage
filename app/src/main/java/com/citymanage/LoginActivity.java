@@ -1,8 +1,11 @@
 package com.citymanage;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +42,8 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Intent intent = getIntent();
 
         autoLoginChk = (CheckBox) findViewById(R.id.autoLoginChk);
         Button btnLogin = (Button)findViewById(R.id.btnLogin) ;
@@ -88,9 +93,6 @@ public class LoginActivity extends BaseActivity {
 
             StringBuilder sb = new StringBuilder(LOGIN);
                 sb.append("?loginId=").append(email.getText().toString()).append("&pwd=").append(password.getText().toString());
-
-
-                Log.i("URL : " , sb.toString());
             //정보를 보내고 받음.
             StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
                 @Override
@@ -135,6 +137,7 @@ public class LoginActivity extends BaseActivity {
                             Module.setAutoLogin(getApplicationContext(),0);
                         }
                         startActivity(intent);
+                        finish();
                     }
 
                 }
@@ -153,13 +156,18 @@ public class LoginActivity extends BaseActivity {
         });
 
         //자동 로그인 가능 하도록 셋팅
-        if(Module.getAutoLogin(getApplicationContext()) == 1 && Module.getRecordId(getApplicationContext()) != ""
-                && Module.getRecordPwd(getApplicationContext()) != "") {
-            autoLoginChk.setChecked(true);
-            email.setText(Module.getRecordId(getApplicationContext()));
-            password.setText(Module.getRecordPwd(getApplicationContext()));
+        //sidenavgation에서 로그아웃을 눌렀을경우 logout플래그가 인텐트에 셋팅되어 있는지 먼저 확인 한 후 자동로그아웃 기능을
+        //실행하지 말지 선택
 
-            btnLogin.callOnClick();
+        if(intent.getStringExtra("logout") == null) {
+            if(Module.getAutoLogin(getApplicationContext()) == 1 && Module.getRecordId(getApplicationContext()) != ""
+                    && Module.getRecordPwd(getApplicationContext()) != "") {
+                autoLoginChk.setChecked(true);
+                email.setText(Module.getRecordId(getApplicationContext()));
+                password.setText(Module.getRecordPwd(getApplicationContext()));
+
+                btnLogin.callOnClick();
+            }
         }
 
         //회원가입 화면으로 전환
@@ -186,5 +194,32 @@ public class LoginActivity extends BaseActivity {
         }
 
         dialog.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
+        createCloseAlertDialog();
+    }
+    private void createCloseAlertDialog() {
+        DialogInterface.OnClickListener appExitListener = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityCompat.finishAffinity(LoginActivity.this);
+            }
+        };
+
+        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        };
+
+        new AlertDialog.Builder(LoginActivity.this)
+                .setTitle("앱을 종료하시겠습니까?")
+                .setPositiveButton("종료",appExitListener)
+                .setNegativeButton("취소",cancelListener)
+                .show();
+
     }
 }

@@ -2,6 +2,7 @@ package com.citymanage;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.app.AlertDialog;
 
 
 /**
@@ -38,6 +39,7 @@ public class BaseActivity extends AppCompatActivity {
     /* 프로그램 실행 후 필요한 상수 값들 정의 끝 */
 
     public ProgressDialog dialog; //프로그레스바 다이얼로그
+    public AlertDialog closeAlertDialog; //back 버튼 눌렀을경우 다이얼로그
     int resultCode; //response 응답코드 변수
     String url = ""; //요청 cityUrl 셋팅 변수
 }

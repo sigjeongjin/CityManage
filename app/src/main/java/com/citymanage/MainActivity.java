@@ -1,5 +1,7 @@
 package com.citymanage;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -86,6 +88,35 @@ public class MainActivity extends SideNaviBaseActivity{
     @Override
     public boolean providesActivityToolbar() {
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        createCloseAlertDialog();
+    }
+    private void createCloseAlertDialog() {
+        DialogInterface.OnClickListener loginMoveListener = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                intent.putExtra("logout","logout");
+                startActivity(intent);
+                finish();
+            }
+        };
+
+        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        };
+
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("로그인 화면으로 돌아가시겠습니까?")
+                .setPositiveButton("이동",loginMoveListener)
+                .setNegativeButton("취소",cancelListener)
+                .show();
     }
 }
 

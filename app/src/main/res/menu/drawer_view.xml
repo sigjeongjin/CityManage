@@ -2,22 +2,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_discuss"
-            android:title="@string/navigation_home" />
+        <!--<item-->
+            <!--android:id="@+id/nav_home"-->
+            <!--android:icon="@drawable/ic_discuss"-->
+            <!--android:title="@string/navigation_home" />-->
         <item
             android:id="@+id/nav_favorite"
-            android:icon="@drawable/ic_discuss"
+            android:icon="@drawable/ic_favorite"
             android:title="@string/navigation_favorite" />
         <item
             android:id="@+id/nav_pushHistory"
-            android:icon="@drawable/ic_forum"
+            android:icon="@drawable/ic_push"
             android:title="@string/navigation_push_history" />
-
+        <item
+            android:id="@+id/nav_wm"
+            android:icon="@drawable/ic_water"
+            android:title="@string/navigation_wm" />
+        <item
+            android:id="@+id/nav_tm"
+            android:icon="@drawable/ic_trash"
+            android:title="@string/navigation_tm" />
+        <item
+            android:id="@+id/nav_gm"
+            android:icon="@drawable/ic_gas"
+            android:title="@string/navigation_gm" />
+        <item
+            android:id="@+id/nav_sm"
+            android:icon="@drawable/ic_smoking"
+            android:title="@string/navigation_sm" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/navigation_logout" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_action_settings"
+            android:icon="@drawable/ic_settings"
             android:title="@string/navigation_settings" />
     </group>
 

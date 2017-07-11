@@ -52,7 +52,7 @@
             android:id="@+id/autologin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="30dp"
             android:layout_weight="1"
             android:button="@drawable/btn_check_v" />
 
@@ -74,6 +74,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="화원가입" />
+        android:text="회원가입" />
 
 </LinearLayout>

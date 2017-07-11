@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
+import android.widget.ToggleButton;
 
 import com.common.Module;
 
@@ -41,7 +41,7 @@ public class SettingFragment extends Fragment {
     private static final int IMAGE_WIDTH = 400;
     private static final int IMAGE_HEIGHT = 300;
 
-    Switch gAutoLoginOnOffSw;
+    ToggleButton gAutoLoginOnOffBtn;
     Button gPwdConfirmGoBtn;
     ImageView gProfileChangeIv;
 
@@ -50,11 +50,11 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_setting, container, false);
 
-        gAutoLoginOnOffSw = (Switch) rootView.findViewById(R.id.autoLoginOnOffSwitch);
+        gAutoLoginOnOffBtn = (ToggleButton) rootView.findViewById(R.id.autoLoginOnOffButton);
         gPwdConfirmGoBtn = (Button) rootView.findViewById(R.id.gPwdConfirmGoBtn);
         gProfileChangeIv = (ImageView) rootView.findViewById(R.id.profileChangeIv);
 
-        gAutoLoginOnOffSw.setChecked((0 == Module.getAutoLogin(getContext())) ?  false : true);
+        gAutoLoginOnOffBtn.setChecked((0 == Module.getAutoLogin(getContext())) ?  false : true);
 
         gProfileChangeIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +93,7 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        gAutoLoginOnOffSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        gAutoLoginOnOffBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(Module.getAutoLogin(getContext()) == 0) {

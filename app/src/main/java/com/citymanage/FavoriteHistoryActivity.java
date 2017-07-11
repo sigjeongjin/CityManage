@@ -50,14 +50,14 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
 
 
         /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
-        gAllChk = (CheckBox) findViewById(R.id.allCheckBox);
+       // gAllChk = (CheckBox) findViewById(R.id.allCheckBox);
         gWmChk = (CheckBox) findViewById(R.id.wmCheckBox);
         gTmChk = (CheckBox) findViewById(R.id.tmCheckBox);
         gGmChk = (CheckBox) findViewById(R.id.gmCheckBox);
         gSmChk = (CheckBox) findViewById(R.id.smCheckBox);
 
         //모두 검색 하는 체크 박스에 초기 체크 데이터 셋팅
-        gAllChk.setChecked(true);
+       // gAllChk.setChecked(true);
 
         gAllChk.setTag(ALL);
         gWmChk.setTag(WM);

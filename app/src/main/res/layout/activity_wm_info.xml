@@ -2,88 +2,114 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-    0
+    android:orientation="vertical"
+    android:layout_margin="20dp">
 
-    <CheckBox
-        android:id="@+id/favoritesCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"/>
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp">
+        android:layout_height="90dp"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="주소 / 센서 ID"
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/sensorIdText"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="sensorId"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="15dp" />
+            android:layout_height="50dp"
+            android:textSize="17dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="센서 위치 정보(지역 정보) "
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/addressText"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="address"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            android:layout_height="50dp"
+            android:textSize="17dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20dp"
-                android:text="수질 : " />
-
-            <TextView
-                android:id="@+id/waterQualityText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="6dp"
-                android:text="waterQuality"
-                android:textColor="#0223e0"
-                android:textSize="20dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20dp"
-                android:text="수온 : " />
-
-            <TextView
-                android:id="@+id/waterLevelText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_alignParentRight="true"
-                android:text="waterLevel"
-                android:textColor="#4902d6"
-                android:textSize="20dp" />
-        </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="센서 설치 날짜"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/sersonDate"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="17dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="수질 센서 정보"
+            android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/waterQualityText"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="17dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="수위 센서 정보"
+            android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/waterLevelText"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="17dp" />
+    </LinearLayout>
+
 </LinearLayout>

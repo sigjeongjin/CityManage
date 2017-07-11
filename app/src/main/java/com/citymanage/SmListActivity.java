@@ -152,6 +152,8 @@ public class SmListActivity extends SideNaviBaseActivity {
 
             JSONObject object = new JSONObject(jsonString);
 
+            //임시테스트용
+//            JSONArray smListArray = object.getJSONArray("smList");
             JSONArray smListArray = object.getJSONArray("smList");
 
             for(int i = 0; i < smListArray.length(); i ++ ) {

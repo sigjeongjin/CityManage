@@ -24,6 +24,17 @@ public class MainActivity extends SideNaviBaseActivity{
 
 
         //수질관리 화면으로 이동
+        gmListActivityGo = (Button) findViewById(R.id.gmListActivityGo);
+
+        gmListActivityGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GmListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //수질관리 화면으로 이동
         wmListActivityGo = (Button) findViewById(R.id.wmListActivityGo);
 
         wmListActivityGo.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +54,7 @@ public class MainActivity extends SideNaviBaseActivity{
                 startActivity(intent);
             }
         });
-        //도시가스 관리 화면으로 이동
+
 
         settingActivityGo = (Button) findViewById(R.id.settingActivityGo);
 

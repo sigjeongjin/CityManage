@@ -3,7 +3,6 @@ package com.citymanage;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,9 +16,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.citymanage.BaseActivity.TM_INFO_URL;
-
-public class SmInfoActivity extends AppCompatActivity {
+public class SmInfoActivity extends BaseActivity {
 
     final static String SENSORID = "sensorId";
 
@@ -41,7 +38,7 @@ public class SmInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tm_info);
+        setContentView(R.layout.activity_sm_info);
 
         sensorIdTv          = (TextView) findViewById(R.id.sensorIdTv);
         locationTv          = (TextView) findViewById(R.id.locationTv);
@@ -57,7 +54,7 @@ public class SmInfoActivity extends AppCompatActivity {
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringBuilder sb = new StringBuilder(TM_INFO_URL);
+        StringBuilder sb = new StringBuilder(SM_INFO_URL);
         sb.append("?sensorId=");
         sb.append(sensorId);
 
@@ -65,6 +62,8 @@ public class SmInfoActivity extends AppCompatActivity {
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
+
+                Log.i("strSensorId",strSensorId);
 
                 sensorIdTv.setText(strSensorId);
                 locationTv.setText(strLocation);

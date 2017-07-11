@@ -49,6 +49,8 @@
         <activity android:name=".WmMapActivity" />
         <activity android:name=".AddressSearchActivity"/>
         <activity android:name=".FavoriteActivity"/>
+        <activity android:name=".GmListActivity"/>
+        <activity android:name=".GmInfoActivity"/>
     </application>
 
 </manifest>

@@ -35,20 +35,20 @@ public class GmListActivity extends SideNaviBaseActivity {
     String resultCode;
 
     GmListAdapter adapter; // 위의 리스트 adapter
-    ListView tmListView;
+    ListView gmListView;
     EditText streetFindEv;
     Button searchBtn;
-    Button tmMapActivityGoBtn;
+    Button gmMapActivityGoBtn;
 
-    List<HashMap<String,String>> mListHashTm = new ArrayList<HashMap<String, String>>();
+    List<HashMap<String,String>> mListHashGm = new ArrayList<HashMap<String, String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tm_list);
+        setContentView(R.layout.activity_gm_list);
 
-        tmMapActivityGoBtn = (Button) findViewById(R.id.tmMapActivityGoBtn);
-        tmListView = (ListView) findViewById(R.id.tmLv);
+        gmMapActivityGoBtn = (Button) findViewById(R.id.gmMapActivityGoBtn);
+        gmListView = (ListView) findViewById(R.id.gmLv);
         streetFindEv = (EditText) findViewById(R.id.streetFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
@@ -62,11 +62,11 @@ public class GmListActivity extends SideNaviBaseActivity {
                 parseJsonData(string);
                 adapter = new GmListAdapter(getApplicationContext());
 
-                for(int i = 0; i < mListHashTm.size(); i ++ ) {
-                    adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
-                            mListHashTm.get(i).get("sensorId")));
+                for(int i = 0; i < mListHashGm.size(); i ++ ) {
+                    adapter.addItem(new GmListItem(mListHashGm.get(i).get("addressInfo"),
+                            mListHashGm.get(i).get("sensorId")));
                 }
-                tmListView.setAdapter(adapter);
+                gmListView.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -107,11 +107,11 @@ public class GmListActivity extends SideNaviBaseActivity {
                         parseJsonData(string);
                         adapter = new GmListAdapter(getApplicationContext());
 
-                        for(int i = 0; i < mListHashTm.size(); i ++ ) {
-                            adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
-                                    mListHashTm.get(i).get("sensorId")));
+                        for(int i = 0; i < mListHashGm.size(); i ++ ) {
+                            adapter.addItem(new GmListItem(mListHashGm.get(i).get("addressInfo"),
+                                    mListHashGm.get(i).get("sensorId")));
                         }
-                        tmListView.setAdapter(adapter);
+                        gmListView.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -127,20 +127,20 @@ public class GmListActivity extends SideNaviBaseActivity {
             }
         });
 
-        tmMapActivityGoBtn.setOnClickListener(new View.OnClickListener() {
+        gmMapActivityGoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TmMapActivity.class);
+                Intent intent = new Intent(getApplicationContext(), GmMapActivity.class);
                 startActivity(intent);
             }
         });
 
-        tmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
-            intent.putExtra(SENSORID,mListHashTm.get(position).get(SENSORID));
+            Intent intent = new Intent(getApplicationContext(), GmInfoActivity.class);
+            intent.putExtra(SENSORID,mListHashGm.get(position).get(SENSORID));
             startActivity(intent);
 
             }
@@ -150,7 +150,7 @@ public class GmListActivity extends SideNaviBaseActivity {
     //통신 후 json 파싱
     void parseJsonData(String jsonString) {
         try {
-            mListHashTm.clear();
+            mListHashGm.clear();
 
             JSONObject object = new JSONObject(jsonString);
 
@@ -166,7 +166,7 @@ public class GmListActivity extends SideNaviBaseActivity {
                 hashTemp.put("addressInfo",addressInfo);
                 hashTemp.put("sensorId",sensorId);
 
-                mListHashTm.add(i,hashTemp);
+                mListHashGm.add(i,hashTemp);
             }
         } catch (JSONException e) {
             e.printStackTrace();

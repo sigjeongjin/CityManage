@@ -26,7 +26,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3Bi6rtPt24vp1VB93_kjavLhrVuEVxJ8" />
-        <activity android:name=".MainActivity">LoginActivity
+        <activity android:name=".RegisterActivity">SettingActivity
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +35,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddressSearchActivity"/>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".SettingActivity" />
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".PushHistoryActivity" />
         <activity android:name=".GmMapActivity" />
@@ -45,7 +45,7 @@
         <activity android:name=".WmMapActivity" />
         <activity android:name=".TmListActivity" />
         <activity android:name=".TmMapActivity" />
-        <activity android:name=".SettingActivity" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".TmInfoActivity"/>
         <activity android:name=".SmInfoActivity"/>
         <activity android:name=".SmListActivity"/>

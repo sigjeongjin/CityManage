@@ -20,67 +20,157 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/photo_frame" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="382dp"
+            android:layout_height="45dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="101dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="이름"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textSize="17dp"/>
+
+            <EditText
+                android:id="@+id/snm"
+                style="@style/EditTextStyle"
+                android:layout_width="245dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:hint="이름을 입력하세요."
+                android:inputType="textPersonName"
+                android:textSize="17dp" />
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/snm"
-            style="@style/EditTextStyle"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:hint="이름을 입력하세요."
-            android:inputType="textPersonName"
-            android:textSize="13dp" />
 
-        <EditText
-            android:id="@+id/sid"
-            style="@style/EditTextStyle"
-            android:layout_width="300dp"
+        <LinearLayout
+            android:layout_width="382dp"
             android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:hint="이메일 주소를 입력하세요."
-            android:inputType="textPersonName"
-            android:textSize="13dp" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/spw"
-            style="@style/EditTextStyle"
-            android:layout_width="300dp"
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="101dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="아이디"
+                android:textSize="17dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/sid"
+                style="@style/EditTextStyle"
+                android:layout_width="245dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:hint="이메일 주소를 입력하세요."
+                android:inputType="textPersonName"
+                android:textSize="17dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="382dp"
             android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:hint="패스워드를 입력하세요."
-            android:inputType="textPassword"
-            android:textSize="13dp" />
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="101dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="패스워드"
+                android:textSize="17dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"/>
 
-        <EditText
-            android:id="@+id/respw"
-            style="@style/EditTextStyle"
-            android:layout_width="300dp"
+            <EditText
+                android:id="@+id/spw"
+                style="@style/EditTextStyle"
+                android:layout_width="245dp"
+                android:layout_height="37dp"
+                android:layout_gravity='center'
+                android:layout_marginTop="5dp"
+
+                android:hint="패스워드를 입력하세요."
+                android:inputType="textPassword"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="382dp"
             android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:hint="패스워드를 재입력하세요."
-            android:inputType="textPassword"
-            android:textSize="13dp" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/hp"
-            style="@style/EditTextStyle"
-            android:layout_width="300dp"
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="101dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="패스워드 확인"
+                android:textSize="17dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/respw"
+                style="@style/EditTextStyle"
+                android:layout_width="245dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+
+                android:hint="패스워드를 재입력하세요."
+                android:inputType="textPassword"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="382dp"
             android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:hint="숫자로만 입력하세요"
-            android:inputType="phone"
-            android:textSize="13dp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="101dp"
+                android:layout_height="43dp"
+                android:layout_gravity='center'
+                android:layout_marginTop="5dp"
+                android:text="전화번호"
+                android:textSize="17dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/hp"
+                style="@style/EditTextStyle"
+                android:layout_width="245dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+
+                android:hint="숫자로만 입력하세요"
+                android:inputType="phone"
+                android:textSize="17dp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -90,24 +180,24 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnf"
+                android:id="@+id/btns"
                 style="@style/ButtonStyleNxt"
                 android:layout_width="140dp"
                 android:layout_height="65dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="취소" />
+                android:text="확인" />
 
             <Button
-                android:id="@+id/btns"
-                style="@style/ButtonStyleNxt"
+                android:id="@+id/btnf"
+                style="@style/ButtonStyleCancel"
                 android:layout_width="140dp"
                 android:layout_height="65dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="확인" />
+                android:text="취소" />
         </LinearLayout>
 
 

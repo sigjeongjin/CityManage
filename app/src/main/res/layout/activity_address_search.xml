@@ -7,7 +7,7 @@
     <Spinner
         android:id="@+id/citySp"
         android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_gravity="center"
         android:layout_marginTop="70dp"
         android:background="@drawable/selectbox"
@@ -16,7 +16,7 @@
     <Spinner
         android:id="@+id/stateSp"
         android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="@drawable/selectbox"
@@ -25,8 +25,8 @@
     <Button
         android:id="@+id/choiceBtn"
         style="@style/ButtonStyleNxt"
-        android:layout_width="170dp"
-        android:layout_height="70dp"
+        android:layout_width="147.33dp"
+        android:layout_height="54dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:text="확인" />

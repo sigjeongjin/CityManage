@@ -12,8 +12,8 @@
         <EditText
             android:id="@+id/streetFindEv"
             style="@style/EditTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
             android:hint="동/읍/면"
@@ -22,12 +22,12 @@
         <Button
             android:id="@+id/searchBtn"
             style="@style/ButtonStyleNxt"
-            android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
             android:layout_marginBottom="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="검색" />
 
     </LinearLayout>

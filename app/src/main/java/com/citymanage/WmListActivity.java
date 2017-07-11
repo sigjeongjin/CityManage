@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.citymanage.R.id.action_settings;
+
 public class WmListActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
@@ -178,13 +180,19 @@ public class WmListActivity extends SideNaviBaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        getMenuInflater().inflate(R.menu.map_actions, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+
         switch (item.getItemId()) {
+            case action_settings :
+                Intent intent = new Intent(getApplicationContext(), WmMapActivity.class);
+                startActivity(intent);
+                break;
             case android.R.id.home:
                 openDrawer();
                 return true;

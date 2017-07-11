@@ -2,9 +2,8 @@ package com.citymanage;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,28 +14,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class WmMapActivity extends AppCompatActivity implements OnMapReadyCallback {
+import static com.citymanage.R.id.action_settings;
 
-    private static final String TAG = "TmMapActivity";
+public class WmMapActivity extends SideNaviBaseActivity implements OnMapReadyCallback {
+
+    private static final String TAG = "WmMapActivity";
     SupportMapFragment mapFragment;
     GoogleMap map;
 
-    Button tmListActivityGoBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tm_map);
-
-        tmListActivityGoBtn = (Button) findViewById(R.id.tmListActivityGoBtn);
-
-        tmListActivityGoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TmListActivity.class);
-                startActivity(intent);
-            }
-        });
+        setContentView(R.layout.activity_wm_map);
+        super.setupToolbar();
+        setTitle(R.string.wm_title);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().
                        findFragmentById(R.id.map);
@@ -111,4 +103,35 @@ public class WmMapActivity extends AppCompatActivity implements OnMapReadyCallba
         cSensor.showInfoWindow();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.list_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId()) {
+            case action_settings :
+                Intent intent = new Intent(getApplicationContext(), WmListActivity.class);
+                startActivity(intent);
+                break;
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected int getSelfNavDrawerItem() {
+        return R.id.nav_favorite;
+    }
+
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
+    }
 }

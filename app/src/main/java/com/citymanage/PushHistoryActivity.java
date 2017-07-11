@@ -216,7 +216,7 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        getMenuInflater().inflate(R.menu.map_actions, menu);
         return true;
     }
 

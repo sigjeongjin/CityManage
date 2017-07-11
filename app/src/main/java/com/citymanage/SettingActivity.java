@@ -55,7 +55,7 @@ public class SettingActivity extends SideNaviBaseActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        getMenuInflater().inflate(R.menu.map_actions, menu);
         return true;
     }
 

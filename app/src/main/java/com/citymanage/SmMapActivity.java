@@ -2,7 +2,8 @@ package com.citymanage;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,7 +15,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-public class SmMapActivity extends AppCompatActivity implements OnMapReadyCallback {
+import static com.citymanage.R.id.action_settings;
+
+public class SmMapActivity extends SideNaviBaseActivity implements OnMapReadyCallback {
 
     private static final String TAG = "SmMapActivity";
     SupportMapFragment mapFragment;
@@ -26,6 +29,8 @@ public class SmMapActivity extends AppCompatActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sm_map);
+        super.setupToolbar();
+        setTitle(R.string.sm_title);
 
         smListActivityGoBtn = (Button) findViewById(R.id.smListActivityGoBtn);
 
@@ -108,6 +113,38 @@ public class SmMapActivity extends AppCompatActivity implements OnMapReadyCallba
 //                .title("수질C")
 //        );
 //        cSensor.showInfoWindow();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.list_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId()) {
+            case action_settings :
+                Intent intent = new Intent(getApplicationContext(), SmListActivity.class);
+                startActivity(intent);
+                break;
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected int getSelfNavDrawerItem() {
+        return R.id.nav_favorite;
+    }
+
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
     }
 
 }

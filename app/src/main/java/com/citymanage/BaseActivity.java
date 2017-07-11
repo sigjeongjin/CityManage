@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 
+
+    public static final String HOST = "http://192.168.0.2:3000";
+
     /* 프로그램 실행 후 필요한 상수 값들 정의 시작 */
     private static final int CANCLE_FROM_CONTENT = 0;
     private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
@@ -19,17 +22,17 @@ public class BaseActivity extends AppCompatActivity {
     private static final int autoLoginFalse = 0;
     private static final int ALBUM_WIDTH = 400;
     private static final int ALBUM_HEIGHT = 300;
-    public static final String HOST = "http://192.168.0.230:3000";
-    public static final String LOGIN = "http://192.168.0.230:3000/login";
-    public static final String REGISTER = "http://192.168.0.230:3000/register";
-    public static final String PUSH_HISTORY_HOST = "http://192.168.0.230:3000/pushHistory";
-    public static final String TM_LIST_URL = "http://192.168.0.230:3000/tmList";
-    public static final String SM_LIST_URL = "http://192.168.0.230:3000/smList";
-    public static final String FAVORITE_HISTORY_HOST = "http://192.168.0.230:3000/favoriteHistory"; // 즐찾 추가
-    public static final String TM_INFO_URL = "http://192.168.0.230:3000/tmInfo";
-    public static final String SM_INFO_URL = "http://192.168.0.230:3000/smInfo";
-    public static final String CITYURL = "http://192.168.0.230:3000/cityList";
-    public static final String SATATEURL = "http://192.168.0.230:3000/stateList";
+
+    public static final String LOGIN = HOST + "/login";
+    public static final String REGISTER = HOST + "/register";
+    public static final String PUSH_HISTORY_HOST = HOST + "/pushHistory";
+    public static final String TM_LIST_URL = HOST + "/tmList";
+    public static final String SM_LIST_URL = HOST + "/smList";
+    public static final String FAVORITE_HOST = HOST + "/favoriteList"; // 즐찾 추가
+    public static final String TM_INFO_URL = HOST + "/tmInfo";
+    public static final String SM_INFO_URL = HOST + "/smInfo";
+    public static final String CITYURL = HOST + "/cityList";
+    public static final String SATATEURL = HOST + "/stateList";
 
     /* 프로그램 실행 후 필요한 상수 값들 정의 끝 */
 

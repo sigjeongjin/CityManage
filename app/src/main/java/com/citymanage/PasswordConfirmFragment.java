@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -43,7 +44,7 @@ public class PasswordConfirmFragment extends Fragment {
         String id = Module.getRecordId(getContext());
         String pwd = Module.getRecordPwd(getContext());
 
-        final EditText idEv = (EditText) rootView.findViewById(R.id.idEv);
+        final TextView idEv = (TextView) rootView.findViewById(R.id.idEv);
         idEv.setText(id); //초기 아이디 셋팅
 
         final EditText pwdEv = (EditText ) rootView.findViewById(R.id.pwdEv);

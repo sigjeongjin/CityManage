@@ -21,7 +21,6 @@ import com.common.Module;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class LoginActivity extends BaseActivity {
 
     //전역 변수 , result 코드 생성

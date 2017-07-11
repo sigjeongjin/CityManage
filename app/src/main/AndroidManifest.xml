@@ -34,21 +34,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AddressSearchActivity"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".PushHistoryActivity" />
+        <activity android:name=".FavoriteActivity" />
         <activity android:name=".GmMapActivity" />
+        <activity android:name=".WmListActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".WmMapActivity" />
         <activity android:name=".TmListActivity" />
         <activity android:name=".TmMapActivity" />
-        <activity android:name=".SettingActivity" />
+        <activity android:name=".SmInfoActivity" />
+        <activity android:name=".WmInfoActivity"/>
         <activity android:name=".TmInfoActivity"/>
-        <activity android:name=".SmInfoActivity"/>
         <activity android:name=".SmListActivity"/>
         <activity android:name=".SmMapActivity" />
-        <activity android:name=".WmListActivity" />
-        <activity android:name=".WmMapActivity" />
-        <activity android:name=".AddressSearchActivity"/>
-        <activity android:name=".FavoriteActivity"/>
         <activity android:name=".GmListActivity"/>
         <activity android:name=".GmInfoActivity"/>
     </application>

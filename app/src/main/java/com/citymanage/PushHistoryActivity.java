@@ -24,18 +24,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 /**
-*
-* @author 박현진
-* @version 1.0.0
-* @since 2017-06-29 오전 10:59
-**/
+ *
+ * @author 박현진
+ * @version 1.0.0
+ * @since 2017-06-29 오전 10:59
+ **/
 
 public class PushHistoryActivity extends SideNaviBaseActivity implements View.OnClickListener {
 
     //wm : 수질    tm : 쓰레기통   gm : 도시가스   sm : 금연구역
-    CheckBox gWmChk, gTmChk, gGmChk, gSmChk , gAllChk;
+    CheckBox gWmChk, gTmChk, gGmChk, gSmChk;
 
     static final String WM = "wm";
     static final String TM = "tm";
@@ -58,23 +57,19 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
         setupToolbar();
 
         /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
-        gAllChk = (CheckBox) findViewById(R.id.allCheckBox);
         gWmChk = (CheckBox) findViewById(R.id.wmCheckBox);
         gTmChk = (CheckBox) findViewById(R.id.tmCheckBox);
         gGmChk = (CheckBox) findViewById(R.id.gmCheckBox);
         gSmChk = (CheckBox) findViewById(R.id.smCheckBox);
 
         //모두 검색 하는 체크 박스에 초기 체크 데이터 셋팅
-        gAllChk.setChecked(true);
 
-        gAllChk.setTag(ALL);
         gWmChk.setTag(WM);
         gTmChk.setTag(TM);
         gGmChk.setTag(GM);
         gSmChk.setTag(SM);
 
         //인터페이스가 받을 수 있도록 listener 등록
-        gAllChk.setOnClickListener(this);
         gWmChk.setOnClickListener(this);
         gTmChk.setOnClickListener(this);
         gGmChk.setOnClickListener(this);
@@ -192,8 +187,6 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
     }
 
     public String checkedSettingUrl(String pCheckBoxTag) {
-
-        gAllChk.setChecked(false);
 
         StringBuilder rItemSetting = new StringBuilder();
         //gWmChk, gTmChk, gGmChk, gSmChk

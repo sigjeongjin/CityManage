@@ -54,8 +54,6 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         gGmChk = (CheckBox) findViewById(R.id.gmCheckBox);
         gSmChk = (CheckBox) findViewById(R.id.smCheckBox);
 
-        //모두 검색 하는 체크 박스에 초기 체크 데이터 셋팅
-
         gWmChk.setTag(WM);
         gTmChk.setTag(TM);
         gGmChk.setTag(GM);

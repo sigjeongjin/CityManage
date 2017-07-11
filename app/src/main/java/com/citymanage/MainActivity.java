@@ -70,7 +70,6 @@ public class MainActivity extends SideNaviBaseActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sample_actions, menu);
         return true;
     }
 
@@ -83,12 +82,6 @@ public class MainActivity extends SideNaviBaseActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    @Override
-//    protected int getSelfNavDrawerItem() {
-//        Log.i("getSelfNavDrawerItem","getSelfNavDrawerItem");
-//        return R.id.nav_favorite;
-//    }
 
     @Override
     public boolean providesActivityToolbar() {

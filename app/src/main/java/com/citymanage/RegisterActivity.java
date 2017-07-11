@@ -111,7 +111,6 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 };
 
-
                 new AlertDialog.Builder(RegisterActivity.this)
                         .setTitle("업로드할 이미지 선택")
                         .setNeutralButton("카메라선택", cameraListener)
@@ -121,51 +120,6 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-//        buttonCamera.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//
-//                //카메라 호출
-//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                intent.putExtra(MediaStore.EXTRA_OUTPUT,
-//                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
-//
-//                //이미지 사이즈 변경
-//                intent.putExtra("crop", "true");
-//                intent.putExtra("aspectX", 0);
-//                intent.putExtra("aspectY", 0);
-//                intent.putExtra("outputX", 200);
-//                intent.putExtra("outputY", 250);
-//
-//                try {
-//                    intent.putExtra("return-data", true);
-//                    startActivityForResult(intent, PICK_FROM_CAMERA);
-//            }catch (ActivityNotFoundException e) {
-//                }
-//
-//            }
-//        });
-
-//        buttonGallery.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_PICK);
-//                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-//                startActivityForResult(intent, PICK_FROM_ALBUM);
-//
-//                intent.setType("image/*");
-//                intent.putExtra("crop", "true");
-//                intent.putExtra("aspectX", 0);
-//                intent.putExtra("aspectY", 0);
-//                intent.putExtra("outputX", 200);
-//                intent.putExtra("outputY", 250);
-//
-//
-//            }
-//        });
 
 
         //비밀번호가 일치하는지에 대한 검사
@@ -191,10 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
                     spw.setBackgroundColor(Color.RED);
                     respw.setBackgroundColor(Color.RED);
                 }
-
-
             }
-
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -295,11 +246,6 @@ public class RegisterActivity extends AppCompatActivity {
                 rQueue.add(request);
             }
         });
-//                // 자신을 호출한 액티비티로 데이터를 보낸다
-//                Intent result = new Intent();
-//                result.putExtra("email", sid.getText().toString());
-//                setResult(RESULT_OK, result);
-//                finish();
 
         //취소 버튼시 화면을 종료하고 로그인 화면으로 돌아감.
         btnf.setOnClickListener(new View.OnClickListener() {
@@ -319,8 +265,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void callCamera() {
 
-        Log.i("callCamera", "callCamera");
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
@@ -334,10 +278,6 @@ public class RegisterActivity extends AppCompatActivity {
         intent.putExtra("return-data", true);
         startActivityForResult(intent, PICK_FROM_CAMERA);
     }
-
-
-
-
 
     protected void onActivityResult(int requestCode,
                                     int resultCode,
@@ -361,6 +301,8 @@ public class RegisterActivity extends AppCompatActivity {
                         Bitmap resized = Bitmap.createBitmap(scaled,0,0, IMAGE_WIDTH, IMAGE_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
 
                         gProfilShot.setImageBitmap(resized);
+
+                        imageDraw = true;
 
                     } catch (FileNotFoundException e) {
                         // TODO Auto-generated catch block
@@ -395,6 +337,8 @@ public class RegisterActivity extends AppCompatActivity {
                             gProfilShot.setImageBitmap(photo);
                         }
                     }
+
+                    imageDraw = true;
                 default:
                     break;
             }

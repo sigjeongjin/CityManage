@@ -114,6 +114,8 @@ public class LoginActivity extends BaseActivity {
                         if(Module.getLocation(getApplicationContext()) == 1) {
                             Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
                             intent = new Intent(getApplication(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                             Module.setRecordId(getApplicationContext(),email.getText().toString());
                             Module.setRecordPwd(getApplicationContext(), password.getText().toString());
@@ -122,6 +124,8 @@ public class LoginActivity extends BaseActivity {
                         } else {
                             Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
                             intent = new Intent(getApplication(), AddressSearchActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                             Module.setRecordId(getApplicationContext(),email.getText().toString());
                             Module.setRecordPwd(getApplicationContext(), password.getText().toString());

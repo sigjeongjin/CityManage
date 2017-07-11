@@ -75,7 +75,7 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                dialog.dismiss();
+                dialog.dismiss();
             }
         });
         RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
@@ -94,8 +94,6 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                 sb.append("?cityCode=");
                 sb.append(cityList.get(position).get("cityCode"));
 
-                Log.i("sb :", sb.toString());
-
                 StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
 
                     @Override
@@ -111,7 +109,7 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                        dialog.dismiss();
+                        dialog.dismiss();
                     }
                 });
                 RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
@@ -134,6 +132,7 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                         Module.setLocation(getApplicationContext(),1);
 
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 };
@@ -161,7 +160,6 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
     }
 
     void setStateAdapater() {
-        Log.i("strArrayStateName", strArrayStateName[0]);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, strArrayStateName);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSp.setAdapter(adapter);
@@ -212,9 +210,6 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                 stateNameList.add(i,state);
                 stateList.add(i, stateInfo);
             }
-
-            Log.i("STATE LIST : " ,stateNameList.toString());
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -223,7 +218,6 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sample_actions, menu);
         return true;
     }
 

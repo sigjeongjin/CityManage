@@ -1,87 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/tmListActivityGo"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_trash_v" />
-
-        <Button
-            android:id="@+id/wmListActivityGo"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_water_v" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/gmListActivityGo"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="30dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_gas_v" />
-
-        <Button
-            android:id="@+id/smListActivityGo"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_smoking_v" />
-    </LinearLayout>
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/pushHistoryActivityGo"
+        android:orientation="vertical">
+        <include layout="@layout/include_toolbar" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="PUSH이력화면" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/settingActivityGo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            android:text="설정화면(임시)" />
+                <Button
+                    android:id="@+id/tmListActivityGo"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_trash_v" />
+
+                <Button
+                    android:id="@+id/wmListActivityGo"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_water_v" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/gmListActivityGo"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_gas_v" />
+
+                <Button
+                    android:id="@+id/smListActivityGo"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_smoking_v" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
-
+    <include layout="@layout/include_navigation" />
+</android.support.v4.widget.DrawerLayout>

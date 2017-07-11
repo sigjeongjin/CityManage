@@ -44,27 +44,6 @@ public class MainActivity extends SideNaviBaseActivity{
                 startActivity(intent);
             }
         });
-        // 푸시 이력으로 이동
-        btnPushHistoryActivityGo = (Button) findViewById(R.id.pushHistoryActivityGo);
-
-        btnPushHistoryActivityGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PushHistoryActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        settingActivityGo = (Button) findViewById(R.id.settingActivityGo);
-
-        settingActivityGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-                startActivity(intent);
-            }
-        });
 
         //쓰레기통 관리 화면으로 이동
         tmListActivityGo = (Button) findViewById(R.id.tmListActivityGo);

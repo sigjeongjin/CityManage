@@ -23,7 +23,7 @@
         android:textSize="30dp" />
 
     <Button
-        android:id="@+id/choiceBtn"
+        android:id="@+id/selectConfirmBtn"
         style="@style/ButtonStyleNxt"
         android:layout_width="147.33dp"
         android:layout_height="54dp"

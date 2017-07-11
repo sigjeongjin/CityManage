@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -33,7 +34,7 @@ public class LoginActivity extends BaseActivity {
 
     private Button btnregister;
     CheckBox autologin;
-    Button btnLogin;
+    TextView loginTv;
     EditText email, password;
     String url = "http://192.168.0.230:3000/login?loginId=bang&pwd=1234";
 //    StringBuilder url2= "http";
@@ -161,8 +162,8 @@ public class LoginActivity extends BaseActivity {
         }
 
         //회원가입 화면으로 전환
-        btnregister = (Button) findViewById(R.id.btnregister);
-        btnregister.setOnClickListener(new Button.OnClickListener(){
+        loginTv = (TextView) findViewById(R.id.loginTv);
+        loginTv.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (getApplication(), RegisterActivity.class);

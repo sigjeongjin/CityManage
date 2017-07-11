@@ -23,6 +23,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/photo_frame" />
+
         </LinearLayout>
 
         <EditText

@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="170dp"
-        android:layout_height="200dp"
+        android:layout_width="212dp"
+        android:layout_height="177.33dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/img_logo" />
 
@@ -81,8 +81,17 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:button="@drawable/btn_check_v"
-                android:text="자동로그인" />
+                android:button="@drawable/btn_check_v" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="자동로그인"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="25dp" />
         </LinearLayout>
 
 

@@ -81,9 +81,6 @@ public class SettingFragment extends Fragment {
                     }
                 };
 
-
-
-
                 new AlertDialog.Builder(getContext())
                         .setTitle("업로드할 이미지 선택")
                         .setNeutralButton("카메라선택",cameraListener)

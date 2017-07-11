@@ -1,7 +1,10 @@
 package com.citymanage;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,77 +27,92 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddressSearchActivity extends AppCompatActivity {
+public class AddressSearchActivity extends BaseActivity {
 
-    String url = "http://192.168.0.229:3000/cityList";
+
     List<HashMap<String, String>> cityList = new ArrayList<HashMap<String, String>>();
     List<String> cityNameList = new ArrayList<String>();
-    String [] cityNameTest;
+    String [] strArrayCityName;
+
+    List<HashMap<String, String>> stateList = new ArrayList<HashMap<String, String>>();
+    List<String> stateNameList = new ArrayList<String>();
+    String [] strArrayStateName;
+
     Spinner citySp;
     Spinner stateSp;
 
-    Button choiceBtn;
-    String citySearch;
+    Button selectConfirmBtn;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_search);
 
         citySp = (Spinner) findViewById(R.id.citySp);
-        final ArrayList<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("2");
-        list.add("4");
-        list.add("5");
-        String[] list2 = new String[2];
-        list2[0] = "안녕";
-        list2[1] = "하세요";
+        stateSp = (Spinner) findViewById(R.id.stateSp);
+        selectConfirmBtn = (Button) findViewById(R.id.selectConfirmBtn);
 
-        Log.i("list2", list2.toString());
-//        dialog.setMessage("Loading....");
-//        dialog.show();
-        Log.i("Url", url);
+        dialog = new ProgressDialog(AddressSearchActivity.this);
+        dialog.setMessage("Loading....");
+        dialog.show();
 
-        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(CITYURL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String pString) {
-                parseJsonData(pString);
-                Log.i("onResponse", "onResponse");
 
-                Log.i("cityNameTest4", cityNameTest[0]);
+                parseCityJsonData(pString);
 
+                setCityAdapter();
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_spinner_item,cityNameTest);
-
-//                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cityNameList);
-//                //simple_spinner_item
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                citySp.setAdapter(adapter);
+                dialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                //dialog.dismiss();
+//                dialog.dismiss();
             }
         });
         RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
         rQueue.add(request);
 
         citySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(AddressSearchActivity.this,"선택된 아이템 : "+citySp.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
 
-//                String text = (String) citySp.getSelectedItem().toString();
-//                System.out.println(text);
-//                Log.i("test", "선택");
-//                String cityCode = cityList.get(position).toString();
-//                cityList.get(position).get("cityCode").toString();
-//                Log.i("cityCode", cityCode);
+                dialog = new ProgressDialog(AddressSearchActivity.this);
+                dialog.setMessage("Loading....");
+                dialog.show();
+
+                StringBuilder sb = new StringBuilder(SATATEURL);
+                sb.append("?cityCode=");
+                sb.append(cityList.get(position).get("cityCode"));
+
+                Log.i("sb :", sb.toString());
+
+                StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String pString) {
+                        parseStateJsonData(pString);
+
+                        setStateAdapater();
+
+                        dialog.dismiss();
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+//                        dialog.dismiss();
+                    }
+                });
+                RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
+                rQueue.add(request);
             }
 
             @Override
@@ -102,39 +120,100 @@ public class AddressSearchActivity extends AppCompatActivity {
 
             }
         });
+
+        selectConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                };
+
+                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                };
+
+                new AlertDialog.Builder(AddressSearchActivity.this)
+                        .setTitle("지역선택 완료")
+                        .setPositiveButton("확인",confirmListener)
+                        .setNegativeButton("취소",cancelListener)
+                        .show();
+            }
+        });
     }
 
-    void parseJsonData(String jsonString) {
+    void setCityAdapter() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, strArrayCityName);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySp.setAdapter(adapter);
+    }
+
+    void setStateAdapater() {
+        Log.i("strArrayStateName", strArrayStateName[0]);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, strArrayStateName);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stateSp.setAdapter(adapter);
+    }
+
+    void parseCityJsonData(String jsonString) {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
 
-            Log.i("JSONARRAY", jsonObject.toString());
-
             JSONArray jsonArray = jsonObject.getJSONArray("address");
-            cityNameTest = new String[jsonArray.length()];
+            strArrayCityName = new String[jsonArray.length()];
             for (int i = 0; i < jsonArray.length(); i++){
 
                 String city = jsonArray.getJSONObject(i).getString("city");
                 String cityCode = jsonArray.getJSONObject(i).getString("cityCode");
-                Log.i("city", city);
-                Log.i("cityCode", cityCode);
+
                 HashMap<String,String> cityInfo = new HashMap<>();
                 cityInfo.put("city", city);
                 cityInfo.put("cityCode", cityCode);
 
-                cityNameTest[i] = city;
+                strArrayCityName[i] = city;
                 cityNameList.add(i,city);
                 cityList.add(i, cityInfo);
             }
 
-            Log.i("cityNameTest", cityNameTest[0]);
-            Log.i("cityNameTest", cityNameTest[1]);
-            Log.i("cityNameTest", cityNameTest[2]);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dialog.dismiss();
+    }
+
+    void parseStateJsonData(String jsonString) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            JSONArray jsonArray = jsonObject.getJSONArray("address");
+            strArrayStateName = new String[jsonArray.length()];
+            for (int i = 0; i < jsonArray.length(); i++){
+
+                String state = jsonArray.getJSONObject(i).getString("state");
+                String stateCode = jsonArray.getJSONObject(i).getString("stateCode");
+
+                HashMap<String,String> stateInfo = new HashMap<>();
+                stateInfo.put("state", state);
+                stateInfo.put("stateCode", stateCode);
+
+                strArrayStateName[i] = state;
+                stateNameList.add(i,state);
+                stateList.add(i, stateInfo);
+            }
+
+            Log.i("STATE LIST : " ,stateNameList.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        dialog.dismiss();
+        dialog.dismiss();
     }
 }
 

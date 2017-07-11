@@ -27,15 +27,13 @@ public class BaseActivity extends AppCompatActivity {
     public static final String FAVORITE_HISTORY_HOST = "http://192.168.0.230:3000/favoriteHistory"; // 즐찾 추가
     public static final String TM_INFO_URL = "http://192.168.0.230:3000/tmInfo";
     public static final String SM_INFO_URL = "http://192.168.0.230:3000/smInfo";
-
-
-
-
+    public static final String CITYURL = "http://192.168.0.230:3000/cityList";
+    public static final String SATATEURL = "http://192.168.0.230:3000/stateList";
 
     /* 프로그램 실행 후 필요한 상수 값들 정의 끝 */
 
     public ProgressDialog dialog; //프로그레스바 다이얼로그
     int ResultCode; //response 응답코드 변수
-    String url = ""; //요청 url 셋팅 변수
+    String url = ""; //요청 cityUrl 셋팅 변수
 
 }

@@ -117,6 +117,7 @@ public class WmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
             case action_settings :
                 Intent intent = new Intent(getApplicationContext(), WmListActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case android.R.id.home:
                 openDrawer();

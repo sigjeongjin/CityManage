@@ -183,6 +183,7 @@ public class GmListActivity extends SideNaviBaseActivity {
             case action_settings :
                 Intent intent = new Intent(getApplicationContext(), GmMapActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case android.R.id.home:
                 openDrawer();

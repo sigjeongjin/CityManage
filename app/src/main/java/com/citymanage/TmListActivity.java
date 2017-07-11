@@ -182,6 +182,7 @@ public class TmListActivity extends SideNaviBaseActivity {
             case action_settings :
                 Intent intent = new Intent(getApplicationContext(), TmMapActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case android.R.id.home:
                 openDrawer();

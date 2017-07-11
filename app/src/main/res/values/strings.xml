@@ -9,4 +9,9 @@
     <string name="navigation_push_history">알림이력</string>
     <string name="navigation_settings">셋팅화면</string>
 
+    <string name="tm_title">쓰레기통 관리</string>
+    <string name="wm_title">수질 관리</string>
+    <string name="gm_title">도시가스 관리</string>
+    <string name="sm_title">금연구역 관리</string>
+
 </resources>

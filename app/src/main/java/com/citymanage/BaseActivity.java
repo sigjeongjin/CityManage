@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public static final  String HOST = "http://172.30.1.43:3000";
+//    public static final  String HOST = "http://172.30.1.43:3000";
 //    public static final String HOST = "http://192.168.0.230:3000";
-//    public static final String HOST = "http://192.168.0.2:3000";
+    public static final String HOST = "http://192.168.0.2:3000";
 
     /* 프로그램 실행 후 필요한 상수 값들 정의 시작 */
     private static final int CANCLE_FROM_CONTENT = 0;

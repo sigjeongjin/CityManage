@@ -46,6 +46,8 @@ public class WmListActivity extends SideNaviBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tm_list);
+        super.setupToolbar();
+        setTitle(R.string.wm_title);
 
         tmMapActivityGoBtn = (Button) findViewById(R.id.tmMapActivityGoBtn);
         tmListView = (ListView) findViewById(R.id.tmLv);

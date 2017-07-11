@@ -46,6 +46,8 @@ public class GmListActivity extends SideNaviBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gm_list);
+        super.setupToolbar();
+        setTitle(R.string.gm_title);
 
         gmMapActivityGoBtn = (Button) findViewById(R.id.gmMapActivityGoBtn);
         gmListView = (ListView) findViewById(R.id.gmLv);

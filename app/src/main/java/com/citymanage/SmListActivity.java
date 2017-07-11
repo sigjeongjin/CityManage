@@ -45,6 +45,8 @@ public class SmListActivity extends SideNaviBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sm_list);
+        super.setupToolbar();
+        setTitle(R.string.sm_title);
 
         smMapActivityGoBtn = (Button) findViewById(R.id.smMapActivityGoBtn);
         smListView = (ListView) findViewById(R.id.smLv);

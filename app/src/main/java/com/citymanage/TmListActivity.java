@@ -3,7 +3,6 @@ package com.citymanage;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.citymanage.R.id.action_settings;
+
 public class TmListActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
@@ -47,6 +48,8 @@ public class TmListActivity extends SideNaviBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tm_list);
+        super.setupToolbar();
+        setTitle(R.string.tm_title);
 
         tmMapActivityGoBtn = (Button) findViewById(R.id.tmMapActivityGoBtn);
         tmListView = (ListView) findViewById(R.id.tmLv);
@@ -183,7 +186,13 @@ public class TmListActivity extends SideNaviBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+
         switch (item.getItemId()) {
+            case action_settings :
+                Intent intent = new Intent(getApplicationContext(), TmMapActivity.class);
+                startActivity(intent);
+                break;
             case android.R.id.home:
                 openDrawer();
                 return true;

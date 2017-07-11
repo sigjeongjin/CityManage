@@ -89,6 +89,8 @@ public class LoginActivity extends BaseActivity {
             StringBuilder sb = new StringBuilder(LOGIN);
                 sb.append("?loginId=").append(email.getText().toString()).append("&pwd=").append(password.getText().toString());
 
+
+                Log.i("URL : " , sb.toString());
             //정보를 보내고 받음.
             StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
                 @Override

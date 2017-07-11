@@ -11,11 +11,11 @@ import java.util.ArrayList;
  * Created by we25 on 2017-06-26.
  */
 
-public class FavoriteHistoryAdapter extends BaseAdapter {
-    ArrayList<FavoriteHistoryItem> items = new ArrayList<FavoriteHistoryItem>();
+public class GmListAdapter extends BaseAdapter {
+    ArrayList<WmListItem> items = new ArrayList<WmListItem>();
     Context context;
 
-    public FavoriteHistoryAdapter(Context context) {
+    public GmListAdapter(Context context) {
         this.context = context;
     }
 
@@ -24,7 +24,7 @@ public class FavoriteHistoryAdapter extends BaseAdapter {
         return items.size();
     }
 
-    public void addItem(FavoriteHistoryItem item) {
+    public void addItem(WmListItem item) {
         items.add(item);
     }
 
@@ -44,12 +44,11 @@ public class FavoriteHistoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        FavoriteHistoryItemView view = new FavoriteHistoryItemView(context);
+        WmListItemView view = new WmListItemView(context);
 
-        FavoriteHistoryItem item = items.get(position);
+        WmListItem item = items.get(position);
         view.setAddressInfo(item.getAddressInfo());
         view.setSensorId(item.getSensorId());
-        view.setFavoriteDescripTion(item.getFavoriteDescription());
         return view;
     }
 }

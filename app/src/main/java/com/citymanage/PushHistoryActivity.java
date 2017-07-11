@@ -3,6 +3,8 @@ package com.citymanage;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -30,7 +32,7 @@ import java.util.List;
 * @since 2017-06-29 오전 10:59
 **/
 
-public class PushHistoryActivity extends BaseActivity implements View.OnClickListener {
+public class PushHistoryActivity extends SideNaviBaseActivity implements View.OnClickListener {
 
     //wm : 수질    tm : 쓰레기통   gm : 도시가스   sm : 금연구역
     CheckBox gWmChk, gTmChk, gGmChk, gSmChk , gAllChk;
@@ -53,7 +55,7 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_history);
-
+        setupToolbar();
 
         /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
         gAllChk = (CheckBox) findViewById(R.id.allCheckBox);
@@ -217,5 +219,31 @@ public class PushHistoryActivity extends BaseActivity implements View.OnClickLis
             rItemSetting.append("?item=" + gSmChk.getTag());
         }
         return rItemSetting.toString();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected int getSelfNavDrawerItem() {
+        return R.id.nav_favorite;
+    }
+
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
     }
 }

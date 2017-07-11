@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,27 +28,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SmListActivity extends SideNaviBaseActivity {
+public class GmListActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
 
     String resultCode;
 
-    SmListAdapter adapter; // 위의 리스트 adapter
-    ListView smListView;
+    GmListAdapter adapter; // 위의 리스트 adapter
+    ListView tmListView;
     EditText streetFindEv;
     Button searchBtn;
-    Button smMapActivityGoBtn;
+    Button tmMapActivityGoBtn;
 
-    List<HashMap<String,String>> mListHashSm = new ArrayList<HashMap<String, String>>();
+    List<HashMap<String,String>> mListHashTm = new ArrayList<HashMap<String, String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sm_list);
+        setContentView(R.layout.activity_tm_list);
 
-        smMapActivityGoBtn = (Button) findViewById(R.id.smMapActivityGoBtn);
-        smListView = (ListView) findViewById(R.id.smLv);
+        tmMapActivityGoBtn = (Button) findViewById(R.id.tmMapActivityGoBtn);
+        tmListView = (ListView) findViewById(R.id.tmLv);
         streetFindEv = (EditText) findViewById(R.id.streetFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
@@ -55,17 +56,17 @@ public class SmListActivity extends SideNaviBaseActivity {
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringRequest pushHistoryRequest = new StringRequest(SM_LIST_URL, new Response.Listener<String>() {
+        StringRequest pushHistoryRequest = new StringRequest(TM_LIST_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
-                adapter = new SmListAdapter(getApplicationContext());
+                adapter = new GmListAdapter(getApplicationContext());
 
-                for(int i = 0; i < mListHashSm.size(); i ++ ) {
-                    adapter.addItem(new SmListItem(mListHashSm.get(i).get("addressInfo"),
-                            mListHashSm.get(i).get("sensorId")));
+                for(int i = 0; i < mListHashTm.size(); i ++ ) {
+                    adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
+                            mListHashTm.get(i).get("sensorId")));
                 }
-                smListView.setAdapter(adapter);
+                tmListView.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -76,7 +77,7 @@ public class SmListActivity extends SideNaviBaseActivity {
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(SmListActivity.this);
+        RequestQueue rQueue = Volley.newRequestQueue(GmListActivity.this);
         rQueue.add(pushHistoryRequest);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -84,11 +85,11 @@ public class SmListActivity extends SideNaviBaseActivity {
             @Override
             public void onClick(View v) {
 
-                dialog = new ProgressDialog(SmListActivity.this);
+                dialog = new ProgressDialog(GmListActivity.this);
                 dialog.setMessage("Loading....");
                 dialog.show();
 
-                StringBuilder sb = new StringBuilder(SM_LIST_URL);
+                StringBuilder sb = new StringBuilder(TM_LIST_URL);
                 String strStreet = streetFindEv.getText().toString();
 
                 try {
@@ -104,13 +105,13 @@ public class SmListActivity extends SideNaviBaseActivity {
                     @Override
                     public void onResponse(String string) {
                         parseJsonData(string);
-                        adapter = new SmListAdapter(getApplicationContext());
+                        adapter = new GmListAdapter(getApplicationContext());
 
-                        for(int i = 0; i < mListHashSm.size(); i ++ ) {
-                            adapter.addItem(new SmListItem(mListHashSm.get(i).get("addressInfo"),
-                                    mListHashSm.get(i).get("sensorId")));
+                        for(int i = 0; i < mListHashTm.size(); i ++ ) {
+                            adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
+                                    mListHashTm.get(i).get("sensorId")));
                         }
-                        smListView.setAdapter(adapter);
+                        tmListView.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -121,26 +122,27 @@ public class SmListActivity extends SideNaviBaseActivity {
                     }
                 });
 
-                RequestQueue rQueue = Volley.newRequestQueue(SmListActivity.this);
+                RequestQueue rQueue = Volley.newRequestQueue(GmListActivity.this);
                 rQueue.add(pushHistoryRequest);
             }
         });
 
-
-        smMapActivityGoBtn.setOnClickListener(new View.OnClickListener() {
+        tmMapActivityGoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SmMapActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TmMapActivity.class);
                 startActivity(intent);
             }
         });
 
-        smListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        tmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), SmInfoActivity.class);
-                intent.putExtra(SENSORID,mListHashSm.get(position).get(SENSORID));
-                startActivity(intent);
+
+            Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
+            intent.putExtra(SENSORID,mListHashTm.get(position).get(SENSORID));
+            startActivity(intent);
+
             }
         });
     }
@@ -148,28 +150,34 @@ public class SmListActivity extends SideNaviBaseActivity {
     //통신 후 json 파싱
     void parseJsonData(String jsonString) {
         try {
-            mListHashSm.clear();
+            mListHashTm.clear();
 
             JSONObject object = new JSONObject(jsonString);
 
-            JSONArray smListArray = object.getJSONArray("smList");
+            JSONArray tmListArray = object.getJSONArray("tmList");
 
-            for(int i = 0; i < smListArray.length(); i ++ ) {
+            for(int i = 0; i < tmListArray.length(); i ++ ) {
 
                 HashMap<String,String> hashTemp = new HashMap<>();
 
-                String addressInfo = smListArray.getJSONObject(i).getString("addressInfo");
-                String sensorId = smListArray.getJSONObject(i).getString("sensorId");
+                String addressInfo = tmListArray.getJSONObject(i).getString("addressInfo");
+                String sensorId = tmListArray.getJSONObject(i).getString("sensorId");
 
                 hashTemp.put("addressInfo",addressInfo);
                 hashTemp.put("sensorId",sensorId);
 
-                mListHashSm.add(i,hashTemp);
+                mListHashTm.add(i,hashTemp);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         dialog.dismiss();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        return true;
     }
 
     @Override

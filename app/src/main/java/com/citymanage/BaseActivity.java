@@ -3,6 +3,7 @@ package com.citymanage;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 
+
 /**
  * Created by we25 on 2017-06-30.
  */
@@ -35,5 +36,4 @@ public class BaseActivity extends AppCompatActivity {
     public ProgressDialog dialog; //프로그레스바 다이얼로그
     int ResultCode; //response 응답코드 변수
     String url = ""; //요청 cityUrl 셋팅 변수
-
 }

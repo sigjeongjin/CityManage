@@ -4,10 +4,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
-public class SettingActivity extends AppCompatActivity{
+public class SettingActivity extends SideNaviBaseActivity{
 
     private Uri mImageCaptureUri;
     private ImageView iv_receipt;
@@ -22,6 +23,7 @@ public class SettingActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        setupToolbar();
 
         settingFragment = (SettingFragment) getSupportFragmentManager().findFragmentById(R.id.settingFragment);
         passwordConfirmFragment = new PasswordConfirmFragment();
@@ -49,6 +51,33 @@ public class SettingActivity extends AppCompatActivity{
             FragmentManager fm = getSupportFragmentManager();
             fm.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+//    @Override
+//    protected int getSelfNavDrawerItem() {
+//        Log.i("getSelfNavDrawerItem","getSelfNavDrawerItem");
+//        return R.id.nav_favorite;
+//    }
+
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
     }
 
 }

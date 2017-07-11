@@ -2,11 +2,12 @@ package com.citymanage;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends SideNaviBaseActivity{
 
     Button btnPushHistoryActivityGo;
     Button wmListActivityGo;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupToolbar();
 
 
         //수질관리 화면으로 이동
@@ -74,6 +76,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+//    @Override
+//    protected int getSelfNavDrawerItem() {
+//        Log.i("getSelfNavDrawerItem","getSelfNavDrawerItem");
+//        return R.id.nav_favorite;
+//    }
+
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
     }
 }
 

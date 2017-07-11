@@ -14,17 +14,17 @@ import static com.citymanage.R.id.sensorIdTv;
  * Created by we25 on 2017-06-26.
  */
 
-public class FavoriteHistoryItemView extends LinearLayout {
+public class FavoriteItemView extends LinearLayout {
     TextView addressInfo;
     TextView sensorId;
     TextView favoriteDescription;
 
-    public FavoriteHistoryItemView(Context context) {
+    public FavoriteItemView(Context context) {
         super(context);
         init(context);
     }
 
-    public FavoriteHistoryItemView(Context context, AttributeSet attrs) {
+    public FavoriteItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context);
@@ -32,7 +32,7 @@ public class FavoriteHistoryItemView extends LinearLayout {
 
     public void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.favorite_history_item, this, true);
+        inflater.inflate(R.layout.favorite_item, this, true);
 
         addressInfo = (TextView) findViewById(addressInfoTv);
         sensorId = (TextView) findViewById(sensorIdTv);

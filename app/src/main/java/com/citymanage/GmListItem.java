@@ -2,17 +2,15 @@ package com.citymanage;
 
 /**
  * Created by we25 on 2017-06-26.
- */
+ **/
 
-public class FavoriteHistoryItem {
+public class GmListItem {
     String addressInfo;
     String sensorId;
-    String favoriteDescription;
 
-    public FavoriteHistoryItem(String pAddressInfo, String pSensorId, String pFavoriteDscription) {
+    public GmListItem(String pAddressInfo, String pSensorId) {
         this.addressInfo = pAddressInfo;
         this.sensorId = pSensorId;
-        this.favoriteDescription = pFavoriteDscription;
     }
 
     public String getAddressInfo() {
@@ -31,11 +29,4 @@ public class FavoriteHistoryItem {
         this.sensorId = sensorId;
     }
 
-    public String getFavoriteDescription() {
-        return favoriteDescription;
-    }
-
-    public void setFavoriteDescripTion(String favoriteDescription) {
-        this.favoriteDescription = favoriteDescription;
-    }
 }

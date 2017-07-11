@@ -2,7 +2,8 @@ package com.citymanage;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -23,50 +24,44 @@ import java.util.HashMap;
 import java.util.List;
 
 
-
-public class FavoriteHistoryActivity extends BaseActivity implements View.OnClickListener {
+public class FavoriteActivity extends SideNaviBaseActivity implements View.OnClickListener {
 
     //wm : 수질    tm : 쓰레기통   gm : 도시가스   sm : 금연구역
-    CheckBox gWmChk, gTmChk, gGmChk, gSmChk , gAllChk;
+    CheckBox gWmChk, gTmChk, gGmChk, gSmChk;
 
     static final String WM = "wm";
     static final String TM = "tm";
     static final String GM = "gm";
     static final String SM = "sm";
-    static final String ALL = "all";
 
     //super 클래스에서 favoritehistoryurl 받아오기
-    String gFavoriteHistoryUrl = FAVORITE_HISTORY_HOST; // URL 변경
+    String gFavoriteHistoryUrl = FAVORITE_HOST; // URL 변경
 
     ListView gFavoriteHistoryLv; //통신 후 받은 데이터 표현할 리스트
-    FavoriteHistoryAdapter adapter; // 위의 리스트 adapter
+    FavoriteAdapter adapter; // 위의 리스트 adapter
 
     List<HashMap<String,String>> gListFavoriteHistory = new ArrayList<HashMap<String, String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite_history);
-
+        setContentView(R.layout.activity_favorite);
+        super.setupToolbar();
 
         /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
-        gAllChk = (CheckBox) findViewById(R.id.allCheckBox);
         gWmChk = (CheckBox) findViewById(R.id.wmCheckBox);
         gTmChk = (CheckBox) findViewById(R.id.tmCheckBox);
         gGmChk = (CheckBox) findViewById(R.id.gmCheckBox);
         gSmChk = (CheckBox) findViewById(R.id.smCheckBox);
 
         //모두 검색 하는 체크 박스에 초기 체크 데이터 셋팅
-        gAllChk.setChecked(true);
 
-        gAllChk.setTag(ALL);
         gWmChk.setTag(WM);
         gTmChk.setTag(TM);
         gGmChk.setTag(GM);
         gSmChk.setTag(SM);
 
         //인터페이스가 받을 수 있도록 listener 등록
-        gAllChk.setOnClickListener(this);
         gWmChk.setOnClickListener(this);
         gTmChk.setOnClickListener(this);
         gGmChk.setOnClickListener(this);
@@ -83,10 +78,10 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
-                adapter = new FavoriteHistoryAdapter(getApplicationContext());
+                adapter = new FavoriteAdapter(getApplicationContext());
 
                 for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
-                    adapter.addItem(new FavoriteHistoryItem(gListFavoriteHistory.get(i).get("addressInfo"),
+                    adapter.addItem(new FavoriteItem(gListFavoriteHistory.get(i).get("addressInfo"),
                             gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("favoriteDescription")));
                 }
                 gFavoriteHistoryLv.setAdapter(adapter);
@@ -99,24 +94,19 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(FavoriteHistoryActivity.this);
+        RequestQueue rQueue = Volley.newRequestQueue(FavoriteActivity.this);
         rQueue.add(favoriteHistoryRequest);
     }
 
     @Override
     public void onClick(View v) {
-        dialog = new ProgressDialog(FavoriteHistoryActivity.this);
+        dialog = new ProgressDialog(FavoriteActivity.this);
         dialog.setMessage("Loading....");
         dialog.show();
 
         StringBuilder sb = new StringBuilder(gFavoriteHistoryUrl);
 
-        if(v.getTag().equals(ALL)) {
-            Log.i("ALL","ALL");
-            allCheckedClickEvent();
-        } else {
-            sb.append(checkedSettingUrl(v.getTag().toString()));
-        }
+        sb.append(checkedSettingUrl(v.getTag().toString()));
 
         StringRequest favoriteHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
             @Override
@@ -129,8 +119,8 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
             parseJsonData(string);
 
             for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
-                adapter.addItem(new FavoriteHistoryItem(gListFavoriteHistory.get(i).get("addressInfo"),
-                        gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("pushDescription")));
+                adapter.addItem(new FavoriteItem(gListFavoriteHistory.get(i).get("addressInfo"),
+                        gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("favoriteDescription")));
             }
             gFavoriteHistoryLv.setAdapter(adapter);
 
@@ -143,7 +133,7 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
             dialog.dismiss();
             }
         });
-        RequestQueue rQueue = Volley.newRequestQueue(FavoriteHistoryActivity.this);
+        RequestQueue rQueue = Volley.newRequestQueue(FavoriteActivity.this);
         rQueue.add(favoriteHistoryItemRequest);
     }
 
@@ -154,7 +144,7 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
 
             JSONObject object = new JSONObject(jsonString);
 
-            JSONArray favoriteHistoryArray = object.getJSONArray("favoriteHistoryList");
+            JSONArray favoriteHistoryArray = object.getJSONArray("favoriteList");
 
             for(int i = 0; i < favoriteHistoryArray.length(); i ++ ) {
 
@@ -176,16 +166,7 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
         dialog.dismiss();
     }
 
-    public void allCheckedClickEvent() {
-        gWmChk.setChecked(false);
-        gTmChk.setChecked(false);
-        gGmChk.setChecked(false);
-        gSmChk.setChecked(false);
-    }
-
     public String checkedSettingUrl(String pCheckBoxTag) {
-
-        gAllChk.setChecked(false);
 
         StringBuilder rItemSetting = new StringBuilder();
         //gWmChk, gTmChk, gGmChk, gSmChk
@@ -211,5 +192,26 @@ public class FavoriteHistoryActivity extends BaseActivity implements View.OnClic
             rItemSetting.append("?item=" + gSmChk.getTag());
         }
         return rItemSetting.toString();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
     }
 }

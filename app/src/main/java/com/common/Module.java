@@ -46,4 +46,17 @@ public class Module extends AppCompatActivity{
         editor.putInt("autoLogin",pAutoLogin);
         editor.commit();
     }
+
+    // 값 불러오기
+    static public int getLocation(Context context){
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        return pref.getInt("location", 0);
+    }
+
+    static public void setLocation(Context context, int pAutoLogin) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("location",pAutoLogin);
+        editor.commit();
+    }
 }

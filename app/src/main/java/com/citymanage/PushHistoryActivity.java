@@ -54,7 +54,8 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_history);
-        setupToolbar();
+        super.setupToolbar();
+        setTitle(R.string.navigation_push_history);
 
         /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
         gWmChk = (CheckBox) findViewById(R.id.wmCheckBox);
@@ -216,7 +217,6 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.map_actions, menu);
         return true;
     }
 

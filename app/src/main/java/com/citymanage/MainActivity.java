@@ -91,6 +91,38 @@ public class MainActivity extends SideNaviBaseActivity{
     }
 
     @Override
+    public void goToNavDrawerItem(int item) {
+        switch (item) {
+            case R.id.nav_favorite:
+                startActivity(new Intent(this, FavoriteActivity.class));
+                break;
+            case R.id.nav_pushHistory:
+                startActivity(new Intent(this, PushHistoryActivity.class));
+                break;
+            case R.id.nav_settings:
+                startActivity(new Intent(this, SettingActivity.class));
+                break;
+            case R.id.nav_wm:
+                startActivity(new Intent(this, WmListActivity.class));
+                break;
+            case R.id.nav_tm:
+                startActivity(new Intent(this, TmListActivity.class));
+                break;
+            case R.id.nav_gm:
+                startActivity(new Intent(this, GmListActivity.class));
+                break;
+            case R.id.nav_sm:
+                startActivity(new Intent(this, SmListActivity.class));
+                break;
+            case R.id.nav_logout:
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.putExtra("logout","logout");
+                startActivity(intent);
+                break;
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         createCloseAlertDialog();
     }

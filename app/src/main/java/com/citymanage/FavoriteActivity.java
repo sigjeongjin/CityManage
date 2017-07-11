@@ -47,6 +47,7 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         super.setupToolbar();
+        setTitle(R.string.navigation_favorite);
 
         /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
         gWmChk = (CheckBox) findViewById(R.id.wmCheckBox);
@@ -194,7 +195,6 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.map_actions, menu);
         return true;
     }
 

@@ -37,6 +37,6 @@ public class BaseActivity extends AppCompatActivity {
     /* 프로그램 실행 후 필요한 상수 값들 정의 끝 */
 
     public ProgressDialog dialog; //프로그레스바 다이얼로그
-    int ResultCode; //response 응답코드 변수
+    int resultCode; //response 응답코드 변수
     String url = ""; //요청 cityUrl 셋팅 변수
 }

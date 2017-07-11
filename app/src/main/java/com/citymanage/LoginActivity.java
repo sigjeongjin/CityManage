@@ -2,7 +2,6 @@ package com.citymanage;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,19 +23,12 @@ import org.json.JSONObject;
 
 public class LoginActivity extends BaseActivity {
 
-    //전역 변수 , result 코드 생성
-    String resultCode;
-
-    //자동 로드인 준비
-    SharedPreferences setting;
-    SharedPreferences.Editor editor;
-
 
     private Button btnregister;
     CheckBox autologin;
     TextView loginTv;
     EditText email, password;
-    String url = "http://192.168.0.230:3000/login?loginId=bang&pwd=1234";
+
 //    StringBuilder url2= "http";
 
     ProgressDialog dialog;
@@ -94,20 +86,23 @@ public class LoginActivity extends BaseActivity {
             dialog.setMessage("Loading....");
             dialog.show();
 
+            StringBuilder sb = new StringBuilder(LOGIN);
+                sb.append("?loginId=").append(email.getText().toString()).append("&pwd=").append(password.getText().toString());
+
             //정보를 보내고 받음.
-            StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String string) {
                     parseJsonData(string);
 
                     // 코드를 400으로 받은경우 메세지 출력
-                    if(resultCode.equals("400")) {
+                    if(resultCode == 400) {
                         Toast.makeText(LoginActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
 
                     }
 
                     //코드를 200으로 받은경우 메세지 출력 및 실행
-                    else if(resultCode.equals ("200")) {
+                    else if(resultCode == 200) {
 
                         Intent intent;
 
@@ -180,7 +175,9 @@ public class LoginActivity extends BaseActivity {
         try {
             JSONObject object = new JSONObject(jsonString);
 
-            resultCode = object.getString("resultCode");
+            resultCode = object.getInt("resultCode");
+
+            Log.i("resultCode", String.valueOf(resultCode));
 
         } catch (JSONException e) {
             e.printStackTrace();

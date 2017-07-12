@@ -22,7 +22,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/addressInput"
+                    android:id="@+id/streetFindEv"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"

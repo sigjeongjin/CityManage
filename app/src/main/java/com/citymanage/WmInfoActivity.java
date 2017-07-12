@@ -3,8 +3,9 @@ package com.citymanage;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +18,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.citymanage.BaseActivity.TM_INFO_URL;
-
-public class WmInfoActivity extends AppCompatActivity {
+public class WmInfoActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
 
@@ -43,6 +42,8 @@ public class WmInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tm_info);
+        super.setupToolbar();
+        setTitle(R.string.wm_title);
 
         sensorIdTv          = (TextView) findViewById(R.id.sensorIdTv);
         locationTv          = (TextView) findViewById(R.id.locationTv);
@@ -105,5 +106,26 @@ public class WmInfoActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         dialog.dismiss();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.favorite_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
     }
 }

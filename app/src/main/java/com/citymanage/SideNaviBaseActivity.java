@@ -108,6 +108,7 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
 //                finish();
 //                break;
             case R.id.nav_favorite:
+                Log.i("여기로와야되는데","여기로와야되는데");
                 startActivity(new Intent(this, FavoriteActivity.class));
                 finish();
                 break;

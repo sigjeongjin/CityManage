@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +18,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SmInfoActivity extends BaseActivity {
+public class SmInfoActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
 
@@ -39,6 +41,8 @@ public class SmInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sm_info);
+        super.setupToolbar();
+        setTitle(R.string.sm_title);
 
         sensorIdTv          = (TextView) findViewById(R.id.sensorIdTv);
         locationTv          = (TextView) findViewById(R.id.locationTv);
@@ -103,5 +107,26 @@ public class SmInfoActivity extends BaseActivity {
             e.printStackTrace();
         }
         dialog.dismiss();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.favorite_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
     }
 }

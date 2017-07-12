@@ -133,7 +133,7 @@ public class WmListActivity extends SideNaviBaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
+            Intent intent = new Intent(getApplicationContext(), WmInfoActivity.class);
             intent.putExtra(SENSORID,mListHashTm.get(position).get(SENSORID));
             startActivity(intent);
 

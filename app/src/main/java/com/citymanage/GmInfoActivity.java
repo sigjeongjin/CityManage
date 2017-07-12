@@ -27,16 +27,14 @@ public class GmInfoActivity extends SideNaviBaseActivity {
     TextView sensorIdTv;
     TextView locationTv;
     TextView installDayTv;
-    TextView fireSensorInfoTv;
-    TextView stinkSensorInfoTv;
-    TextView garbageSensorInfoTv;
+    TextView gasDensitySensorInfoTv;
+    TextView pressSensorInfoTv;
 
     String strSensorId;
     String strLocation;
     String installDay;
-    String fireSensorInfo;
-    String stinkSensorInfo;
-    String garbageSensorInfo;
+    String gasDensitySensorInfo;
+    String pressSensorInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +43,11 @@ public class GmInfoActivity extends SideNaviBaseActivity {
         super.setupToolbar();
         setTitle(R.string.gm_title);
 
-        sensorIdTv          = (TextView) findViewById(R.id.sensorIdTv);
-        locationTv          = (TextView) findViewById(R.id.locationTv);
-        installDayTv        = (TextView) findViewById(R.id.installDayTv);
-        fireSensorInfoTv    = (TextView) findViewById(R.id.fireSensorInfoTv);
-        stinkSensorInfoTv   = (TextView) findViewById(R.id.stinkSensorInfoTv);
-        garbageSensorInfoTv = (TextView) findViewById(R.id.garbageSensorInfoTv);
+        sensorIdTv              = (TextView) findViewById(R.id.sensorIdTv);
+        locationTv              = (TextView) findViewById(R.id.locationTv);
+        installDayTv            = (TextView) findViewById(R.id.installDayTv);
+        gasDensitySensorInfoTv  = (TextView) findViewById(R.id.gasDensitySensorInfoTv);
+        pressSensorInfoTv       = (TextView) findViewById(R.id.pressSensorInfoTv);
 
         Intent intent = getIntent();
         String sensorId = intent.getStringExtra(SENSORID);
@@ -71,9 +68,8 @@ public class GmInfoActivity extends SideNaviBaseActivity {
                 sensorIdTv.setText(strSensorId);
                 locationTv.setText(strLocation);
                 installDayTv.setText(installDay);
-                fireSensorInfoTv.setText(fireSensorInfo);
-                stinkSensorInfoTv.setText(stinkSensorInfo);
-                garbageSensorInfoTv.setText(garbageSensorInfo);
+                gasDensitySensorInfoTv.setText(gasDensitySensorInfo);
+                pressSensorInfoTv.setText(pressSensorInfo);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -93,12 +89,13 @@ public class GmInfoActivity extends SideNaviBaseActivity {
         try {
             JSONObject object = new JSONObject(jsonString);
 
+            Log.i("JSONOBJECT : " , object.toString());
+
             strSensorId = object.getString("sensorId");
             strLocation = object.getString("addressInfo");
             installDay = object.getString("installDay");
-            fireSensorInfo = object.getString("fireSensorInfo");
-            stinkSensorInfo = object.getString("stinkSensorInfo");
-            garbageSensorInfo = object.getString("garbageSensorInfo");
+            gasDensitySensorInfo = object.getString("gasDensity");
+            pressSensorInfo = object.getString("press");
 
         } catch (JSONException e) {
             e.printStackTrace();

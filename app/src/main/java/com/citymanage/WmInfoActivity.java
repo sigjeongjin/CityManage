@@ -27,30 +27,29 @@ public class WmInfoActivity extends SideNaviBaseActivity {
     TextView sensorIdTv;
     TextView locationTv;
     TextView installDayTv;
-    TextView fireSensorInfoTv;
-    TextView stinkSensorInfoTv;
-    TextView garbageSensorInfoTv;
+    TextView waterLevelSensorInfoTv;
+    TextView waterQualitySensorInfoTv;
+
 
     String strSensorId;
     String strLocation;
     String installDay;
-    String fireSensorInfo;
-    String stinkSensorInfo;
-    String garbageSensorInfo;
+    String waterLevel;
+    String waterQuality;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tm_info);
+        setContentView(R.layout.activity_wm_info);
         super.setupToolbar();
         setTitle(R.string.wm_title);
 
-        sensorIdTv          = (TextView) findViewById(R.id.sensorIdTv);
-        locationTv          = (TextView) findViewById(R.id.locationTv);
-        installDayTv        = (TextView) findViewById(R.id.installDayTv);
-        fireSensorInfoTv    = (TextView) findViewById(R.id.fireSensorInfoTv);
-        stinkSensorInfoTv   = (TextView) findViewById(R.id.stinkSensorInfoTv);
-        garbageSensorInfoTv = (TextView) findViewById(R.id.garbageSensorInfoTv);
+        sensorIdTv                  = (TextView) findViewById(R.id.sensorIdTv);
+        locationTv                  = (TextView) findViewById(R.id.locationTv);
+        installDayTv                = (TextView) findViewById(R.id.installDayTv);
+        waterLevelSensorInfoTv      = (TextView) findViewById(R.id.waterLevelSensorInfoTv);
+        waterQualitySensorInfoTv    = (TextView) findViewById(R.id.waterQualitySensorInfoTv);
 
         Intent intent = getIntent();
         String sensorId = intent.getStringExtra(SENSORID);
@@ -68,12 +67,14 @@ public class WmInfoActivity extends SideNaviBaseActivity {
             public void onResponse(String string) {
                 parseJsonData(string);
 
+                Log.i("sensorId: ", strSensorId);
+
                 sensorIdTv.setText(strSensorId);
                 locationTv.setText(strLocation);
                 installDayTv.setText(installDay);
-                fireSensorInfoTv.setText(fireSensorInfo);
-                stinkSensorInfoTv.setText(stinkSensorInfo);
-                garbageSensorInfoTv.setText(garbageSensorInfo);
+                waterLevelSensorInfoTv.setText(waterLevel);
+                waterQualitySensorInfoTv.setText(waterQuality);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -98,9 +99,8 @@ public class WmInfoActivity extends SideNaviBaseActivity {
             strSensorId = object.getString("sensorId");
             strLocation = object.getString("addressInfo");
             installDay = object.getString("installDay");
-            fireSensorInfo = object.getString("fireSensorInfo");
-            stinkSensorInfo = object.getString("stinkSensorInfo");
-            garbageSensorInfo = object.getString("garbageSensorInfo");
+            waterLevel = object.getString("waterLevel");
+            waterQuality = object.getString("waterQuality");
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -86,11 +86,11 @@
                     android:id="@+id/textView4"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="불꽃감지 센서 정보 "
+                    android:text="압력(농도) 센서 정보 "
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/fireSensorInfoTv"
+                    android:id="@+id/gasDensitySensorInfoTv"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -106,37 +106,16 @@
                     android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="악취감지 센서 정보 "
+                    android:text="충격감지 센서 정보 "
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/stinkSensorInfoTv"
+                    android:id="@+id/pressSensorInfoTv"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:textSize="17dp" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:text="쓰레기양 감지 센서 정보 "
-                    android:textSize="17dp" />
-
-                <TextView
-                    android:id="@+id/garbageSensorInfoTv"
-                    style="@style/EditTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:textSize="17dp" />
-            </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
     <include layout="@layout/include_navigation" />

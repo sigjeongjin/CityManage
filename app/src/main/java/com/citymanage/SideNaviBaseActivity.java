@@ -102,6 +102,8 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
      * @param item the selected navigation item
      */
     public void goToNavDrawerItem(int item) {
+        Log.i("goToNavDrawerItem","goToNavDrawerItem");
+
         switch (item) {
 //            case R.id.nav_home:
 //                startActivity(new Intent(this, MainActivity.class));

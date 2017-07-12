@@ -112,11 +112,36 @@ public class MainActivity extends SideNaviBaseActivity{
                 startActivity(new Intent(this, SmListActivity.class));
                 break;
             case R.id.nav_logout:
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.putExtra("logout","logout");
-                startActivity(intent);
+                DialogInterface.OnClickListener logoutListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        moveLoginActivity();
+                    }
+                };
+
+                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                };
+
+                new AlertDialog.Builder(this)
+                        .setTitle("정말 로그아웃 하시겠습니까?")
+                        .setPositiveButton("로그아웃", logoutListener)
+                        .setNegativeButton("취소", cancelListener)
+                        .show();
                 break;
+
         }
+    }
+
+    //로그아웃시 화면 이동 함수
+    public void moveLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("logout", "logout");
+        startActivity(intent);
+        finish();
     }
 
     @Override

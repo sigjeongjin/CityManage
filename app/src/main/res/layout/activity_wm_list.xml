@@ -53,14 +53,9 @@
                 <ListView
                     android:id="@+id/wmLv"
                     android:layout_width="match_parent"
-                    android:layout_height="341dp"
+                    android:layout_height="match_parent"
                     android:background="#ffffff" />
 
-                <Button
-                    android:id="@+id/wmMapActivityGo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="맵" />
             </LinearLayout>
 
         </LinearLayout>

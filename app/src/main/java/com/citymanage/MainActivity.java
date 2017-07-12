@@ -11,19 +11,16 @@ import android.widget.Button;
 
 public class MainActivity extends SideNaviBaseActivity{
 
-    Button btnPushHistoryActivityGo;
     Button wmListActivityGo;
     Button gmListActivityGo;
     Button tmListActivityGo;
     Button smListActivityGo;
-    Button settingActivityGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setupToolbar();
-
+        super.setupToolbar();
 
         //수질관리 화면으로 이동
         gmListActivityGo = (Button) findViewById(R.id.gmListActivityGo);

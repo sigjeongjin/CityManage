@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -86,6 +88,10 @@ public class RegisterActivity extends AppCompatActivity {
         url.append("&phone=" + hp.getText().toString());
 
         gProfilShot = (ImageView) findViewById(R.id.profilShot);
+
+        gProfilShot.setBackground(new ShapeDrawable(new OvalShape()));
+        gProfilShot.setClipToOutline(true);
+
         gProfilShot.setOnClickListener(new View.OnClickListener() {
 
             @Override

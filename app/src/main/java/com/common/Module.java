@@ -2,6 +2,7 @@ package com.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -57,6 +58,19 @@ public class Module extends AppCompatActivity{
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("location",pAutoLogin);
+        editor.commit();
+    }
+
+    // 값 불러오기
+    static public Uri getProfileImageUrl(Context context){
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        return Uri.parse(pref.getString("profileImageUrl", ""));
+    }
+
+    static public void setProfileImageUrl(Context context, String profileImageUrl) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("context",profileImageUrl);
         editor.commit();
     }
 }

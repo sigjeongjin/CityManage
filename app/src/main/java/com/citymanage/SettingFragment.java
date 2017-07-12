@@ -4,6 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -53,6 +56,9 @@ public class SettingFragment extends Fragment {
         gAutoLoginOnOffBtn = (ToggleButton) rootView.findViewById(R.id.autoLoginOnOffButton);
         gPwdConfirmGoBtn = (Button) rootView.findViewById(R.id.gPwdConfirmGoBtn);
         gProfileChangeIv = (ImageView) rootView.findViewById(R.id.profileChangeIv);
+
+        gProfileChangeIv.setBackground(new ShapeDrawable(new OvalShape()));
+        gProfileChangeIv.setClipToOutline(true);
 
         gAutoLoginOnOffBtn.setChecked((0 == Module.getAutoLogin(getContext())) ?  false : true);
 
@@ -121,8 +127,6 @@ public class SettingFragment extends Fragment {
     }
 
     public void callCamera() {
-
-        Log.i("callCamera", "callCamera");
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,

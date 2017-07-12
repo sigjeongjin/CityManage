@@ -23,7 +23,8 @@ public class SettingActivity extends SideNaviBaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        setupToolbar();
+        super.setupToolbar();
+        setTitle(R.string.navigation_settings);
 
         settingFragment = (SettingFragment) getSupportFragmentManager().findFragmentById(R.id.settingFragment);
         passwordConfirmFragment = new PasswordConfirmFragment();
@@ -55,7 +56,6 @@ public class SettingActivity extends SideNaviBaseActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.map_actions, menu);
         return true;
     }
 
@@ -68,12 +68,6 @@ public class SettingActivity extends SideNaviBaseActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    @Override
-//    protected int getSelfNavDrawerItem() {
-//        Log.i("getSelfNavDrawerItem","getSelfNavDrawerItem");
-//        return R.id.nav_favorite;
-//    }
 
     @Override
     public boolean providesActivityToolbar() {

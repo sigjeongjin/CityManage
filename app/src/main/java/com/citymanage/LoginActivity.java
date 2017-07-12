@@ -102,7 +102,6 @@ public class LoginActivity extends BaseActivity {
                     // 코드를 400으로 받은경우 메세지 출력
                     if(resultCode == 400) {
                         Toast.makeText(LoginActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
-
                     }
 
                     //코드를 200으로 받은경우 메세지 출력 및 실행
@@ -128,7 +127,6 @@ public class LoginActivity extends BaseActivity {
 
                             Module.setRecordId(getApplicationContext(),email.getText().toString());
                             Module.setRecordPwd(getApplicationContext(), password.getText().toString());
-
                         }
 
                         if(autoLoginChk.isChecked()){
@@ -136,6 +134,8 @@ public class LoginActivity extends BaseActivity {
                         } else {
                             Module.setAutoLogin(getApplicationContext(),0);
                         }
+
+
                         startActivity(intent);
                         finish();
                     }
@@ -186,8 +186,8 @@ public class LoginActivity extends BaseActivity {
             JSONObject object = new JSONObject(jsonString);
 
             resultCode = object.getInt("resultCode");
-
-            Log.i("resultCode", String.valueOf(resultCode));
+            String profileImageUrl = object.getString("profileImageUrl");
+            Module.setProfileImageUrl(getApplicationContext(),profileImageUrl);
 
         } catch (JSONException e) {
             e.printStackTrace();

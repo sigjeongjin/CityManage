@@ -2,13 +2,17 @@ package com.citymanage;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 /**
  * Created by we25 on 2017-07-11.
@@ -27,6 +31,8 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private Toolbar actionBarToolbar;
 
+    ImageView profilShot;
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -44,6 +50,7 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         if (navigationView != null) {
             setupDrawerSelectListener(navigationView);
             setSelectedItem(navigationView);
@@ -151,7 +158,6 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
         return getSupportActionBar();
     }
 
-
     /**
      * Returns the navigation drawer item that corresponds to this Activity. Subclasses
      * have to override this method.
@@ -165,6 +171,17 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
             return;
 
         drawerLayout.openDrawer(GravityCompat.START);
+
+        /* 사이드 네비게이션바 프로필 이미지 셋팅*/
+        profilShot = (ImageView) findViewById(R.id.profilShot);
+
+        if(profilShot ==  null) {
+            Log.i("null 입니다","null 입니다.");
+        } else {
+            profilShot.setImageResource(R.drawable.bearbang);
+            profilShot.setBackground(new ShapeDrawable(new OvalShape()));
+            profilShot.setClipToOutline(true);
+        }
     }
 
     protected void closeDrawer() {

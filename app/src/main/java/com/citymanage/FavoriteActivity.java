@@ -1,10 +1,12 @@
 package com.citymanage;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,8 +25,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.citymanage.R.id.favoriteHistoryListView;
+
 
 public class FavoriteActivity extends SideNaviBaseActivity implements View.OnClickListener {
+
+    final static String SENSORID = "sensorId";
 
     //wm : 수질    tm : 쓰레기통   gm : 도시가스   sm : 금연구역
     CheckBox gWmChk, gTmChk, gGmChk, gSmChk;
@@ -67,7 +73,9 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         gSmChk.setOnClickListener(this);
         /** 체크 박스 셋팅 끝(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
 
-        gFavoriteHistoryLv = (ListView) findViewById(R.id.favoriteHistoryListView);
+        gWmChk.setChecked(true);
+
+        gFavoriteHistoryLv = (ListView) findViewById(favoriteHistoryListView);
 
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading....");
@@ -95,6 +103,17 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
 
         RequestQueue rQueue = Volley.newRequestQueue(FavoriteActivity.this);
         rQueue.add(favoriteHistoryRequest);
+
+        gFavoriteHistoryLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
+                intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
+                startActivity(intent);
+
+            }
+        });
     }
 
     @Override

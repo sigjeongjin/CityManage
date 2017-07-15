@@ -91,8 +91,6 @@ public class GmInfoActivity extends SideNaviBaseActivity {
         try {
             JSONObject object = new JSONObject(jsonString);
 
-            Log.i("JSONOBJECT : " , object.toString());
-
             strSensorId = object.getString("sensorId");
             strLocation = object.getString("addressInfo");
             installDay = object.getString("installDay");

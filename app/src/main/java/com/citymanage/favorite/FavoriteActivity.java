@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.favorite;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.citymanage.R;
+import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.tm.TmInfoActivity;
 
 import org.json.JSONArray;
@@ -26,14 +28,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- *
- * @author 박현진
- * @version 1.0.0
- * @since 2017-06-29 오전 10:59
- **/
+import static com.citymanage.R.id.favoriteHistoryListView;
 
-public class PushHistoryActivity extends SideNaviBaseActivity implements View.OnClickListener {
+
+public class FavoriteActivity extends SideNaviBaseActivity implements View.OnClickListener {
 
     final static String SENSORID = "sensorId";
 
@@ -44,30 +42,27 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
     static final String TM = "tm";
     static final String GM = "gm";
     static final String SM = "sm";
-    static final String ALL = "all";
 
-    //super 클래스에서 pushhistoryurl 받아오기
-    String gPushHistoryUrl = PUSH_HISTORY_HOST;
+    //super 클래스에서 favoritehistoryurl 받아오기
+    String gFavoriteHistoryUrl = FAVORITE_HOST; // URL 변경
 
-    ListView gPushHistoryLv; //통신 후 받은 데이터 표현할 리스트
-    PushHistoryAdapter adapter; // 위의 리스트 adapter
+    ListView gFavoriteHistoryLv; //통신 후 받은 데이터 표현할 리스트
+    FavoriteAdapter adapter; // 위의 리스트 adapter
 
-    List<HashMap<String,String>> gListPushHistory = new ArrayList<HashMap<String, String>>();
+    List<HashMap<String,String>> gListFavoriteHistory = new ArrayList<HashMap<String, String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_push_history);
+        setContentView(R.layout.activity_favorite);
         super.setupToolbar();
-        setTitle(R.string.navigation_push_history);
+        setTitle(R.string.navigation_favorite);
 
         /** 체크 박스 셋팅 시작(객체 생성, 체크 박스 태그 생성, 체크 박스 리스너 등록) **/
         gWmChk = (CheckBox) findViewById(R.id.wmCheckBox);
         gTmChk = (CheckBox) findViewById(R.id.tmCheckBox);
         gGmChk = (CheckBox) findViewById(R.id.gmCheckBox);
         gSmChk = (CheckBox) findViewById(R.id.smCheckBox);
-
-        //모두 검색 하는 체크 박스에 초기 체크 데이터 셋팅
 
         gWmChk.setTag(WM);
         gTmChk.setTag(TM);
@@ -83,23 +78,23 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
 
         gWmChk.setChecked(true);
 
-        gPushHistoryLv = (ListView) findViewById(R.id.pushHistoryListView);
+        gFavoriteHistoryLv = (ListView) findViewById(favoriteHistoryListView);
 
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringRequest pushHistoryRequest = new StringRequest(gPushHistoryUrl, new Response.Listener<String>() {
+        StringRequest favoriteHistoryRequest = new StringRequest(gFavoriteHistoryUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
-                adapter = new PushHistoryAdapter(getApplicationContext());
+                adapter = new FavoriteAdapter(getApplicationContext());
 
-                for(int i = 0; i < gListPushHistory.size(); i ++ ) {
-                    adapter.addItem(new PushHistoryItem(gListPushHistory.get(i).get("addressInfo"),
-                            gListPushHistory.get(i).get("sensorId"), gListPushHistory.get(i).get("pushDescription")));
+                for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
+                    adapter.addItem(new FavoriteItem(gListFavoriteHistory.get(i).get("addressInfo"),
+                            gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("favoriteDescription")));
                 }
-                gPushHistoryLv.setAdapter(adapter);
+                gFavoriteHistoryLv.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -109,15 +104,15 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(PushHistoryActivity.this);
-        rQueue.add(pushHistoryRequest);
+        RequestQueue rQueue = Volley.newRequestQueue(FavoriteActivity.this);
+        rQueue.add(favoriteHistoryRequest);
 
-        gPushHistoryLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gFavoriteHistoryLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
-                intent.putExtra(SENSORID,gListPushHistory.get(position).get(SENSORID));
+                intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
                 startActivity(intent);
 
             }
@@ -126,19 +121,15 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        dialog = new ProgressDialog(PushHistoryActivity.this);
+        dialog = new ProgressDialog(FavoriteActivity.this);
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringBuilder sb = new StringBuilder(gPushHistoryUrl);
+        StringBuilder sb = new StringBuilder(gFavoriteHistoryUrl);
 
-        if(v.getTag().equals(ALL)) {
-            allCheckedClickEvent();
-        } else {
-            sb.append(checkedSettingUrl(v.getTag().toString()));
-        }
+        sb.append(checkedSettingUrl(v.getTag().toString()));
 
-        StringRequest pushHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
+        StringRequest favoriteHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
 
@@ -148,13 +139,13 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
 
             parseJsonData(string);
 
-            for(int i = 0; i < gListPushHistory.size(); i ++ ) {
-                adapter.addItem(new PushHistoryItem(gListPushHistory.get(i).get("addressInfo"),
-                        gListPushHistory.get(i).get("sensorId"), gListPushHistory.get(i).get("pushDescription")));
+            for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
+                adapter.addItem(new FavoriteItem(gListFavoriteHistory.get(i).get("addressInfo"),
+                        gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("favoriteDescription")));
             }
-            gPushHistoryLv.setAdapter(adapter);
+            gFavoriteHistoryLv.setAdapter(adapter);
 
-            gPushHistoryLv.deferNotifyDataSetChanged();
+            gFavoriteHistoryLv.deferNotifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -163,44 +154,37 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
             dialog.dismiss();
             }
         });
-        RequestQueue rQueue = Volley.newRequestQueue(PushHistoryActivity.this);
-        rQueue.add(pushHistoryItemRequest);
+        RequestQueue rQueue = Volley.newRequestQueue(FavoriteActivity.this);
+        rQueue.add(favoriteHistoryItemRequest);
     }
 
     //통신 후 json 파싱
     void parseJsonData(String jsonString) {
         try {
-            gListPushHistory.clear();
+            gListFavoriteHistory.clear();
 
             JSONObject object = new JSONObject(jsonString);
 
-            JSONArray pushHistoryArray = object.getJSONArray("pushHistoryList");
+            JSONArray favoriteHistoryArray = object.getJSONArray("favoriteList");
 
-            for(int i = 0; i < pushHistoryArray.length(); i ++ ) {
+            for(int i = 0; i < favoriteHistoryArray.length(); i ++ ) {
 
                 HashMap<String,String> hashTemp = new HashMap<>();
 
-                String addressInfo = pushHistoryArray.getJSONObject(i).getString("addressInfo");
-                String sensorId = pushHistoryArray.getJSONObject(i).getString("sensorId");
-                String pushDescription = pushHistoryArray.getJSONObject(i).getString("pushDescription");
+                String addressInfo = favoriteHistoryArray.getJSONObject(i).getString("addressInfo");
+                String sensorId = favoriteHistoryArray.getJSONObject(i).getString("sensorId");
+                String favoriteDescription = favoriteHistoryArray.getJSONObject(i).getString("favoriteDescription");
 
                 hashTemp.put("addressInfo",addressInfo);
                 hashTemp.put("sensorId",sensorId);
-                hashTemp.put("pushDescription",pushDescription);
+                hashTemp.put("favoriteDescription",favoriteDescription);
 
-                gListPushHistory.add(i,hashTemp);
+                gListFavoriteHistory.add(i,hashTemp);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         dialog.dismiss();
-    }
-
-    public void allCheckedClickEvent() {
-        gWmChk.setChecked(false);
-        gTmChk.setChecked(false);
-        gGmChk.setChecked(false);
-        gSmChk.setChecked(false);
     }
 
     public String checkedSettingUrl(String pCheckBoxTag) {
@@ -244,11 +228,6 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected int getSelfNavDrawerItem() {
-        return R.id.nav_favorite;
     }
 
     @Override

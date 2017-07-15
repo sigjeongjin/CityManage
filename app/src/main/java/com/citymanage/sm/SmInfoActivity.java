@@ -69,8 +69,6 @@ public class SmInfoActivity extends SideNaviBaseActivity {
             public void onResponse(String string) {
                 parseJsonData(string);
 
-                Log.i("strSensorId",strSensorId);
-
                 sensorIdTv.setText(strSensorId);
                 locationTv.setText(strLocation);
                 installDayTv.setText(installDay);
@@ -95,8 +93,6 @@ public class SmInfoActivity extends SideNaviBaseActivity {
     void parseJsonData(String jsonString) {
         try {
             JSONObject object = new JSONObject(jsonString);
-
-            Log.i("JSON OBJECT " , object.toString());
 
             strSensorId = object.getString("sensorId");
             strLocation = object.getString("addressInfo");

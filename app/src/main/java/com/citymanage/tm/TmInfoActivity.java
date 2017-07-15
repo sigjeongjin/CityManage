@@ -95,8 +95,6 @@ public class TmInfoActivity extends SideNaviBaseActivity {
         try {
             JSONObject object = new JSONObject(jsonString);
 
-            Log.i("JSON OBJECT " , object.toString());
-
             strSensorId = object.getString("sensorId");
             strLocation = object.getString("addressInfo");
             installDay = object.getString("installDay");

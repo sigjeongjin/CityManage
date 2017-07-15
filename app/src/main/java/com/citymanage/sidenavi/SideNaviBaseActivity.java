@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.sidenavi;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,7 +14,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.citymanage.BaseActivity;
+import com.citymanage.LoginActivity;
+import com.citymanage.R;
+import com.citymanage.SettingActivity;
+import com.citymanage.favorite.FavoriteActivity;
 import com.citymanage.gm.GmListActivity;
+import com.citymanage.push.PushHistoryActivity;
 import com.citymanage.sm.SmListActivity;
 import com.citymanage.tm.TmListActivity;
 import com.citymanage.wm.WmListActivity;
@@ -107,15 +113,12 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
      * @param item the selected navigation item
      */
     public void goToNavDrawerItem(int item) {
-        Log.i("goToNavDrawerItem","goToNavDrawerItem");
-
         switch (item) {
 //            case R.id.nav_home:
 //                startActivity(new Intent(this, MainActivity.class));
 //                finish();
 //                break;
             case R.id.nav_favorite:
-                Log.i("여기로와야되는데","여기로와야되는데");
                 startActivity(new Intent(this, FavoriteActivity.class));
                 finish();
                 break;

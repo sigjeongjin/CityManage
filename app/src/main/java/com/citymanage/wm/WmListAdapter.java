@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.wm;
 
 import android.content.Context;
 import android.view.View;
@@ -11,11 +11,11 @@ import java.util.ArrayList;
  * Created by we25 on 2017-06-26.
  */
 
-public class GmListAdapter extends BaseAdapter {
-    ArrayList<GmListItem> items = new ArrayList<GmListItem>();
+public class WmListAdapter extends BaseAdapter {
+    ArrayList<WmListItem> items = new ArrayList<WmListItem>();
     Context context;
 
-    public GmListAdapter(Context context) {
+    public WmListAdapter(Context context) {
         this.context = context;
     }
 
@@ -24,7 +24,7 @@ public class GmListAdapter extends BaseAdapter {
         return items.size();
     }
 
-    public void addItem(GmListItem item) {
+    public void addItem(WmListItem item) {
         items.add(item);
     }
 
@@ -44,9 +44,9 @@ public class GmListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        GmListItemView view = new GmListItemView(context);
+        WmListItemView view = new WmListItemView(context);
 
-        GmListItem item = items.get(position);
+        WmListItem item = items.get(position);
         view.setAddressInfo(item.getAddressInfo());
         view.setSensorId(item.getSensorId());
         return view;

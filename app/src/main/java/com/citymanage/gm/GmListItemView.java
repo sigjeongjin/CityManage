@@ -1,10 +1,12 @@
-package com.citymanage;
+package com.citymanage.gm;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.citymanage.R;
 
 import static com.citymanage.R.id.addressInfoTv;
 import static com.citymanage.R.id.sensorIdTv;

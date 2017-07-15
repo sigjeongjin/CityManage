@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.wm;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.citymanage.R;
+import com.citymanage.SideNaviBaseActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,27 +32,27 @@ import java.util.List;
 
 import static com.citymanage.R.id.action_settings;
 
-public class TmListActivity extends SideNaviBaseActivity {
+public class WmListActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
 
     String resultCode;
 
-    TmListAdapter adapter; // 위의 리스트 adapter
-    ListView tmListView;
+    WmListAdapter adapter; // 위의 리스트 adapter
+    ListView wmListView;
     EditText streetFindEv;
     Button searchBtn;
 
-    List<HashMap<String,String>> mListHashTm = new ArrayList<HashMap<String, String>>();
+    List<HashMap<String,String>> mListHashWm = new ArrayList<HashMap<String, String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tm_list);
+        setContentView(R.layout.activity_wm_list);
         super.setupToolbar();
-        setTitle(R.string.tm_title);
+        setTitle(R.string.wm_title);
 
-        tmListView = (ListView) findViewById(R.id.tmLv);
+        wmListView = (ListView) findViewById(R.id.wmLv);
         streetFindEv = (EditText) findViewById(R.id.streetFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
@@ -62,13 +64,13 @@ public class TmListActivity extends SideNaviBaseActivity {
             @Override
             public void onResponse(String string) {
                 parseJsonData(string);
-                adapter = new TmListAdapter(getApplicationContext());
+                adapter = new WmListAdapter(getApplicationContext());
 
-                for(int i = 0; i < mListHashTm.size(); i ++ ) {
-                    adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
-                            mListHashTm.get(i).get("sensorId")));
+                for(int i = 0; i < mListHashWm.size(); i ++ ) {
+                    adapter.addItem(new WmListItem(mListHashWm.get(i).get("addressInfo"),
+                            mListHashWm.get(i).get("sensorId")));
                 }
-                tmListView.setAdapter(adapter);
+                wmListView.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -79,7 +81,7 @@ public class TmListActivity extends SideNaviBaseActivity {
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(TmListActivity.this);
+        RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
         rQueue.add(pushHistoryRequest);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +89,7 @@ public class TmListActivity extends SideNaviBaseActivity {
             @Override
             public void onClick(View v) {
 
-                dialog = new ProgressDialog(TmListActivity.this);
+                dialog = new ProgressDialog(WmListActivity.this);
                 dialog.setMessage("Loading....");
                 dialog.show();
 
@@ -107,13 +109,13 @@ public class TmListActivity extends SideNaviBaseActivity {
                     @Override
                     public void onResponse(String string) {
                         parseJsonData(string);
-                        adapter = new TmListAdapter(getApplicationContext());
+                        adapter = new WmListAdapter(getApplicationContext());
 
-                        for(int i = 0; i < mListHashTm.size(); i ++ ) {
-                            adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
-                                    mListHashTm.get(i).get("sensorId")));
+                        for(int i = 0; i < mListHashWm.size(); i ++ ) {
+                            adapter.addItem(new WmListItem(mListHashWm.get(i).get("addressInfo"),
+                                    mListHashWm.get(i).get("sensorId")));
                         }
-                        tmListView.setAdapter(adapter);
+                        wmListView.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -124,17 +126,17 @@ public class TmListActivity extends SideNaviBaseActivity {
                     }
                 });
 
-                RequestQueue rQueue = Volley.newRequestQueue(TmListActivity.this);
+                RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
                 rQueue.add(pushHistoryRequest);
             }
         });
 
-        tmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        wmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
-            intent.putExtra(SENSORID,mListHashTm.get(position).get(SENSORID));
+            Intent intent = new Intent(getApplicationContext(), WmInfoActivity.class);
+            intent.putExtra(SENSORID,mListHashWm.get(position).get(SENSORID));
             startActivity(intent);
 
             }
@@ -144,7 +146,7 @@ public class TmListActivity extends SideNaviBaseActivity {
     //통신 후 json 파싱
     void parseJsonData(String jsonString) {
         try {
-            mListHashTm.clear();
+            mListHashWm.clear();
 
             JSONObject object = new JSONObject(jsonString);
 
@@ -160,7 +162,7 @@ public class TmListActivity extends SideNaviBaseActivity {
                 hashTemp.put("addressInfo",addressInfo);
                 hashTemp.put("sensorId",sensorId);
 
-                mListHashTm.add(i,hashTemp);
+                mListHashWm.add(i,hashTemp);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -180,7 +182,7 @@ public class TmListActivity extends SideNaviBaseActivity {
 
         switch (item.getItemId()) {
             case action_settings :
-                Intent intent = new Intent(getApplicationContext(), TmMapActivity.class);
+                Intent intent = new Intent(getApplicationContext(), WmMapActivity.class);
                 startActivity(intent);
                 finish();
                 break;

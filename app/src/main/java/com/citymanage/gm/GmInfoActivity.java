@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.gm;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,11 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.citymanage.R;
+import com.citymanage.SideNaviBaseActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SmInfoActivity extends SideNaviBaseActivity {
+public class GmInfoActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
 
@@ -27,29 +29,27 @@ public class SmInfoActivity extends SideNaviBaseActivity {
     TextView sensorIdTv;
     TextView locationTv;
     TextView installDayTv;
-    TextView fireSensorInfoTv;
-    TextView smokeSensorInfoTv;
-
+    TextView gasDensitySensorInfoTv;
+    TextView pressSensorInfoTv;
 
     String strSensorId;
     String strLocation;
     String installDay;
-    String fireSensorInfo;
-    String smokeSensorInfo;
+    String gasDensitySensorInfo;
+    String pressSensorInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sm_info);
+        setContentView(R.layout.activity_gm_info);
         super.setupToolbar();
-        setTitle(R.string.sm_title);
+        setTitle(R.string.gm_title);
 
-        sensorIdTv          = (TextView) findViewById(R.id.sensorIdTv);
-        locationTv          = (TextView) findViewById(R.id.locationTv);
-        installDayTv        = (TextView) findViewById(R.id.installDayTv);
-        fireSensorInfoTv    = (TextView) findViewById(R.id.fireSensorInfoTv);
-        smokeSensorInfoTv   = (TextView) findViewById(R.id.smokeSensorInfoTv);
-
+        sensorIdTv              = (TextView) findViewById(R.id.sensorIdTv);
+        locationTv              = (TextView) findViewById(R.id.locationTv);
+        installDayTv            = (TextView) findViewById(R.id.installDayTv);
+        gasDensitySensorInfoTv  = (TextView) findViewById(R.id.gasDensitySensorInfoTv);
+        pressSensorInfoTv       = (TextView) findViewById(R.id.pressSensorInfoTv);
 
         Intent intent = getIntent();
         String sensorId = intent.getStringExtra(SENSORID);
@@ -58,7 +58,7 @@ public class SmInfoActivity extends SideNaviBaseActivity {
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringBuilder sb = new StringBuilder(SM_INFO_URL);
+        StringBuilder sb = new StringBuilder(TM_INFO_URL);
         sb.append("?sensorId=");
         sb.append(sensorId);
 
@@ -67,14 +67,11 @@ public class SmInfoActivity extends SideNaviBaseActivity {
             public void onResponse(String string) {
                 parseJsonData(string);
 
-                Log.i("strSensorId",strSensorId);
-
                 sensorIdTv.setText(strSensorId);
                 locationTv.setText(strLocation);
                 installDayTv.setText(installDay);
-                fireSensorInfoTv.setText(fireSensorInfo);
-                smokeSensorInfoTv.setText(smokeSensorInfo);
-
+                gasDensitySensorInfoTv.setText(gasDensitySensorInfo);
+                pressSensorInfoTv.setText(pressSensorInfo);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -85,7 +82,7 @@ public class SmInfoActivity extends SideNaviBaseActivity {
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(SmInfoActivity.this);
+        RequestQueue rQueue = Volley.newRequestQueue(GmInfoActivity.this);
         rQueue.add(pushHistoryRequest);
     }
 
@@ -94,14 +91,13 @@ public class SmInfoActivity extends SideNaviBaseActivity {
         try {
             JSONObject object = new JSONObject(jsonString);
 
-            Log.i("JSON OBJECT " , object.toString());
+            Log.i("JSONOBJECT : " , object.toString());
 
             strSensorId = object.getString("sensorId");
             strLocation = object.getString("addressInfo");
             installDay = object.getString("installDay");
-            fireSensorInfo = object.getString("fireSensorInfo");
-            smokeSensorInfo = object.getString("smokeSensorInfo");
-
+            gasDensitySensorInfo = object.getString("gasDensity");
+            pressSensorInfo = object.getString("press");
 
         } catch (JSONException e) {
             e.printStackTrace();

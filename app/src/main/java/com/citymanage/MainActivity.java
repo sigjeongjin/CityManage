@@ -9,6 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.citymanage.gm.GmListActivity;
+import com.citymanage.sm.SmListActivity;
+import com.citymanage.tm.TmListActivity;
+import com.citymanage.wm.WmListActivity;
+
 public class MainActivity extends SideNaviBaseActivity{
 
     Button wmListActivityGo;

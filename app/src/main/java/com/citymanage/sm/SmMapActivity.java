@@ -1,39 +1,37 @@
-package com.citymanage;
+package com.citymanage.sm;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.citymanage.R;
+import com.citymanage.SideNaviBaseActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import static com.citymanage.R.id.action_settings;
 
-public class GmMapActivity extends SideNaviBaseActivity implements OnMapReadyCallback {
+public class SmMapActivity extends SideNaviBaseActivity implements OnMapReadyCallback {
 
-    private static final String TAG = "GmMapActivity";
+    private static final String TAG = "SmMapActivity";
     SupportMapFragment mapFragment;
     GoogleMap map;
-
-    Button gmListActivityGoBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gm_map);
+        setContentView(R.layout.activity_sm_map);
         super.setupToolbar();
-        setTitle(R.string.gm_title);
+        setTitle(R.string.sm_title);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().
-                findFragmentById(R.id.map);
+                       findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);  // 메인 쓰레드에서 호출되어야 메인스레드에서 콜백이 실행
     }
 
@@ -69,7 +67,7 @@ public class GmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
                 Toast.makeText(getApplicationContext(),
                         marker.getTitle() + " 클릭했음"
                         , Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SmInfoActivity.class);
                 startActivity(intent);
                 return false;
             }
@@ -86,23 +84,23 @@ public class GmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
         LatLng bSensorlocation = new LatLng(37.423144, 126.908034);
         LatLng cSensorlocation = new LatLng(37.586906, 126.703245);
 
-        aSensor =  map.addMarker(new MarkerOptions()
-                .position(aSensorlocation)
-                .title("수질A")
-        );
-        aSensor.showInfoWindow();
-
-        bSensor =  map.addMarker(new MarkerOptions()
-                .position(bSensorlocation)
-                .title("수질B")
-        );
-        bSensor.showInfoWindow();
-
-        cSensor =  map.addMarker(new MarkerOptions()
-                .position(cSensorlocation)
-                .title("수질C")
-        );
-        cSensor.showInfoWindow();
+//        aSensor =  map.addMarker(new MarkerOptions()
+//                .position(aSensorlocation)
+//                .title("수질A")
+//        );
+//        aSensor.showInfoWindow();
+//
+//        bSensor =  map.addMarker(new MarkerOptions()
+//                .position(bSensorlocation)
+//                .title("수질B")
+//        );
+//        bSensor.showInfoWindow();
+//
+//        cSensor =  map.addMarker(new MarkerOptions()
+//                .position(cSensorlocation)
+//                .title("수질C")
+//        );
+//        cSensor.showInfoWindow();
     }
 
     @Override
@@ -117,7 +115,7 @@ public class GmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
 
         switch (item.getItemId()) {
             case action_settings :
-                Intent intent = new Intent(getApplicationContext(), GmListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SmListActivity.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -137,4 +135,5 @@ public class GmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
     public boolean providesActivityToolbar() {
         return true;
     }
+
 }

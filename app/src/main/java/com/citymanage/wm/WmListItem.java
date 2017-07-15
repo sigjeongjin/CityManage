@@ -1,14 +1,14 @@
-package com.citymanage;
+package com.citymanage.wm;
 
 /**
  * Created by we25 on 2017-06-26.
  **/
 
-public class GmListItem {
+public class WmListItem {
     String addressInfo;
     String sensorId;
 
-    public GmListItem(String pAddressInfo, String pSensorId) {
+    public WmListItem(String pAddressInfo, String pSensorId) {
         this.addressInfo = pAddressInfo;
         this.sensorId = pSensorId;
     }

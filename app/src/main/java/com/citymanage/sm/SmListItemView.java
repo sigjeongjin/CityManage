@@ -1,10 +1,12 @@
-package com.citymanage;
+package com.citymanage.sm;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.citymanage.R;
 
 import static com.citymanage.R.id.addressInfoTv;
 import static com.citymanage.R.id.sensorIdTv;
@@ -13,24 +15,25 @@ import static com.citymanage.R.id.sensorIdTv;
  * Created by we25 on 2017-06-26.
  */
 
-public class WmListItemView extends LinearLayout {
+public class SmListItemView extends LinearLayout {
     TextView addressInfo;
     TextView sensorId;
 
-    public WmListItemView(Context context) {
+    public SmListItemView(Context context) {
         super(context);
         init(context);
     }
 
-    public WmListItemView(Context context, AttributeSet attrs) {
+    public SmListItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context);
     }
 
+    //정보 구별
     public void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.tm_list_item, this, true);
+        inflater.inflate(R.layout.sm_list_item, this, true);
 
         addressInfo = (TextView) findViewById(addressInfoTv);
         sensorId = (TextView) findViewById(sensorIdTv);

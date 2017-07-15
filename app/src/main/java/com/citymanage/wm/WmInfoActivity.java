@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.wm;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,11 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.citymanage.R;
+import com.citymanage.SideNaviBaseActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class GmInfoActivity extends SideNaviBaseActivity {
+public class WmInfoActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
 
@@ -27,27 +29,29 @@ public class GmInfoActivity extends SideNaviBaseActivity {
     TextView sensorIdTv;
     TextView locationTv;
     TextView installDayTv;
-    TextView gasDensitySensorInfoTv;
-    TextView pressSensorInfoTv;
+    TextView waterLevelSensorInfoTv;
+    TextView waterQualitySensorInfoTv;
+
 
     String strSensorId;
     String strLocation;
     String installDay;
-    String gasDensitySensorInfo;
-    String pressSensorInfo;
+    String waterLevel;
+    String waterQuality;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gm_info);
+        setContentView(R.layout.activity_wm_info);
         super.setupToolbar();
-        setTitle(R.string.gm_title);
+        setTitle(R.string.wm_title);
 
-        sensorIdTv              = (TextView) findViewById(R.id.sensorIdTv);
-        locationTv              = (TextView) findViewById(R.id.locationTv);
-        installDayTv            = (TextView) findViewById(R.id.installDayTv);
-        gasDensitySensorInfoTv  = (TextView) findViewById(R.id.gasDensitySensorInfoTv);
-        pressSensorInfoTv       = (TextView) findViewById(R.id.pressSensorInfoTv);
+        sensorIdTv                  = (TextView) findViewById(R.id.sensorIdTv);
+        locationTv                  = (TextView) findViewById(R.id.locationTv);
+        installDayTv                = (TextView) findViewById(R.id.installDayTv);
+        waterLevelSensorInfoTv      = (TextView) findViewById(R.id.waterLevelSensorInfoTv);
+        waterQualitySensorInfoTv    = (TextView) findViewById(R.id.waterQualitySensorInfoTv);
 
         Intent intent = getIntent();
         String sensorId = intent.getStringExtra(SENSORID);
@@ -65,11 +69,14 @@ public class GmInfoActivity extends SideNaviBaseActivity {
             public void onResponse(String string) {
                 parseJsonData(string);
 
+                Log.i("sensorId: ", strSensorId);
+
                 sensorIdTv.setText(strSensorId);
                 locationTv.setText(strLocation);
                 installDayTv.setText(installDay);
-                gasDensitySensorInfoTv.setText(gasDensitySensorInfo);
-                pressSensorInfoTv.setText(pressSensorInfo);
+                waterLevelSensorInfoTv.setText(waterLevel);
+                waterQualitySensorInfoTv.setText(waterQuality);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -80,7 +87,7 @@ public class GmInfoActivity extends SideNaviBaseActivity {
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(GmInfoActivity.this);
+        RequestQueue rQueue = Volley.newRequestQueue(WmInfoActivity.this);
         rQueue.add(pushHistoryRequest);
     }
 
@@ -89,13 +96,13 @@ public class GmInfoActivity extends SideNaviBaseActivity {
         try {
             JSONObject object = new JSONObject(jsonString);
 
-            Log.i("JSONOBJECT : " , object.toString());
+            Log.i("JSON OBJECT " , object.toString());
 
             strSensorId = object.getString("sensorId");
             strLocation = object.getString("addressInfo");
             installDay = object.getString("installDay");
-            gasDensitySensorInfo = object.getString("gasDensity");
-            pressSensorInfo = object.getString("press");
+            waterLevel = object.getString("waterLevel");
+            waterQuality = object.getString("waterQuality");
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.sm;
 
 /**
  * Created by we25 on 2017-06-26.

@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.sm;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,11 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.citymanage.R;
+import com.citymanage.SideNaviBaseActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TmInfoActivity extends SideNaviBaseActivity {
+public class SmInfoActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
 
@@ -28,29 +30,28 @@ public class TmInfoActivity extends SideNaviBaseActivity {
     TextView locationTv;
     TextView installDayTv;
     TextView fireSensorInfoTv;
-    TextView stinkSensorInfoTv;
-    TextView garbageSensorInfoTv;
+    TextView smokeSensorInfoTv;
+
 
     String strSensorId;
     String strLocation;
     String installDay;
     String fireSensorInfo;
-    String stinkSensorInfo;
-    String garbageSensorInfo;
+    String smokeSensorInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tm_info);
+        setContentView(R.layout.activity_sm_info);
         super.setupToolbar();
-        setTitle(R.string.tm_title);
+        setTitle(R.string.sm_title);
 
         sensorIdTv          = (TextView) findViewById(R.id.sensorIdTv);
         locationTv          = (TextView) findViewById(R.id.locationTv);
         installDayTv        = (TextView) findViewById(R.id.installDayTv);
         fireSensorInfoTv    = (TextView) findViewById(R.id.fireSensorInfoTv);
-        stinkSensorInfoTv   = (TextView) findViewById(R.id.stinkSensorInfoTv);
-        garbageSensorInfoTv = (TextView) findViewById(R.id.garbageSensorInfoTv);
+        smokeSensorInfoTv   = (TextView) findViewById(R.id.smokeSensorInfoTv);
+
 
         Intent intent = getIntent();
         String sensorId = intent.getStringExtra(SENSORID);
@@ -59,7 +60,7 @@ public class TmInfoActivity extends SideNaviBaseActivity {
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringBuilder sb = new StringBuilder(TM_INFO_URL);
+        StringBuilder sb = new StringBuilder(SM_INFO_URL);
         sb.append("?sensorId=");
         sb.append(sensorId);
 
@@ -68,12 +69,14 @@ public class TmInfoActivity extends SideNaviBaseActivity {
             public void onResponse(String string) {
                 parseJsonData(string);
 
+                Log.i("strSensorId",strSensorId);
+
                 sensorIdTv.setText(strSensorId);
                 locationTv.setText(strLocation);
                 installDayTv.setText(installDay);
                 fireSensorInfoTv.setText(fireSensorInfo);
-                stinkSensorInfoTv.setText(stinkSensorInfo);
-                garbageSensorInfoTv.setText(garbageSensorInfo);
+                smokeSensorInfoTv.setText(smokeSensorInfo);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -84,7 +87,7 @@ public class TmInfoActivity extends SideNaviBaseActivity {
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(TmInfoActivity.this);
+        RequestQueue rQueue = Volley.newRequestQueue(SmInfoActivity.this);
         rQueue.add(pushHistoryRequest);
     }
 
@@ -99,8 +102,8 @@ public class TmInfoActivity extends SideNaviBaseActivity {
             strLocation = object.getString("addressInfo");
             installDay = object.getString("installDay");
             fireSensorInfo = object.getString("fireSensorInfo");
-            stinkSensorInfo = object.getString("stinkSensorInfo");
-            garbageSensorInfo = object.getString("garbageSensorInfo");
+            smokeSensorInfo = object.getString("smokeSensorInfo");
+
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -39,19 +39,19 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".PushHistoryActivity" />
         <activity android:name=".FavoriteActivity" />
-        <activity android:name=".GmMapActivity" />
-        <activity android:name=".WmListActivity" />
+        <activity android:name=".gm.GmMapActivity" />
+        <activity android:name=".wm.WmListActivity" />
         <activity android:name=".SettingActivity" />
-        <activity android:name=".WmMapActivity" />
-        <activity android:name=".TmListActivity" />
-        <activity android:name=".TmMapActivity" />
-        <activity android:name=".SmInfoActivity" />
-        <activity android:name=".WmInfoActivity"/>
-        <activity android:name=".TmInfoActivity"/>
-        <activity android:name=".SmListActivity"/>
-        <activity android:name=".SmMapActivity" />
-        <activity android:name=".GmListActivity"/>
-        <activity android:name=".GmInfoActivity"/>
+        <activity android:name=".wm.WmMapActivity" />
+        <activity android:name=".tm.TmListActivity" />
+        <activity android:name=".tm.TmMapActivity" />
+        <activity android:name=".sm.SmInfoActivity" />
+        <activity android:name=".wm.WmInfoActivity"/>
+        <activity android:name=".tm.TmInfoActivity"/>
+        <activity android:name=".sm.SmListActivity"/>
+        <activity android:name=".sm.SmMapActivity" />
+        <activity android:name=".gm.GmListActivity"/>
+        <activity android:name=".gm.GmInfoActivity"/>
     </application>
 
 </manifest>

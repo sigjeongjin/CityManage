@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.citymanage.R;
-import com.citymanage.SideNaviBaseActivity;
+import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

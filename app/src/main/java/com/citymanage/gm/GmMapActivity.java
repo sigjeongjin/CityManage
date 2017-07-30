@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.citymanage.R;
-import com.citymanage.SideNaviBaseActivity;
+import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.tm.TmInfoActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

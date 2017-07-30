@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.citymanage.sidenavi.SideNaviBaseActivity;
+
 public class SettingActivity extends SideNaviBaseActivity{
 
     private Uri mImageCaptureUri;

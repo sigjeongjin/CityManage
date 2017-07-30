@@ -19,7 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
-import com.citymanage.SideNaviBaseActivity;
+import com.citymanage.sidenavi.SideNaviBaseActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

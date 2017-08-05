@@ -9,7 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.citymanage.favorite.FavoriteActivity;
 import com.citymanage.gm.GmListActivity;
+import com.citymanage.member.LoginActivity;
+import com.citymanage.push.PushHistoryActivity;
+import com.citymanage.setting.SettingActivity;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.sm.SmListActivity;
 import com.citymanage.tm.TmListActivity;

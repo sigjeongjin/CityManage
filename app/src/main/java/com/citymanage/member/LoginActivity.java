@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.member;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,6 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.citymanage.BaseActivity;
+import com.citymanage.MainActivity;
+import com.citymanage.R;
 import com.common.Module;
 
 import org.json.JSONException;

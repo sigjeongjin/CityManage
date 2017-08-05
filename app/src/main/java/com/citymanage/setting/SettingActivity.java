@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.setting;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.citymanage.R;
+import com.citymanage.member.PasswordChangeFragment;
+import com.citymanage.member.PasswordConfirmFragment;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 
 public class SettingActivity extends SideNaviBaseActivity{

@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.citymanage.BaseActivity;
-import com.citymanage.LoginActivity;
+import com.citymanage.member.LoginActivity;
 import com.citymanage.R;
-import com.citymanage.SettingActivity;
+import com.citymanage.setting.SettingActivity;
 import com.citymanage.favorite.FavoriteActivity;
 import com.citymanage.gm.GmListActivity;
 import com.citymanage.push.PushHistoryActivity;

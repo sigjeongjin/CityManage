@@ -41,6 +41,6 @@ public class BaseActivity extends AppCompatActivity {
 
     public ProgressDialog dialog; //프로그레스바 다이얼로그
     public AlertDialog closeAlertDialog; //back 버튼 눌렀을경우 다이얼로그
-    int resultCode; //response 응답코드 변수
-    String url = ""; //요청 cityUrl 셋팅 변수
+    public int resultCode; //response 응답코드 변수
+    public String url = ""; //요청 cityUrl 셋팅 변수
 }

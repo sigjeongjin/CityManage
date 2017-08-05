@@ -21,7 +21,7 @@
                 android:id="@+id/settingFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.citymanage.SettingFragment" />
+                android:name="com.citymanage.setting.SettingFragment" />
 
         </FrameLayout>
     </LinearLayout>

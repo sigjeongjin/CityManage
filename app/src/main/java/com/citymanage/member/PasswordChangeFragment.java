@@ -1,4 +1,4 @@
-package com.citymanage;
+package com.citymanage.member;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.citymanage.R;
+import com.citymanage.setting.SettingActivity;
 
 /**
  * Created by we25 on 2017-07-04.

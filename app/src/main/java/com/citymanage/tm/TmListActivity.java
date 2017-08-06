@@ -21,6 +21,8 @@ import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.wm.WmListItem;
+import com.citymanage.wm.retrofit.repo.WmRepo;
+import com.citymanage.wm.retrofit.repo.WmService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +32,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
 
 import static com.citymanage.R.id.action_settings;
 
@@ -61,29 +66,40 @@ public class TmListActivity extends SideNaviBaseActivity {
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringRequest pushHistoryRequest = new StringRequest(TM_LIST_URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                parseJsonData(string);
-                adapter = new TmListAdapter(getApplicationContext());
 
-                for(int i = 0; i < mListHashTm.size(); i ++ ) {
-                    adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
-                            mListHashTm.get(i).get("sensorId")));
-                }
-                tmListView.setAdapter(adapter);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                Log.i("volley error : ",volleyError.toString());
-                dialog.dismiss();
-            }
-        });
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST)
+                .build();
 
-        RequestQueue rQueue = Volley.newRequestQueue(TmListActivity.this);
-        rQueue.add(pushHistoryRequest);
+        WmService service = retrofit.create(WmService.class);
+
+        Call<WmRepo> repo = service.getWmRepo("park");
+
+
+
+//        StringRequest pushHistoryRequest = new StringRequest(TM_LIST_URL, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String string) {
+//                parseJsonData(string);
+//                adapter = new TmListAdapter(getApplicationContext());
+//
+//                for(int i = 0; i < mListHashTm.size(); i ++ ) {
+//                    adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
+//                            mListHashTm.get(i).get("sensorId")));
+//                }
+//                tmListView.setAdapter(adapter);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+//                Log.i("volley error : ",volleyError.toString());
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        RequestQueue rQueue = Volley.newRequestQueue(TmListActivity.this);
+//        rQueue.add(pushHistoryRequest);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
 

@@ -21,8 +21,6 @@ import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.wm.WmListItem;
-import com.citymanage.wm.retrofit.repo.WmRepo;
-import com.citymanage.wm.retrofit.repo.WmService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +30,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Retrofit;
 
 import static com.citymanage.R.id.action_settings;
 
@@ -67,13 +62,13 @@ public class TmListActivity extends SideNaviBaseActivity {
         dialog.show();
 
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(HOST)
-                .build();
-
-        WmService service = retrofit.create(WmService.class);
-
-        Call<WmRepo> repo = service.getWmRepo("park");
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(HOST)
+//                .build();
+//
+//        WmService service = retrofit.create(WmService.class);
+//
+//        Call<WmRepo> repo = service.getWmRepo("park");
 
 
 

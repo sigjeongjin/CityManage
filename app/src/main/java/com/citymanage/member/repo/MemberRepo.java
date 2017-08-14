@@ -10,22 +10,27 @@ public class MemberRepo {
     @SerializedName("resultCode")
     private String resultCode;
 
-    @SerializedName("name")
-    private String name;
+    @SerializedName("resultMessage")
+    private String resultMessage;
 
-    @SerializedName("id")
-    private String id;
+    @SerializedName("memberName")
+    private String memberName;
+
+    @SerializedName("memberId")
+    private String memberId;
+
+    public String getResultMessage() { return resultMessage; }
 
     public String getResultCode() {
         return resultCode;
     }
 
-    public String getName() {
-        return name;
+    public String getMemberName() {
+        return memberName;
     }
 
-    public String getId() {
-        return id;
+    public String getMemberId() {
+        return memberId;
     }
 
 //    public List<Tm> tmList = new ArrayList<>();

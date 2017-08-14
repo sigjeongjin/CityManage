@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity {
             dialog.show();
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.0.230:8080/board/")
+                        .baseUrl("http://192.168.0.230:8080/member/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
@@ -99,45 +99,47 @@ public class LoginActivity extends BaseActivity {
                 repos.enqueue(new Callback<MemberRepo>() {
                     @Override
                     public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+                        dialog.dismiss();
+
                         MemberRepo memberRepo= response.body();
 
-//                        Log.i("GET RESULTCODE : " , memberRepo.getResultCode());
-//                        Log.i("MEMBERREPO GETNAME: " , String.valueOf(memberRepo.getTm().get(0).getName()));
+                        if(memberRepo != null) {
+                            if(memberRepo.getResultCode().equals("200") ) {
+                                Intent intent;
 
-                        if(memberRepo.getResultCode().equals("200") ) {
-                            Intent intent;
+                                if(Module.getLocation(getApplicationContext()) == 1) {
+                                    Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                                    intent = new Intent(getApplication(), MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                            if(Module.getLocation(getApplicationContext()) == 1) {
-                                Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
-                                intent = new Intent(getApplication(), MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                Module.setRecordId(getApplicationContext(),email.getText().toString());
-                                Module.setRecordPwd(getApplicationContext(), password.getText().toString());
+                                    Module.setRecordId(getApplicationContext(),email.getText().toString());
+                                    Module.setRecordPwd(getApplicationContext(), password.getText().toString());
 
 
-                            } else {
-                                Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
-                                intent = new Intent(getApplication(), AddressSearchActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
+                                    intent = new Intent(getApplication(), AddressSearchActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                Module.setRecordId(getApplicationContext(),email.getText().toString());
-                                Module.setRecordPwd(getApplicationContext(), password.getText().toString());
+                                    Module.setRecordId(getApplicationContext(),email.getText().toString());
+                                    Module.setRecordPwd(getApplicationContext(), password.getText().toString());
+                                }
+
+                                if(autoLoginChk.isChecked()){
+                                    Module.setAutoLogin(getApplicationContext(),1);
+                                } else {
+                                    Module.setAutoLogin(getApplicationContext(),0);
+                                }
+
+
+                                startActivity(intent);
+                                finish();
                             }
-
-                            if(autoLoginChk.isChecked()){
-                                Module.setAutoLogin(getApplicationContext(),1);
-                            } else {
-                                Module.setAutoLogin(getApplicationContext(),0);
-                            }
-
-
-                            startActivity(intent);
-                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show();
                         }
-                        dialog.dismiss();
                     }
 
                     @Override

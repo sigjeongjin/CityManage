@@ -11,6 +11,14 @@ import retrofit2.http.Query;
 
 public interface MemberService {
     @Headers({"Accept:application/json"})
-    @GET("appLogin.app")
-    Call<MemberRepo> getMemberRepo(@Query("id") String id, @Query("password") String password);
+    @GET("memberLogin.app")
+    Call<MemberRepo> getMemberRepo(@Query("memberId") String id, @Query("memberPwd") String password);
+
+    @Headers({"Accept:application/json"})
+    @GET("cityInfo.app")
+    Call<MemberRepo> getCityInfo();
+
+    @Headers({"Accept:application/json"})
+    @GET("stateInfo.app")
+    Call<MemberRepo> getStateInfo(@Query("cityCode") String cityCode);
 }

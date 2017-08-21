@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,7 +35,7 @@ public class LoginActivity extends BaseActivity {
     private Button btnregister;
     CheckBox autologin;
     TextView loginTv;
-    EditText email, password;
+    EditText idEt, password;
 
 //    StringBuilder url2= "http";
 
@@ -53,18 +52,20 @@ public class LoginActivity extends BaseActivity {
 
         autoLoginChk = (CheckBox) findViewById(R.id.autoLoginChk);
         Button btnLogin = (Button)findViewById(R.id.btnLogin) ;
-        email = (EditText)findViewById(R.id.email);
+
+        //2017.08.20 email 로그인으로 확정짓지 않아서 id로 변경
+        idEt = (EditText)findViewById(R.id.idEt);
         password = (EditText)findViewById(R.id.password);
 
         if(Module.getAutoLogin(getApplicationContext()) == 1) {
             autoLoginChk.setChecked(true);
-            email.setText(Module.getRecordId(getApplicationContext()));
+            idEt.setText(Module.getRecordId(getApplicationContext()));
             password.setText(Module.getRecordPwd(getApplicationContext()));
         }
 
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-            String id = email.getText().toString();
+            String id = idEt.getText().toString();
             String pw = password.getText().toString();
 
             //아이디와 비밀번호가 공백일때 출력메세지
@@ -88,13 +89,12 @@ public class LoginActivity extends BaseActivity {
             dialog.show();
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.0.230:8080/member/")
+                        .baseUrl(BASEHOST)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 MemberService service = retrofit.create(MemberService.class);
-//                final Call<List<MemberRepo>> repos = service.getMemberRepo("park");
-                final Call<MemberRepo> repos = service.getMemberRepo("test1","test1");
+                final Call<MemberRepo> repos = service.getMemberRepo(id,pw);
 
                 repos.enqueue(new Callback<MemberRepo>() {
                     @Override
@@ -113,17 +113,17 @@ public class LoginActivity extends BaseActivity {
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                    Module.setRecordId(getApplicationContext(),email.getText().toString());
+                                    Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
 
 
                                 } else {
-                                    Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                                     intent = new Intent(getApplication(), AddressSearchActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                    Module.setRecordId(getApplicationContext(),email.getText().toString());
+                                    Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
                                 }
 
@@ -138,80 +138,16 @@ public class LoginActivity extends BaseActivity {
                                 finish();
                             }
                         } else {
-                            Toast.makeText(LoginActivity.this, "등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MemberRepo> call, Throwable t) {
-                        Log.i("fali String : ", call.toString());
-                        Log.i("fali String : ", t.getMessage());
-                        Log.i("fali String : ", t.getMessage());
+                        Toast.makeText(LoginActivity.this, "등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
-
-//            StringBuilder sb = new StringBuilder(LOGIN);
-//                sb.append("?loginId=").append(email.getText().toString()).append("&pwd=").append(password.getText().toString());
-//            //정보를 보내고 받음.
-//            StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String string) {
-//                    parseJsonData(string);
-//
-//                    // 코드를 400으로 받은경우 메세지 출력
-//                    if(resultCode == 400) {
-//                        Toast.makeText(LoginActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    //코드를 200으로 받은경우 메세지 출력 및 실행
-//                    else if(resultCode == 200) {
-//
-//                        Intent intent;
-//
-//                        if(Module.getLocation(getApplicationContext()) == 1) {
-//                            Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
-//                            intent = new Intent(getApplication(), MainActivity.class);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//                            Module.setRecordId(getApplicationContext(),email.getText().toString());
-//                            Module.setRecordPwd(getApplicationContext(), password.getText().toString());
-//
-//
-//                        } else {
-//                            Toast.makeText(LoginActivity.this, "로그인을 환영합니다.", Toast.LENGTH_SHORT).show();
-//                            intent = new Intent(getApplication(), AddressSearchActivity.class);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//                            Module.setRecordId(getApplicationContext(),email.getText().toString());
-//                            Module.setRecordPwd(getApplicationContext(), password.getText().toString());
-//                        }
-//
-//                        if(autoLoginChk.isChecked()){
-//                            Module.setAutoLogin(getApplicationContext(),1);
-//                        } else {
-//                            Module.setAutoLogin(getApplicationContext(),0);
-//                        }
-//
-//
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//
-//                }
-//                //통신이 되지 않는 경우
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError volleyError) {
-//                    Log.i("VOLLEY ERROR", volleyError.toString());
-//                    dialog.dismiss();
-//                }
-//            });
-//                // RequestQueue Queue = Volley.newRequestQueue(this); 정보의 전달
-//                RequestQueue rQueue = Volley.newRequestQueue(LoginActivity.this);
-//            rQueue.add(request);
             }
         });
 
@@ -223,7 +159,7 @@ public class LoginActivity extends BaseActivity {
             if(Module.getAutoLogin(getApplicationContext()) == 1 && Module.getRecordId(getApplicationContext()) != ""
                     && Module.getRecordPwd(getApplicationContext()) != "") {
                 autoLoginChk.setChecked(true);
-                email.setText(Module.getRecordId(getApplicationContext()));
+                idEt.setText(Module.getRecordId(getApplicationContext()));
                 password.setText(Module.getRecordPwd(getApplicationContext()));
 
                 btnLogin.callOnClick();

@@ -14,7 +14,7 @@
         android:background="@drawable/img_logo" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/idEt"
         style="@style/EditTextStyle"
         android:layout_width="302.67dp"
         android:layout_height="42dp"

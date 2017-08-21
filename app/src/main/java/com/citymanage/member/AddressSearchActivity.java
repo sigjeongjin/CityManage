@@ -14,13 +14,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.citymanage.MainActivity;
 import com.citymanage.R;
+import com.citymanage.member.repo.MemberRepo;
+import com.citymanage.member.repo.MemberService;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.common.Module;
 
@@ -31,6 +28,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 
 public class AddressSearchActivity extends SideNaviBaseActivity {
 
@@ -61,27 +65,29 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringRequest request = new StringRequest(CITYURL, new Response.Listener<String>() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
+        MemberService service = retrofit.create(MemberService.class);
+        final Call<MemberRepo> repos = service.getCityInfo();
+
+        repos.enqueue(new Callback<MemberRepo>(){
             @Override
-            public void onResponse(String pString) {
-
-                parseCityJsonData(pString);
+            public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
 
                 setCityAdapter();
 
                 dialog.dismiss();
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onFailure(Call<MemberRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
-        RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
-        rQueue.add(request);
 
         citySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -92,30 +98,30 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                 dialog.setMessage("Loading....");
                 dialog.show();
 
-                StringBuilder sb = new StringBuilder(SATATEURL);
-                sb.append("?cityCode=");
-                sb.append(cityList.get(position).get("cityCode"));
-
-                StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String pString) {
-                        parseStateJsonData(pString);
-
-                        setStateAdapater();
-
-                        dialog.dismiss();
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                });
-                RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
-                rQueue.add(request);
+//                StringBuilder sb = new StringBuilder(SATATEURL);
+//                sb.append("?cityCode=");
+//                sb.append(cityList.get(position).get("cityCode"));
+//
+//                StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
+//
+//                    @Override
+//                    public void onResponse(String pString) {
+//                        parseStateJsonData(pString);
+//
+//                        setStateAdapater();
+//
+//                        dialog.dismiss();
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError volleyError) {
+//                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+//                        dialog.dismiss();
+//                    }
+//                });
+//                RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
+//                rQueue.add(request);
             }
 
             @Override

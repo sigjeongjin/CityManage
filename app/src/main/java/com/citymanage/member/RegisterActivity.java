@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
         gProfilShot = (ImageView) findViewById(R.id.profilShot);
 
         gProfilShot.setBackground(new ShapeDrawable(new OvalShape()));
-        gProfilShot.setClipToOutline(true);
+//        gProfilShot.setClipToOutline(true);
 
         gProfilShot.setOnClickListener(new View.OnClickListener() {
 

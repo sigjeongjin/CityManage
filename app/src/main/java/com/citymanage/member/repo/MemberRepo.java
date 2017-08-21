@@ -19,6 +19,18 @@ public class MemberRepo {
     @SerializedName("memberId")
     private String memberId;
 
+    @SerializedName("cityCode")
+    private String cityCode;
+
+    @SerializedName("cityName")
+    private String cityName;
+
+    @SerializedName("stateCode")
+    private String stateCode;
+
+    @SerializedName("stateName")
+    private String stateName;
+
     public String getResultMessage() { return resultMessage; }
 
     public String getResultCode() {
@@ -33,7 +45,23 @@ public class MemberRepo {
         return memberId;
     }
 
-//    public List<Tm> tmList = new ArrayList<>();
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    //    public List<Tm> tmList = new ArrayList<>();
 //    public List<Tm> getTm() {return tmList;}
 //
 //    public class Tm {

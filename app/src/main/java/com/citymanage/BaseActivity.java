@@ -14,8 +14,9 @@ public class BaseActivity extends AppCompatActivity {
 //    public static final  String HOST = "http://172.30.1.43:3000"; //민정 집
 //    public static final String HOST = "http://192.168.0.230:3000"; //학원
 //    public static final String HOST = "http://192.168.0.2:3000"; //현진 집
-//    public static final String HOST = "http://192.168.0.2:8080"; //현진 집 톰캣
-    public static final String HOST = "http://192.168.0.230:8080"; //현진 집 톰캣
+    public static final String HOST = "http://192.168.0.2:3000"; //현진 집 톰캣
+    public static final String BASEHOST = "http://192.168.0.2:3000/api/"; // nodejs 웹서버 baseurl
+//    public static final String HOST = "http://192.168.0.230:8080"; //현진 집 톰캣
 
     /* 프로그램 실행 후 필요한 상수 값들 정의 시작 */
     private static final int CANCLE_FROM_CONTENT = 0;

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,30 +99,35 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                 dialog.setMessage("Loading....");
                 dialog.show();
 
-//                StringBuilder sb = new StringBuilder(SATATEURL);
-//                sb.append("?cityCode=");
-//                sb.append(cityList.get(position).get("cityCode"));
-//
-//                StringRequest request = new StringRequest(sb.toString(), new Response.Listener<String>() {
-//
-//                    @Override
-//                    public void onResponse(String pString) {
-//                        parseStateJsonData(pString);
-//
-//                        setStateAdapater();
-//
-//                        dialog.dismiss();
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError volleyError) {
-//                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                        dialog.dismiss();
-//                    }
-//                });
-//                RequestQueue rQueue = Volley.newRequestQueue(AddressSearchActivity.this);
-//                rQueue.add(request);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(BASEHOST)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                MemberService service = retrofit.create(MemberService.class);
+                final Call<MemberRepo> repos = service.getCityInfo();
+
+                repos.enqueue(new Callback<MemberRepo>() {
+                    @Override
+                    public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+                        dialog.dismiss();
+
+                        MemberRepo memberRepo= response.body();
+
+                        Log.e("TEST TEST :", memberRepo.getResultMessage());
+                        Log.e("TEST TEST :", memberRepo.getResultCode());
+
+                        if(memberRepo != null) {
+                            setStateAdapater();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MemberRepo> call, Throwable t) {
+
+                        dialog.dismiss();
+                    }
+                });
             }
 
             @Override

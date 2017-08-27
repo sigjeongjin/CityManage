@@ -50,6 +50,7 @@
         <activity android:name=".sm.SmMapActivity" />
         <activity android:name=".gm.GmListActivity"/>
         <activity android:name=".gm.GmInfoActivity"/>
+        <activity android:name=".favorite.FavoriteActivity"/>
     </application>
 
 </manifest>

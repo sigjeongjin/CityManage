@@ -16,9 +16,9 @@ public interface MemberService {
 
     @Headers({"Accept:application/json"})
     @GET("cityInfo.app")
-    Call<MemberRepo> getCityInfo();
+    Call<CityInfoRepo> getCityInfo();
 
     @Headers({"Accept:application/json"})
     @GET("stateInfo.app")
-    Call<MemberRepo> getStateInfo(@Query("cityCode") String cityCode);
+    Call<StateInfoRepo> getStateInfo(@Query("cityCode") String cityCode);
 }

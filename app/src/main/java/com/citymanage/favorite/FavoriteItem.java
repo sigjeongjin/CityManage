@@ -17,15 +17,15 @@ public class FavoriteItem {
         return addressInfo;
     }
 
-    public void setAddressInfo(String addressInfo) {
-        this.addressInfo = addressInfo;
-    }
+//    public void setAddressInfo(String addressInfo) {
+//        this.addressInfo = addressInfo;
+//    }
 
     public String getSensorId() {
         return sensorId;
     }
 
-    public void setSensorId(String sensorId) {
-        this.sensorId = sensorId;
-    }
+//    public void setSensorId(String sensorId) {
+//        this.sensorId = sensorId;
+//    }
 }

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.citymanage.R;
 
 import static com.citymanage.R.id.addressInfoTv;
-import static com.citymanage.R.id.pushDescriptionTv;
+import static com.citymanage.R.id.pushSendTimeTv;
 import static com.citymanage.R.id.sensorIdTv;
 
 /**
@@ -19,7 +19,7 @@ import static com.citymanage.R.id.sensorIdTv;
 public class PushHistoryItemView extends LinearLayout {
     TextView addressInfo;
     TextView sensorId;
-    TextView pushDescription;
+    TextView pushSendTime;
 
     public PushHistoryItemView(Context context) {
         super(context);
@@ -38,7 +38,7 @@ public class PushHistoryItemView extends LinearLayout {
 
         addressInfo = (TextView) findViewById(addressInfoTv);
         sensorId = (TextView) findViewById(sensorIdTv);
-        pushDescription = (TextView) findViewById(pushDescriptionTv);
+        pushSendTime = (TextView) findViewById(pushSendTimeTv);
     }
 
     public void setAddressInfo(String pAddressInfo) {
@@ -49,7 +49,7 @@ public class PushHistoryItemView extends LinearLayout {
         this.sensorId.setText(pSensorId);
     }
 
-    public void setPushDescripTion(String pPushDescription) {
-        this.pushDescription.setText(pPushDescription);
+    public void setPushSendTime(String pushSendTime) {
+        this.pushSendTime.setText(pushSendTime);
     }
 }

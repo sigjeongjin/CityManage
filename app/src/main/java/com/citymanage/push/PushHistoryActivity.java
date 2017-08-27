@@ -11,22 +11,22 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
+import com.citymanage.push.repo.PushHistoryInfoRepo;
+import com.citymanage.push.repo.PushService;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.tm.TmInfoActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.common.Module;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  *
@@ -91,28 +91,56 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringRequest pushHistoryRequest = new StringRequest(gPushHistoryUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                parseJsonData(string);
-                adapter = new PushHistoryAdapter(getApplicationContext());
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-                for(int i = 0; i < gListPushHistory.size(); i ++ ) {
-                    adapter.addItem(new PushHistoryItem(gListPushHistory.get(i).get("addressInfo"),
-                            gListPushHistory.get(i).get("sensorId"), gListPushHistory.get(i).get("pushDescription")));
-                }
-                gPushHistoryLv.setAdapter(adapter);
-            }
-        }, new Response.ErrorListener() {
+        PushService service = retrofit.create(PushService.class);
+        final Call<PushHistoryInfoRepo> repos = service.getPushHistoryList(Module.getRecordId(getApplicationContext()),"wm");
+
+        repos.enqueue(new Callback<PushHistoryInfoRepo>(){
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onResponse(Call<PushHistoryInfoRepo> call, Response<PushHistoryInfoRepo> response) {
+
+                PushHistoryInfoRepo pushInfo = response.body();
+
+                if(pushInfo != null) {
+                    gListPushHistory.clear();
+
+                    adapter = new PushHistoryAdapter(getApplicationContext());
+
+                    for(int i = 0; i < pushInfo.getPushHistoryList().size(); i ++ ) {
+
+                        HashMap<String,String> hashTemp = new HashMap<>();
+
+                        String addressInfo = pushInfo.getPushHistoryList().get(i).getLocationName();
+                        String sensorId = pushInfo.getPushHistoryList().get(i).getManageId();
+                        String pushSendTime = pushInfo.getPushHistoryList().get(i).getPushSendTime();
+
+                        hashTemp.put("addressInfo",addressInfo);
+                        hashTemp.put("sensorId",sensorId);
+                        hashTemp.put("pushSendTime",pushSendTime);
+
+                        gListPushHistory.add(i,hashTemp);
+
+                        adapter.addItem(new PushHistoryItem(addressInfo,sensorId,pushSendTime));
+                    }
+
+                    gPushHistoryLv.setAdapter(adapter);
+
+                } else {
+                    Toast.makeText(PushHistoryActivity.this, pushInfo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<PushHistoryInfoRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
-
-        RequestQueue rQueue = Volley.newRequestQueue(PushHistoryActivity.this);
-        rQueue.add(pushHistoryRequest);
 
         gPushHistoryLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -121,7 +149,6 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
                 Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
                 intent.putExtra(SENSORID,gListPushHistory.get(position).get(SENSORID));
                 startActivity(intent);
-
             }
         });
     }
@@ -134,68 +161,68 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
 
         StringBuilder sb = new StringBuilder(gPushHistoryUrl);
 
-        if(v.getTag().equals(ALL)) {
-            allCheckedClickEvent();
-        } else {
-            sb.append(checkedSettingUrl(v.getTag().toString()));
+        checkedSettingUrl(v.getTag().toString());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        CheckBox temp = (CheckBox)v.findViewWithTag(v.getTag());
+
+        if(!temp.isChecked()){
+            dialog.dismiss();
+            return;
         }
 
-        StringRequest pushHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
+        PushService service = retrofit.create(PushService.class);
+        final Call<PushHistoryInfoRepo> repos = service.getPushHistoryList(Module.getRecordId(getApplicationContext()),v.getTag().toString());
+
+        repos.enqueue(new Callback<PushHistoryInfoRepo>(){
             @Override
-            public void onResponse(String string) {
+            public void onResponse(Call<PushHistoryInfoRepo> call, Response<PushHistoryInfoRepo> response) {
 
-            //통신을 해서 데이터를 받아 오기전에 리스트뷰를 아무것도 없는 상태로 셋팅한다.
-            adapter.clearItemAll(); //어댑터에 셋팅된 아이템 전부 삭제
-            adapter.notifyDataSetChanged(); //어댑터 정보 갱신
+                PushHistoryInfoRepo pushInfo = response.body();
 
-            parseJsonData(string);
+                adapter.clearItemAll(); //어댑터에 셋팅된 아이템 전부 삭제
+                adapter.notifyDataSetChanged(); //어댑터 정보 갱신
 
-            for(int i = 0; i < gListPushHistory.size(); i ++ ) {
-                adapter.addItem(new PushHistoryItem(gListPushHistory.get(i).get("addressInfo"),
-                        gListPushHistory.get(i).get("sensorId"), gListPushHistory.get(i).get("pushDescription")));
+                if(pushInfo != null) {
+                    gListPushHistory.clear();
+
+                    adapter = new PushHistoryAdapter(getApplicationContext());
+
+                    for(int i = 0; i < pushInfo.getPushHistoryList().size(); i ++ ) {
+
+                        HashMap<String,String> hashTemp = new HashMap<>();
+
+                        String addressInfo = pushInfo.getPushHistoryList().get(i).getLocationName();
+                        String sensorId = pushInfo.getPushHistoryList().get(i).getManageId();
+                        String pushSendTime = pushInfo.getPushHistoryList().get(i).getPushSendTime();
+
+                        hashTemp.put("addressInfo",addressInfo);
+                        hashTemp.put("sensorId",sensorId);
+                        hashTemp.put("pushSendTime",pushSendTime);
+
+                        gListPushHistory.add(i,hashTemp);
+
+                        adapter.addItem(new PushHistoryItem(addressInfo,sensorId,pushSendTime));
+                    }
+
+                    gPushHistoryLv.setAdapter(adapter);
+
+                } else {
+                    Toast.makeText(PushHistoryActivity.this, pushInfo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
             }
-            gPushHistoryLv.setAdapter(adapter);
 
-            gPushHistoryLv.deferNotifyDataSetChanged();
-            }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
-            Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            public void onFailure(Call<PushHistoryInfoRepo> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
-        RequestQueue rQueue = Volley.newRequestQueue(PushHistoryActivity.this);
-        rQueue.add(pushHistoryItemRequest);
-    }
-
-    //통신 후 json 파싱
-    void parseJsonData(String jsonString) {
-        try {
-            gListPushHistory.clear();
-
-            JSONObject object = new JSONObject(jsonString);
-
-            JSONArray pushHistoryArray = object.getJSONArray("pushHistoryList");
-
-            for(int i = 0; i < pushHistoryArray.length(); i ++ ) {
-
-                HashMap<String,String> hashTemp = new HashMap<>();
-
-                String addressInfo = pushHistoryArray.getJSONObject(i).getString("addressInfo");
-                String sensorId = pushHistoryArray.getJSONObject(i).getString("sensorId");
-                String pushDescription = pushHistoryArray.getJSONObject(i).getString("pushDescription");
-
-                hashTemp.put("addressInfo",addressInfo);
-                hashTemp.put("sensorId",sensorId);
-                hashTemp.put("pushDescription",pushDescription);
-
-                gListPushHistory.add(i,hashTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
     }
 
     public void allCheckedClickEvent() {
@@ -205,32 +232,26 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
         gSmChk.setChecked(false);
     }
 
-    public String checkedSettingUrl(String pCheckBoxTag) {
+    public void checkedSettingUrl(String pCheckBoxTag) {
 
-        StringBuilder rItemSetting = new StringBuilder();
         //gWmChk, gTmChk, gGmChk, gSmChk
         if(pCheckBoxTag.equals("wm")) {
             gTmChk.setChecked(false);
             gGmChk.setChecked(false);
             gSmChk.setChecked(false);
-            rItemSetting.append("?item=" + gWmChk.getTag());
         } else if(pCheckBoxTag.equals("tm")){
             gWmChk.setChecked(false);
             gGmChk.setChecked(false);
             gSmChk.setChecked(false);
-            rItemSetting.append("?item=" + gTmChk.getTag());
         } else if(pCheckBoxTag.equals("gm")) {
             gWmChk.setChecked(false);
             gTmChk.setChecked(false);
             gSmChk.setChecked(false);
-            rItemSetting.append("?item=" + gGmChk.getTag());
         } else if(pCheckBoxTag.equals("sm")) {
             gWmChk.setChecked(false);
             gTmChk.setChecked(false);
             gGmChk.setChecked(false);
-            rItemSetting.append("?item=" + gSmChk.getTag());
         }
-        return rItemSetting.toString();
     }
 
     @Override

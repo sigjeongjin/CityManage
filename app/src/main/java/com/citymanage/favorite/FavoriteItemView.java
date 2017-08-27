@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.citymanage.R;
 
 import static com.citymanage.R.id.addressInfoTv;
-import static com.citymanage.R.id.favoriteDescriptionTv;
 import static com.citymanage.R.id.sensorIdTv;
 
 /**
@@ -19,7 +18,6 @@ import static com.citymanage.R.id.sensorIdTv;
 public class FavoriteItemView extends LinearLayout {
     TextView addressInfo;
     TextView sensorId;
-    TextView favoriteDescription;
 
     public FavoriteItemView(Context context) {
         super(context);
@@ -38,7 +36,6 @@ public class FavoriteItemView extends LinearLayout {
 
         addressInfo = (TextView) findViewById(addressInfoTv);
         sensorId = (TextView) findViewById(sensorIdTv);
-        favoriteDescription = (TextView) findViewById(favoriteDescriptionTv);
     }
 
     public void setAddressInfo(String pAddressInfo) {
@@ -49,7 +46,4 @@ public class FavoriteItemView extends LinearLayout {
         this.sensorId.setText(pSensorId);
     }
 
-    public void setFavoriteDescripTion(String pFavoriteDescription) {
-        this.favoriteDescription.setText(pFavoriteDescription);
-    }
 }

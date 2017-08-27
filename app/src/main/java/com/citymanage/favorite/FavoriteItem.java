@@ -7,12 +7,10 @@ package com.citymanage.favorite;
 public class FavoriteItem {
     String addressInfo;
     String sensorId;
-    String favoriteDescription;
 
-    public FavoriteItem(String pAddressInfo, String pSensorId, String pFavoriteDscription) {
+    public FavoriteItem(String pAddressInfo, String pSensorId) {
         this.addressInfo = pAddressInfo;
         this.sensorId = pSensorId;
-        this.favoriteDescription = pFavoriteDscription;
     }
 
     public String getAddressInfo() {
@@ -29,13 +27,5 @@ public class FavoriteItem {
 
     public void setSensorId(String sensorId) {
         this.sensorId = sensorId;
-    }
-
-    public String getFavoriteDescription() {
-        return favoriteDescription;
-    }
-
-    public void setFavoriteDescripTion(String favoriteDescription) {
-        this.favoriteDescription = favoriteDescription;
     }
 }

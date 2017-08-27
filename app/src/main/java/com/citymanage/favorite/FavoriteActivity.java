@@ -172,13 +172,11 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
             @Override
             public void onResponse(Call<FavoritesInfoRepo> call, Response<FavoritesInfoRepo> response) {
 
-
-
                 FavoritesInfoRepo favoritesInfo = response.body();
 
                 gListFavoriteHistory.clear();
 
-                    //통신을 해서 데이터를 받아 오기전에 리스트뷰를 아무것도 없는 상태로 셋팅한다.
+                //통신을 해서 데이터를 받아 오기전에 리스트뷰를 아무것도 없는 상태로 셋팅한다.
                 adapter.clearItemAll(); //어댑터에 셋팅된 아이템 전부 삭제
                 adapter.notifyDataSetChanged(); //어댑터 정보 갱신
 

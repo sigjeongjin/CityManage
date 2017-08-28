@@ -56,7 +56,7 @@ public class SmListActivity extends SideNaviBaseActivity {
         setTitle(R.string.sm_title);
 
         smListView = (ListView) findViewById(R.id.smLv);
-        streetFindEv = (EditText) findViewById(R.id.streetFindEv);
+        streetFindEv = (EditText) findViewById(R.id.sensorIdFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
         dialog = new ProgressDialog(this);

@@ -14,9 +14,6 @@ import android.widget.Toast;
 
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
-import com.citymanage.tm.TmListActivity;
-import com.citymanage.tm.TmListAdapter;
-import com.citymanage.tm.TmListItem;
 import com.common.Module;
 import com.common.repo.SensorInfoRepo;
 import com.common.repo.SensorService;
@@ -46,7 +43,7 @@ public class WmListActivity extends SideNaviBaseActivity {
 
     WmListAdapter adapter; // 위의 리스트 adapter
     ListView wmListView;
-    EditText streetFindEv;
+    EditText sensorIdFindEt;
     Button searchBtn;
 
     List<HashMap<String,String>> mListHashWm = new ArrayList<HashMap<String, String>>();
@@ -59,7 +56,7 @@ public class WmListActivity extends SideNaviBaseActivity {
         setTitle(R.string.wm_title);
 
         wmListView = (ListView) findViewById(R.id.wmLv);
-        streetFindEv = (EditText) findViewById(R.id.streetFindEv);
+        sensorIdFindEt = (EditText) findViewById(R.id.sensorIdFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
         dialog = new ProgressDialog(this);
@@ -142,45 +139,58 @@ public class WmListActivity extends SideNaviBaseActivity {
             @Override
             public void onClick(View v) {
 
-                dialog = new ProgressDialog(WmListActivity.this);
-                dialog.setMessage("Loading....");
-                dialog.show();
+            dialog = new ProgressDialog(WmListActivity.this);
+            dialog.setMessage("Loading....");
+            dialog.show();
 
-//                StringBuilder sb = new StringBuilder(TM_LIST_URL);
-//                String strStreet = streetFindEv.getText().toString();
-//
-//                try {
-//                    if(strStreet.length() > 0) {
-//                        sb.append("?find=");
-//                        sb.append(URLEncoder.encode(streetFindEv.getText().toString(),"UTF-8"));
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//                StringRequest pushHistoryRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String string) {
-//                        parseJsonData(string);
-//                        adapter = new WmListAdapter(getApplicationContext());
-//
-//                        for(int i = 0; i < mListHashWm.size(); i ++ ) {
-//                            adapter.addItem(new WmListItem(mListHashWm.get(i).get("addressInfo"),
-//                                    mListHashWm.get(i).get("sensorId")));
-//                        }
-//                        wmListView.setAdapter(adapter);
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError volleyError) {
-//                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                        Log.i("volley error : ",volleyError.toString());
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
-//                rQueue.add(pushHistoryRequest);
+            String strSensorId = sensorIdFindEt.getText().toString();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASEHOST)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            SensorService service = retrofit.create(SensorService.class);
+            final Call<SensorInfoRepo> repos = service.getStateSearchSensorList(Module.getRecordId(getApplicationContext()),ACTIVITYNAME,strSensorId);
+
+            repos.enqueue(new Callback<SensorInfoRepo>(){
+                @Override
+                public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
+
+                    SensorInfoRepo sensorInfoRepo = response.body();
+
+                    if(sensorInfoRepo != null) {
+                        mListHashWm.clear();
+                        adapter = new WmListAdapter(getApplicationContext());
+
+                        for(int i = 0; i < sensorInfoRepo.getSensorList().size(); i ++ ) {
+
+                            HashMap<String, String> hashTemp = new HashMap<>();
+
+                            String addressInfo = sensorInfoRepo.getSensorList().get(i).getLocationName();
+                            String sensorId = sensorInfoRepo.getSensorList().get(i).getManageId();
+
+                            hashTemp.put("addressInfo", addressInfo);
+                            hashTemp.put("sensorId", sensorId);
+
+                            mListHashWm.add(i, hashTemp);
+
+                            adapter.addItem(new WmListItem(addressInfo, sensorId));
+                        }
+                        wmListView.setAdapter(adapter);
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(WmListActivity.this, sensorInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
             }
         });
 
@@ -189,9 +199,8 @@ public class WmListActivity extends SideNaviBaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             Intent intent = new Intent(getApplicationContext(), WmInfoActivity.class);
-            intent.putExtra(SENSORID,mListHashWm.get(position).get(SENSORID));
+            intent.putExtra("sensorId",mListHashWm.get(position).get("sensorId"));
             startActivity(intent);
-
             }
         });
     }

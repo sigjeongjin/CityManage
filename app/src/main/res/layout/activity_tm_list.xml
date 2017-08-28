@@ -21,13 +21,13 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/streetFindEv"
+                    android:id="@+id/sensorIdFindEv"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
                     android:layout_margin="15dp"
                     android:layout_weight="1"
-                    android:hint="동/읍/면"
+                    android:hint="센서ID"
                     android:inputType="textPersonName" />
 
                 <Button

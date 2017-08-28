@@ -43,7 +43,7 @@ public class GmListActivity extends SideNaviBaseActivity {
 
     GmListAdapter adapter; // 위의 리스트 adapter
     ListView gmListView;
-    EditText streetFindEv;
+    EditText sensorIdFindEt;
     Button searchBtn;
 
     List<HashMap<String,String>> mListHashGm = new ArrayList<HashMap<String, String>>();
@@ -57,7 +57,7 @@ public class GmListActivity extends SideNaviBaseActivity {
 
 
         gmListView = (ListView) findViewById(R.id.gmLv);
-        streetFindEv = (EditText) findViewById(R.id.streetFindEv);
+        sensorIdFindEt = (EditText) findViewById(R.id.sensorIdFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
         dialog = new ProgressDialog(this);
@@ -116,45 +116,58 @@ public class GmListActivity extends SideNaviBaseActivity {
             @Override
             public void onClick(View v) {
 
-                dialog = new ProgressDialog(GmListActivity.this);
-                dialog.setMessage("Loading....");
-                dialog.show();
+            dialog = new ProgressDialog(GmListActivity.this);
+            dialog.setMessage("Loading....");
+            dialog.show();
 
-//                StringBuilder sb = new StringBuilder(TM_LIST_URL);
-//                String strStreet = streetFindEv.getText().toString();
-//
-//                try {
-//                    if(strStreet.length() > 0) {
-//                        sb.append("?find=");
-//                        sb.append(URLEncoder.encode(streetFindEv.getText().toString(),"UTF-8"));
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//                StringRequest pushHistoryRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String string) {
-//                        parseJsonData(string);
-//                        adapter = new GmListAdapter(getApplicationContext());
-//
-//                        for(int i = 0; i < mListHashGm.size(); i ++ ) {
-//                            adapter.addItem(new GmListItem(mListHashGm.get(i).get("addressInfo"),
-//                                    mListHashGm.get(i).get("sensorId")));
-//                        }
-//                        gmListView.setAdapter(adapter);
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError volleyError) {
-//                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                        Log.i("volley error : ",volleyError.toString());
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                RequestQueue rQueue = Volley.newRequestQueue(GmListActivity.this);
-//                rQueue.add(pushHistoryRequest);
+            String strSensorId = sensorIdFindEt.getText().toString();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASEHOST)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            SensorService service = retrofit.create(SensorService.class);
+            final Call<SensorInfoRepo> repos = service.getStateSearchSensorList(Module.getRecordId(getApplicationContext()),ACTIVITYNAME,strSensorId);
+
+            repos.enqueue(new Callback<SensorInfoRepo>(){
+                @Override
+                public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
+
+                    SensorInfoRepo sensorInfoRepo = response.body();
+
+                    if(sensorInfoRepo != null) {
+                        mListHashGm.clear();
+                        adapter = new GmListAdapter(getApplicationContext());
+
+                        for(int i = 0; i < sensorInfoRepo.getSensorList().size(); i ++ ) {
+
+                            HashMap<String, String> hashTemp = new HashMap<>();
+
+                            String addressInfo = sensorInfoRepo.getSensorList().get(i).getLocationName();
+                            String sensorId = sensorInfoRepo.getSensorList().get(i).getManageId();
+
+                            hashTemp.put("addressInfo", addressInfo);
+                            hashTemp.put("sensorId", sensorId);
+
+                            mListHashGm.add(i, hashTemp);
+
+                            adapter.addItem(new GmListItem(addressInfo, sensorId));
+                        }
+                        gmListView.setAdapter(adapter);
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(GmListActivity.this, sensorInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
             }
         });
 

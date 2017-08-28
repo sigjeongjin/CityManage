@@ -3,22 +3,29 @@ package com.citymanage.wm;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
+import com.common.Module;
+import com.common.repo.SensorInfoRepo;
+import com.common.repo.SensorService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.citymanage.wm.WmListActivity.ACTIVITYNAME;
 
 public class WmInfoActivity extends SideNaviBaseActivity {
 
@@ -31,7 +38,6 @@ public class WmInfoActivity extends SideNaviBaseActivity {
     TextView installDayTv;
     TextView waterLevelSensorInfoTv;
     TextView waterQualitySensorInfoTv;
-
 
     String strSensorId;
     String strLocation;
@@ -50,8 +56,8 @@ public class WmInfoActivity extends SideNaviBaseActivity {
         sensorIdTv                  = (TextView) findViewById(R.id.sensorIdTv);
         locationTv                  = (TextView) findViewById(R.id.locationTv);
         installDayTv                = (TextView) findViewById(R.id.installDayTv);
-        waterLevelSensorInfoTv      = (TextView) findViewById(R.id.waterLevelSensorInfoTv);
-        waterQualitySensorInfoTv    = (TextView) findViewById(R.id.waterQualitySensorInfoTv);
+        waterLevelSensorInfoTv    = (TextView) findViewById(R.id.waterLevelSensorInfoTv);
+        waterQualitySensorInfoTv  = (TextView) findViewById(R.id.waterQualitySensorInfoTv);
 
         Intent intent = getIntent();
         String sensorId = intent.getStringExtra(SENSORID);
@@ -60,33 +66,80 @@ public class WmInfoActivity extends SideNaviBaseActivity {
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringBuilder sb = new StringBuilder(TM_INFO_URL);
-        sb.append("?sensorId=");
-        sb.append(sensorId);
 
-        StringRequest pushHistoryRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SensorService service = retrofit.create(SensorService.class);
+        final Call<SensorInfoRepo> repos = service.getStateSearchSensorList(Module.getRecordId(getApplicationContext()),ACTIVITYNAME,strSensorId);
+
+        repos.enqueue(new Callback<SensorInfoRepo>(){
             @Override
-            public void onResponse(String string) {
-                parseJsonData(string);
+            public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
 
-                sensorIdTv.setText(strSensorId);
-                locationTv.setText(strLocation);
-                installDayTv.setText(installDay);
-                waterLevelSensorInfoTv.setText(waterLevel);
-                waterQualitySensorInfoTv.setText(waterQuality);
+                SensorInfoRepo sensorInfoRepo = response.body();
 
+                if(sensorInfoRepo != null) {
+                    mListHashWm.clear();
+                    adapter = new WmListAdapter(getApplicationContext());
+
+                    for(int i = 0; i < sensorInfoRepo.getSensorList().size(); i ++ ) {
+
+                        HashMap<String, String> hashTemp = new HashMap<>();
+
+                        String addressInfo = sensorInfoRepo.getSensorList().get(i).getLocationName();
+                        String sensorId = sensorInfoRepo.getSensorList().get(i).getManageId();
+
+                        hashTemp.put("addressInfo", addressInfo);
+                        hashTemp.put("sensorId", sensorId);
+
+                        mListHashWm.add(i, hashTemp);
+
+                        adapter.addItem(new WmListItem(addressInfo, sensorId));
+                    }
+                    wmListView.setAdapter(adapter);
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(WmListActivity.this, sensorInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                Log.i("volley error : ",volleyError.toString());
                 dialog.dismiss();
             }
         });
-
-        RequestQueue rQueue = Volley.newRequestQueue(WmInfoActivity.this);
-        rQueue.add(pushHistoryRequest);
+//        StringBuilder sb = new StringBuilder(TM_INFO_URL);
+//        sb.append("?sensorId=");
+//        sb.append(sensorId);
+//
+//        StringRequest pushHistoryRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String string) {
+//                parseJsonData(string);
+//
+//                sensorIdTv.setText(strSensorId);
+//                locationTv.setText(strLocation);
+//                installDayTv.setText(installDay);
+//                waterLevelSensorInfoTv.setText(waterLevel);
+//                waterQualitySensorInfoTv.setText(waterQuality);
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+//                Log.i("volley error : ",volleyError.toString());
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        RequestQueue rQueue = Volley.newRequestQueue(WmInfoActivity.this);
+//        rQueue.add(pushHistoryRequest);
     }
 
     //통신 후 json 파싱

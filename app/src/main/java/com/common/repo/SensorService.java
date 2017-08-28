@@ -13,4 +13,8 @@ public interface SensorService {
     @Headers({"Accept:application/json"})
     @GET("sensorList.app")
     Call<SensorInfoRepo> getSensorList(@Query("memberId") String memberId, @Query("manageType") String manageType);
+
+    @Headers({"Accept:application/json"})
+    @GET("stateSearchSensorList.app")
+    Call<SensorInfoRepo> getStateSearchSensorList(@Query("memberId") String memberId, @Query("manageType") String manageType, @Query("searchText") String searchText);
 }

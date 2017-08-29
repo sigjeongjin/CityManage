@@ -1,4 +1,4 @@
-package com.citymanage.member.repo;
+package com.citymanage.favorite.repo;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,21 +6,16 @@ import com.google.gson.annotations.SerializedName;
  * Created by park on 2017-08-06.
  */
 
-public class MemberRepo {
+public class FavoriteRepo {
     @SerializedName("resultCode")
     private String resultCode;
 
     @SerializedName("resultMessage")
     private String resultMessage;
 
-    @SerializedName("memberName")
-    private String memberName;
 
     @SerializedName("memberId")
     private String memberId;
-
-    @SerializedName("memberPwd")
-    private String memberPwd;
 
     @SerializedName("manageId")
     private String manageId;
@@ -29,8 +24,7 @@ public class MemberRepo {
     private String bookmark;
 
 
-    @SerializedName("memberPhoto")
-    private String memberPhoto;
+
 
     public String getResultMessage() {
         return resultMessage;
@@ -42,9 +36,6 @@ public class MemberRepo {
 
 
 
-    public String getMemberName() {
-        return memberName;
-    }
 
     public String getbookmark() {
         return bookmark;
@@ -58,13 +49,6 @@ public class MemberRepo {
         return manageId;
     }
 
-    public String getMemberPhoto() {
-        return memberPhoto;
-    }
-
-    public String getMemberPwd() {
-        return memberPwd;
-    }
 
     //    public List<Tm> tmList = new ArrayList<>();
 //    public List<Tm> getTm() {return tmList;}

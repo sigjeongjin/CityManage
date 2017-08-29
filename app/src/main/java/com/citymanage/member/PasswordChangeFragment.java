@@ -68,7 +68,7 @@ public class PasswordChangeFragment extends Fragment {
 
                             }
                         });
-                        
+
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
 

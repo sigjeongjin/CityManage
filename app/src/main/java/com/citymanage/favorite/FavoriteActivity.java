@@ -17,8 +17,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
+import com.citymanage.favorite.repo.FavoriteRepo;
+import com.citymanage.favorite.repo.FavoriteService;
+import com.citymanage.member.repo.CityRepo;
+import com.citymanage.member.repo.MemberRepo;
+import com.citymanage.member.repo.MemberService;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.tm.TmInfoActivity;
+import com.common.Module;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +33,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
 
 import static com.citymanage.R.id.favoriteHistoryListView;
 
@@ -53,6 +64,9 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         super.setupToolbar();
@@ -83,6 +97,35 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading....");
         dialog.show();
+
+
+
+                Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        FavoriteService service = retrofit.create(FavoriteService.class);
+        final Call<FavoriteRepo> favoritesRegister = service.getFavoritesRegister(Module.getRecordId(getApplicationContext()), "bookmark", "manageId");
+
+        favoritesRegister.enqueue(new Callback<FavoriteRepo>() {
+            @Override
+            public void onResponse(Call<FavoriteRepo> call, retrofit2.Response<FavoriteRepo> response) {
+
+                FavoriteRepo favoriteRegister = response.body();
+
+            }
+
+            @Override
+            public void onFailure(Call<FavoriteRepo> call, Throwable t) {
+
+            }
+        });
+
+
+
+
+
 
         StringRequest favoriteHistoryRequest = new StringRequest(gFavoriteHistoryUrl, new Response.Listener<String>() {
             @Override

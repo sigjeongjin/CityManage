@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.citymanage.MainActivity;
 import com.citymanage.R;
+import com.citymanage.member.repo.CityRepo;
 import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
+import com.citymanage.member.repo.StateRepo;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.common.Module;
 
@@ -72,19 +74,35 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                 .build();
 
         MemberService service = retrofit.create(MemberService.class);
-        final Call<MemberRepo> repos = service.getCityInfo();
+        final Call<CityRepo> repos = service.getCityInfo();
 
-        repos.enqueue(new Callback<MemberRepo>(){
+        repos.enqueue(new Callback<CityRepo>(){
             @Override
-            public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+            public void onResponse(Call<CityRepo> call, Response<CityRepo> response) {
+
+                CityRepo cityInfo = response.body();
+
+                strArrayCityName = new String[cityInfo.getCity().size()];
+                for (int i = 0; i < cityInfo.getCity().size(); i++){
+
+                    String city = cityInfo.getCity().get(i).getCityName();
+                    String cityCode = cityInfo.getCity().get(i).getCityCode();
+
+                    HashMap<String,String> cityHashMap = new HashMap<>();
+                    cityHashMap.put("city", city);
+                    cityHashMap.put("cityCode", cityCode);
+
+                    strArrayCityName[i] = city;
+                    cityNameList.add(i,city);
+                    cityList.add(i, cityHashMap);
+                }
 
                 setCityAdapter();
-
                 dialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<MemberRepo> call, Throwable t) {
+            public void onFailure(Call<CityRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -92,7 +110,6 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
         citySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 dialog = new ProgressDialog(AddressSearchActivity.this);
@@ -105,25 +122,35 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                         .build();
 
                 MemberService service = retrofit.create(MemberService.class);
-                final Call<MemberRepo> repos = service.getCityInfo();
+                final Call<StateRepo> repos = service.getStateInfo(cityList.get(position).get("city"));
 
-                repos.enqueue(new Callback<MemberRepo>() {
+                repos.enqueue(new Callback<StateRepo>() {
                     @Override
-                    public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+                    public void onResponse(Call<StateRepo> call, Response<StateRepo> response) {
+
+                        StateRepo stateInfo = response.body();
+
+                        strArrayStateName = new String[stateInfo.getState().size()];
+                        for (int i = 0; i < stateInfo.getState().size(); i++) {
+                            String state = stateInfo.getState().get(i).getStateName();
+                            String stateCode = stateInfo.getState().get(i).getStateCode();
+
+                            HashMap<String, String> stateHashMap = new HashMap<>();
+                            stateHashMap.put("state", state);
+                            stateHashMap.put("stateCode", stateCode);
+
+                            strArrayStateName[i] = state;
+                            stateNameList.add(i, state);
+                            stateList.add(i, stateHashMap);
+                        }
+                        setStateAdapater();
                         dialog.dismiss();
 
-                        MemberRepo memberRepo= response.body();
-
-                        Log.e("TEST TEST :", memberRepo.getResultMessage());
-                        Log.e("TEST TEST :", memberRepo.getResultCode());
-
-                        if(memberRepo != null) {
-                            setStateAdapater();
-                        }
                     }
 
+
                     @Override
-                    public void onFailure(Call<MemberRepo> call, Throwable t) {
+                    public void onFailure(Call<StateRepo> call, Throwable t) {
 
                         dialog.dismiss();
                     }
@@ -133,8 +160,11 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+
+
             }
         });
+
 
         selectConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,9 +172,40 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
                 DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener(){
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Module.setLocation(getApplicationContext(),1);
+                    public void onClick(final DialogInterface dialog, int which) {
+                        Module.setLocation(getApplicationContext(), 1);
 
+
+                        String cityCode = cityList.get(citySp.getSelectedItemPosition()).get("cityCode");
+                        String stateCode = stateList.get(stateSp.getSelectedItemPosition()).get("stateCode");
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(BASEHOST)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+
+                        MemberService service = retrofit.create(MemberService.class);
+                        final Call<MemberRepo> cityStateInfo = service.getCityStateInfoRegister(cityCode, stateCode, Module.getRecordId(getApplicationContext()),Module.getRecordPwd(getApplicationContext()));
+
+                        cityStateInfo.enqueue(new Callback<MemberRepo>() {
+
+                            public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+
+                                MemberRepo cityStateInfo = response.body();
+
+
+                                setStateAdapater();
+                                dialog.dismiss();
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<MemberRepo> call, Throwable t) {
+
+                            }
+
+                        });
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

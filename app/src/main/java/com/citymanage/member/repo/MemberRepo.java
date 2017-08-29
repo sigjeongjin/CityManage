@@ -19,46 +19,45 @@ public class MemberRepo {
     @SerializedName("memberId")
     private String memberId;
 
-    @SerializedName("cityCode")
-    private String cityCode;
+    @SerializedName("memberPwd")
+    private String memberPwd;
 
-    @SerializedName("cityName")
-    private String cityName;
+    @SerializedName("manageId")
+    private String manageId;
 
-    @SerializedName("stateCode")
-    private String stateCode;
+    @SerializedName("memberPhoto")
+    private String memberPhoto;
 
-    @SerializedName("stateName")
-    private String stateName;
-
-    public String getResultMessage() { return resultMessage; }
+    public String getResultMessage() {
+        return resultMessage;
+    }
 
     public String getResultCode() {
         return resultCode;
     }
 
+
+
     public String getMemberName() {
         return memberName;
     }
+
+
 
     public String getMemberId() {
         return memberId;
     }
 
-    public String getCityCode() {
-        return cityCode;
+    public String getManageId() {
+        return manageId;
     }
 
-    public String getCityName() {
-        return cityName;
+    public String getMemberPhoto() {
+        return memberPhoto;
     }
 
-    public String getStateCode() {
-        return stateCode;
-    }
-
-    public String getStateName() {
-        return stateName;
+    public String getMemberPwd() {
+        return memberPwd;
     }
 
     //    public List<Tm> tmList = new ArrayList<>();

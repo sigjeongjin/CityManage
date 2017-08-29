@@ -16,16 +16,16 @@ public interface MemberService {
 
     @Headers({"Accept:application/json"})
     @GET("cityInfo.app")
-    Call<MemberRepo> getCityInfo();
+    Call<CityRepo> getCityInfo();
 
     @Headers({"Accept:application/json"})
     @GET("stateInfo.app")
-    Call<MemberRepo> getStateInfo(@Query("cityCode") String cityCode);
+    Call<StateRepo> getStateInfo(@Query("cityCode") String cityCode);
 
 
     @Headers({"Accept:application/json"})
     @GET("cityStateInfoRegister.app")
-    Call<MemberRepo> getCityStateInfoRegister(@Query("cityGecode") String cityGeocode, @Query("stateGeocode") String stateGeocode);
+    Call<MemberRepo> getCityStateInfoRegister(@Query("cityCode") String citycode, @Query("stateCode") String statecode, @Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
 
     @Headers({"Accept:application/json"})
     @GET("memberPwdConfirm.app")
@@ -35,7 +35,17 @@ public interface MemberService {
     @GET("memberPwdChange.app")
     Call<MemberRepo> getMemberPwdChange(@Query("memberId") String id, @Query("memberPwd") String password);
 
+    @Headers({"Accept:application/json"})
+    @GET("memberProfileImageChange.app")
+    Call<MemberRepo> getMemberProfileImageChange(@Query("memberId") String id, @Query("memberPhoto") String memberPhoto);
 
+    @Headers({"Accept:application/json"})
+    @GET("favoritesRegister.app")
+    Call<MemberRepo> getFavoritesRegister(@Query("memberId") String id, @Query("manageId") String manageId);
+
+    @Headers({"Accept:application/json"})
+    @GET("operationStatusRegister.app")
+    Call<MemberRepo> getOperationStatusRegister(@Query("sensorId") String id, @Query("operationStatus") String operationStatus);
 
 
 

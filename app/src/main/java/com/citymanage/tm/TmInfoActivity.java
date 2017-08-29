@@ -3,22 +3,25 @@ package com.citymanage.tm;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
+import com.citymanage.tm.repo.TmInfoRepo;
+import com.citymanage.wm.repo.WmInfoRepo;
+import com.common.repo.SensorService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.citymanage.R.id.waterLevelSensorInfoTv;
+import static com.citymanage.R.id.waterQualitySensorInfoTv;
 
 public class TmInfoActivity extends SideNaviBaseActivity {
 
@@ -61,51 +64,40 @@ public class TmInfoActivity extends SideNaviBaseActivity {
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringBuilder sb = new StringBuilder(TM_INFO_URL);
-        sb.append("?sensorId=");
-        sb.append(sensorId);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        StringRequest pushHistoryRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
+        SensorService service = retrofit.create(SensorService.class);
+        final Call<TmInfoRepo> repos = service.getTmInfo(sensorId);
+
+        repos.enqueue(new Callback<TmInfoRepo>(){
             @Override
-            public void onResponse(String string) {
-                parseJsonData(string);
+            public void onResponse(Call<TmInfoRepo> call, Response<TmInfoRepo> response) {
 
-                sensorIdTv.setText(strSensorId);
-                locationTv.setText(strLocation);
-                installDayTv.setText(installDay);
-                fireSensorInfoTv.setText(fireSensorInfo);
-                stinkSensorInfoTv.setText(stinkSensorInfo);
-                garbageSensorInfoTv.setText(garbageSensorInfo);
+                TmInfoRepo tmInfoRepo = response.body();
+
+                if(tmInfoRepo != null) {
+                    sensorIdTv.setText(tmInfoRepo.getManageId());
+                    locationTv.setText(tmInfoRepo.getLocationName());
+                    installDayTv.setText(tmInfoRepo.getInstallationDateTime());
+                    waterLevelSensorInfoTv.setText(tmInfoRepo.getWaterLevel());
+                    waterQualitySensorInfoTv.setText(tmInfoRepo.getWaterQuality());
+
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(TmInfoActivity.this, wmInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onFailure(Call<TmInfoRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                Log.i("volley error : ",volleyError.toString());
                 dialog.dismiss();
             }
         });
-
-        RequestQueue rQueue = Volley.newRequestQueue(TmInfoActivity.this);
-        rQueue.add(pushHistoryRequest);
-    }
-
-    //통신 후 json 파싱
-    void parseJsonData(String jsonString) {
-        try {
-            JSONObject object = new JSONObject(jsonString);
-
-            strSensorId = object.getString("sensorId");
-            strLocation = object.getString("addressInfo");
-            installDay = object.getString("installDay");
-            fireSensorInfo = object.getString("fireSensorInfo");
-            stinkSensorInfo = object.getString("stinkSensorInfo");
-            garbageSensorInfo = object.getString("garbageSensorInfo");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
     }
 
     @Override

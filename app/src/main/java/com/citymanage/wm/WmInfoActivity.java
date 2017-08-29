@@ -10,22 +10,14 @@ import android.widget.Toast;
 
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
-import com.common.Module;
-import com.common.repo.SensorInfoRepo;
+import com.citymanage.wm.repo.WmInfoRepo;
 import com.common.repo.SensorService;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.citymanage.wm.WmListActivity.ACTIVITYNAME;
 
 public class WmInfoActivity extends SideNaviBaseActivity {
 
@@ -73,90 +65,34 @@ public class WmInfoActivity extends SideNaviBaseActivity {
                 .build();
 
         SensorService service = retrofit.create(SensorService.class);
-        final Call<SensorInfoRepo> repos = service.getStateSearchSensorList(Module.getRecordId(getApplicationContext()),ACTIVITYNAME,strSensorId);
+        final Call<WmInfoRepo> repos = service.getWmInfo(sensorId);
 
-        repos.enqueue(new Callback<SensorInfoRepo>(){
+        repos.enqueue(new Callback<WmInfoRepo>(){
             @Override
-            public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
+            public void onResponse(Call<WmInfoRepo> call, Response<WmInfoRepo> response) {
 
-                SensorInfoRepo sensorInfoRepo = response.body();
+                WmInfoRepo wmInfoRepo = response.body();
 
-                if(sensorInfoRepo != null) {
-                    mListHashWm.clear();
-                    adapter = new WmListAdapter(getApplicationContext());
+                if(wmInfoRepo != null) {
+                    sensorIdTv.setText(wmInfoRepo.getManageId());
+                    locationTv.setText(wmInfoRepo.getLocationName());
+                    installDayTv.setText(wmInfoRepo.getInstallationDateTime());
+                    waterLevelSensorInfoTv.setText(wmInfoRepo.getWaterLevel());
+                    waterQualitySensorInfoTv.setText(wmInfoRepo.getWaterQuality());
 
-                    for(int i = 0; i < sensorInfoRepo.getSensorList().size(); i ++ ) {
-
-                        HashMap<String, String> hashTemp = new HashMap<>();
-
-                        String addressInfo = sensorInfoRepo.getSensorList().get(i).getLocationName();
-                        String sensorId = sensorInfoRepo.getSensorList().get(i).getManageId();
-
-                        hashTemp.put("addressInfo", addressInfo);
-                        hashTemp.put("sensorId", sensorId);
-
-                        mListHashWm.add(i, hashTemp);
-
-                        adapter.addItem(new WmListItem(addressInfo, sensorId));
-                    }
-                    wmListView.setAdapter(adapter);
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(WmListActivity.this, sensorInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WmInfoActivity.this, wmInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
+            public void onFailure(Call<WmInfoRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
-//        StringBuilder sb = new StringBuilder(TM_INFO_URL);
-//        sb.append("?sensorId=");
-//        sb.append(sensorId);
-//
-//        StringRequest pushHistoryRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String string) {
-//                parseJsonData(string);
-//
-//                sensorIdTv.setText(strSensorId);
-//                locationTv.setText(strLocation);
-//                installDayTv.setText(installDay);
-//                waterLevelSensorInfoTv.setText(waterLevel);
-//                waterQualitySensorInfoTv.setText(waterQuality);
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                Log.i("volley error : ",volleyError.toString());
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        RequestQueue rQueue = Volley.newRequestQueue(WmInfoActivity.this);
-//        rQueue.add(pushHistoryRequest);
-    }
-
-    //통신 후 json 파싱
-    void parseJsonData(String jsonString) {
-        try {
-            JSONObject object = new JSONObject(jsonString);
-
-            strSensorId = object.getString("sensorId");
-            strLocation = object.getString("addressInfo");
-            installDay = object.getString("installDay");
-            waterLevel = object.getString("waterLevel");
-            waterQuality = object.getString("waterQuality");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
     }
 
     @Override

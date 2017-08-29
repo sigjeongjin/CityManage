@@ -13,8 +13,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.citymanage.BaseActivity;
 import com.citymanage.R;
+import com.citymanage.member.repo.MemberRepo;
+import com.citymanage.member.repo.MemberService;
 import com.citymanage.setting.SettingActivity;
+import com.common.Module;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by we25 on 2017-07-04.
@@ -38,6 +48,27 @@ public class PasswordChangeFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(BaseActivity.BASEHOST)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        MemberService service = retrofit.create(MemberService.class);
+                        final retrofit2.Call<MemberRepo> pwdChange = service.getMemberPwdChange(Module.getRecordId(getContext()), Module.getRecordPwd(getContext()));
+                        pwdChange.enqueue(new Callback<MemberRepo>() {
+                            @Override
+                            public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+
+                                MemberRepo pwdChange = response.body();
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<MemberRepo> call, Throwable t) {
+
+                            }
+                        });
+                        
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
 

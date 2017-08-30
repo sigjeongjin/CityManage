@@ -5,9 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.citymanage.wm.WmListItem;
-import com.citymanage.wm.WmListItemView;
-
 import java.util.ArrayList;
 
 /**
@@ -15,7 +12,7 @@ import java.util.ArrayList;
  */
 
 public class TmListAdapter extends BaseAdapter {
-    ArrayList<WmListItem> items = new ArrayList<WmListItem>();
+    ArrayList<TmListItem> items = new ArrayList<TmListItem>();
     Context context;
 
     public TmListAdapter(Context context) {
@@ -27,7 +24,7 @@ public class TmListAdapter extends BaseAdapter {
         return items.size();
     }
 
-    public void addItem(WmListItem item) {
+    public void addItem(TmListItem item) {
         items.add(item);
     }
 
@@ -47,9 +44,9 @@ public class TmListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        WmListItemView view = new WmListItemView(context);
+        TmListItemView view = new TmListItemView(context);
 
-        WmListItem item = items.get(position);
+        TmListItem item = items.get(position);
         view.setAddressInfo(item.getAddressInfo());
         view.setSensorId(item.getSensorId());
         return view;

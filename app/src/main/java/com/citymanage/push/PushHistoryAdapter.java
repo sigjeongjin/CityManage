@@ -49,7 +49,7 @@ public class PushHistoryAdapter extends BaseAdapter {
         PushHistoryItem item = items.get(position);
         view.setAddressInfo(item.getAddressInfo());
         view.setSensorId(item.getSensorId());
-        view.setPushDescripTion(item.getPushDescription());
+        view.setPushSendTime(item.getPushSendTime());
         return view;
     }
 }

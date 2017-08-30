@@ -3,7 +3,6 @@ package com.citymanage.tm;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,35 +12,38 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
-import com.citymanage.wm.WmListItem;
+import com.common.Module;
+import com.common.repo.SensorInfoRepo;
+import com.common.repo.SensorService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static com.citymanage.R.id.action_settings;
 
 public class TmListActivity extends SideNaviBaseActivity {
 
     final static String SENSORID = "sensorId";
+    final static String ACTIVITYNAME ="tm";
 
     String resultCode;
 
     TmListAdapter adapter; // 위의 리스트 adapter
     ListView tmListView;
-    EditText streetFindEv;
+    EditText sensorIdFindEt;
     Button searchBtn;
 
     List<HashMap<String,String>> mListHashTm = new ArrayList<HashMap<String, String>>();
@@ -54,92 +56,117 @@ public class TmListActivity extends SideNaviBaseActivity {
         setTitle(R.string.tm_title);
 
         tmListView = (ListView) findViewById(R.id.tmLv);
-        streetFindEv = (EditText) findViewById(R.id.streetFindEv);
+        sensorIdFindEt = (EditText) findViewById(R.id.sensorIdFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading....");
         dialog.show();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(HOST)
-//                .build();
-//
-//        WmService service = retrofit.create(WmService.class);
-//
-//        Call<WmRepo> repo = service.getWmRepo("park");
+        SensorService service = retrofit.create(SensorService.class);
+        final Call<SensorInfoRepo> repos = service.getSensorList(Module.getRecordId(getApplicationContext()),ACTIVITYNAME);
 
+        repos.enqueue(new Callback<SensorInfoRepo>(){
+            @Override
+            public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
 
+                SensorInfoRepo sensorInfoRepo = response.body();
 
-//        StringRequest pushHistoryRequest = new StringRequest(TM_LIST_URL, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String string) {
-//                parseJsonData(string);
-//                adapter = new TmListAdapter(getApplicationContext());
-//
-//                for(int i = 0; i < mListHashTm.size(); i ++ ) {
-//                    adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
-//                            mListHashTm.get(i).get("sensorId")));
-//                }
-//                tmListView.setAdapter(adapter);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                Log.i("volley error : ",volleyError.toString());
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        RequestQueue rQueue = Volley.newRequestQueue(TmListActivity.this);
-//        rQueue.add(pushHistoryRequest);
+                if(sensorInfoRepo != null) {
+                    mListHashTm.clear();
+                    adapter = new TmListAdapter(getApplicationContext());
+
+                    for(int i = 0; i < sensorInfoRepo.getSensorList().size(); i ++ ) {
+
+                        HashMap<String, String> hashTemp = new HashMap<>();
+
+                        String addressInfo = sensorInfoRepo.getSensorList().get(i).getLocationName();
+                        String sensorId = sensorInfoRepo.getSensorList().get(i).getManageId();
+
+                        hashTemp.put("addressInfo", addressInfo);
+                        hashTemp.put("sensorId", sensorId);
+
+                        mListHashTm.add(i, hashTemp);
+
+                        adapter.addItem(new TmListItem(addressInfo, sensorId));
+                    }
+                    tmListView.setAdapter(adapter);
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(TmListActivity.this, sensorInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                dialog = new ProgressDialog(TmListActivity.this);
-                dialog.setMessage("Loading....");
-                dialog.show();
+            dialog = new ProgressDialog(TmListActivity.this);
+            dialog.setMessage("Loading....");
+            dialog.show();
 
-                StringBuilder sb = new StringBuilder(TM_LIST_URL);
-                String strStreet = streetFindEv.getText().toString();
+            String strSensorId = sensorIdFindEt.getText().toString();
 
-                try {
-                    if(strStreet.length() > 0) {
-                        sb.append("?find=");
-                        sb.append(URLEncoder.encode(streetFindEv.getText().toString(),"UTF-8"));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASEHOST)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-                StringRequest pushHistoryRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String string) {
-                        parseJsonData(string);
+            SensorService service = retrofit.create(SensorService.class);
+            final Call<SensorInfoRepo> repos = service.getStateSearchSensorList(Module.getRecordId(getApplicationContext()),ACTIVITYNAME,strSensorId);
+
+            repos.enqueue(new Callback<SensorInfoRepo>(){
+                @Override
+                public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
+
+                    SensorInfoRepo sensorInfoRepo = response.body();
+
+                    if(sensorInfoRepo != null) {
+                        mListHashTm.clear();
                         adapter = new TmListAdapter(getApplicationContext());
 
-                        for(int i = 0; i < mListHashTm.size(); i ++ ) {
-                            adapter.addItem(new WmListItem(mListHashTm.get(i).get("addressInfo"),
-                                    mListHashTm.get(i).get("sensorId")));
+                        for(int i = 0; i < sensorInfoRepo.getSensorList().size(); i ++ ) {
+
+                            HashMap<String, String> hashTemp = new HashMap<>();
+
+                            String addressInfo = sensorInfoRepo.getSensorList().get(i).getLocationName();
+                            String sensorId = sensorInfoRepo.getSensorList().get(i).getManageId();
+
+                            hashTemp.put("addressInfo", addressInfo);
+                            hashTemp.put("sensorId", sensorId);
+
+                            mListHashTm.add(i, hashTemp);
+
+                            adapter.addItem(new TmListItem(addressInfo, sensorId));
                         }
                         tmListView.setAdapter(adapter);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                        Log.i("volley error : ",volleyError.toString());
                         dialog.dismiss();
+                    } else {
+                        Toast.makeText(TmListActivity.this, sensorInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                     }
-                });
+                    dialog.dismiss();
+                }
 
-                RequestQueue rQueue = Volley.newRequestQueue(TmListActivity.this);
-                rQueue.add(pushHistoryRequest);
+                @Override
+                public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
             }
         });
 

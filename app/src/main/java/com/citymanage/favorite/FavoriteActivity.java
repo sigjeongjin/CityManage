@@ -11,24 +11,15 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
-import com.citymanage.favorite.repo.FavoriteRepo;
-import com.citymanage.favorite.repo.FavoriteService;
-import com.citymanage.member.repo.CityRepo;
-import com.citymanage.member.repo.MemberRepo;
-import com.citymanage.member.repo.MemberService;
+
+
+import com.citymanage.favorite.repo.FavoritesInfoRepo;
+import com.citymanage.favorite.repo.FavoritesService;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.tm.TmInfoActivity;
 import com.common.Module;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +28,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
+
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static com.citymanage.R.id.favoriteHistoryListView;
@@ -97,58 +90,87 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading....");
         dialog.show();
-
-
-
-                Retrofit retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASEHOST)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        FavoriteService service = retrofit.create(FavoriteService.class);
-        final Call<FavoriteRepo> favoritesRegister = service.getFavoritesRegister(Module.getRecordId(getApplicationContext()), "bookmark", "manageId");
+        FavoritesService service = retrofit.create(FavoritesService.class);
+        final Call<FavoritesInfoRepo> repos = service.getFavoritesInfo(Module.getRecordId(getApplicationContext()),"wm");
 
-        favoritesRegister.enqueue(new Callback<FavoriteRepo>() {
+//<<<<<<< HEAD
+//
+//
+//                Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(BASEHOST)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        FavoriteService service = retrofit.create(FavoriteService.class);
+//        final Call<FavoriteRepo> favoritesRegister = service.getFavoritesRegister(Module.getRecordId(getApplicationContext()), "bookmark", "manageId");
+//
+//        favoritesRegister.enqueue(new Callback<FavoriteRepo>() {
+//            @Override
+//            public void onResponse(Call<FavoriteRepo> call, retrofit2.Response<FavoriteRepo> response) {
+//
+//                FavoriteRepo favoriteRegister = response.body();
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<FavoriteRepo> call, Throwable t) {
+//
+//            }
+//        });
+//
+//
+//
+//
+//
+//
+//        StringRequest favoriteHistoryRequest = new StringRequest(gFavoriteHistoryUrl, new Response.Listener<String>() {
+//=======
+        repos.enqueue(new Callback<FavoritesInfoRepo>(){
+
             @Override
-            public void onResponse(Call<FavoriteRepo> call, retrofit2.Response<FavoriteRepo> response) {
-
-                FavoriteRepo favoriteRegister = response.body();
-
-            }
-
-            @Override
-            public void onFailure(Call<FavoriteRepo> call, Throwable t) {
-
-            }
-        });
+            public void onResponse(Call<FavoritesInfoRepo> call, Response<FavoritesInfoRepo> response) {
 
 
+                FavoritesInfoRepo favoritesInfo = response.body();
 
+                if(favoritesInfo != null) {
+                    for(int i = 0; i < favoritesInfo.getFavoritesList().size(); i ++ ) {
 
+                        HashMap<String,String> hashTemp = new HashMap<>();
 
+                        String addressInfo = favoritesInfo.getFavoritesList().get(i).getLocationName();
+                        String sensorId = favoritesInfo.getFavoritesList().get(i).getManageId();
 
-        StringRequest favoriteHistoryRequest = new StringRequest(gFavoriteHistoryUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                parseJsonData(string);
+                        hashTemp.put("addressInfo",addressInfo);
+                        hashTemp.put("sensorId",sensorId);
+
+                        gListFavoriteHistory.add(i,hashTemp);
+                    }
                 adapter = new FavoriteAdapter(getApplicationContext());
 
                 for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
                     adapter.addItem(new FavoriteItem(gListFavoriteHistory.get(i).get("addressInfo"),
-                            gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("favoriteDescription")));
+                            gListFavoriteHistory.get(i).get("sensorId")));
                 }
                 gFavoriteHistoryLv.setAdapter(adapter);
+
+                } else {
+                    Toast.makeText(FavoriteActivity.this, favoritesInfo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onFailure(Call<FavoritesInfoRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
-
-        RequestQueue rQueue = Volley.newRequestQueue(FavoriteActivity.this);
-        rQueue.add(favoriteHistoryRequest);
 
         gFavoriteHistoryLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -168,94 +190,91 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         dialog.setMessage("Loading....");
         dialog.show();
 
-        StringBuilder sb = new StringBuilder(gFavoriteHistoryUrl);
+        checkedSettingUrl(v.getTag().toString());
 
-        sb.append(checkedSettingUrl(v.getTag().toString()));
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        StringRequest favoriteHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
+        FavoritesService service = retrofit.create(FavoritesService.class);
 
-            //통신을 해서 데이터를 받아 오기전에 리스트뷰를 아무것도 없는 상태로 셋팅한다.
-            adapter.clearItemAll(); //어댑터에 셋팅된 아이템 전부 삭제
-            adapter.notifyDataSetChanged(); //어댑터 정보 갱신
+        CheckBox temp = (CheckBox)v.findViewWithTag(v.getTag());
 
-            parseJsonData(string);
-
-            for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
-                adapter.addItem(new FavoriteItem(gListFavoriteHistory.get(i).get("addressInfo"),
-                        gListFavoriteHistory.get(i).get("sensorId"), gListFavoriteHistory.get(i).get("favoriteDescription")));
-            }
-            gFavoriteHistoryLv.setAdapter(adapter);
-
-            gFavoriteHistoryLv.deferNotifyDataSetChanged();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-            Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+        if(!temp.isChecked()){
             dialog.dismiss();
+            return;
+        }
+
+        final Call<FavoritesInfoRepo> repos = service.getFavoritesInfo(Module.getRecordId(getApplicationContext()),v.getTag().toString());
+
+        repos.enqueue(new Callback<FavoritesInfoRepo>(){
+            @Override
+            public void onResponse(Call<FavoritesInfoRepo> call, Response<FavoritesInfoRepo> response) {
+
+                FavoritesInfoRepo favoritesInfo = response.body();
+
+                gListFavoriteHistory.clear();
+
+                //통신을 해서 데이터를 받아 오기전에 리스트뷰를 아무것도 없는 상태로 셋팅한다.
+                adapter.clearItemAll(); //어댑터에 셋팅된 아이템 전부 삭제
+                adapter.notifyDataSetChanged(); //어댑터 정보 갱신
+
+                for(int i = 0; i < favoritesInfo.getFavoritesList().size(); i ++ ) {
+
+                    HashMap<String,String> hashTemp = new HashMap<>();
+
+                    String addressInfo = favoritesInfo.getFavoritesList().get(i).getLocationName();
+                    String sensorId = favoritesInfo.getFavoritesList().get(i).getManageId();
+
+                    hashTemp.put("addressInfo",addressInfo);
+                    hashTemp.put("sensorId",sensorId);
+
+                    gListFavoriteHistory.add(i,hashTemp);
+                }
+
+                for(int i = 0; i < gListFavoriteHistory.size(); i ++ ) {
+                    adapter.addItem(new FavoriteItem(gListFavoriteHistory.get(i).get("addressInfo"),
+                            gListFavoriteHistory.get(i).get("sensorId")));
+                }
+                gFavoriteHistoryLv.setAdapter(adapter);
+
+                gFavoriteHistoryLv.deferNotifyDataSetChanged();
+
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<FavoritesInfoRepo> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
-        RequestQueue rQueue = Volley.newRequestQueue(FavoriteActivity.this);
-        rQueue.add(favoriteHistoryItemRequest);
+
     }
 
-    //통신 후 json 파싱
-    void parseJsonData(String jsonString) {
-        try {
-            gListFavoriteHistory.clear();
+    public void checkedSettingUrl(String pCheckBoxTag) {
 
-            JSONObject object = new JSONObject(jsonString);
-
-            JSONArray favoriteHistoryArray = object.getJSONArray("favoriteList");
-
-            for(int i = 0; i < favoriteHistoryArray.length(); i ++ ) {
-
-                HashMap<String,String> hashTemp = new HashMap<>();
-
-                String addressInfo = favoriteHistoryArray.getJSONObject(i).getString("addressInfo");
-                String sensorId = favoriteHistoryArray.getJSONObject(i).getString("sensorId");
-                String favoriteDescription = favoriteHistoryArray.getJSONObject(i).getString("favoriteDescription");
-
-                hashTemp.put("addressInfo",addressInfo);
-                hashTemp.put("sensorId",sensorId);
-                hashTemp.put("favoriteDescription",favoriteDescription);
-
-                gListFavoriteHistory.add(i,hashTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
-    }
-
-    public String checkedSettingUrl(String pCheckBoxTag) {
-
-        StringBuilder rItemSetting = new StringBuilder();
-        //gWmChk, gTmChk, gGmChk, gSmChk
         if(pCheckBoxTag.equals("wm")) {
             gTmChk.setChecked(false);
             gGmChk.setChecked(false);
             gSmChk.setChecked(false);
-            rItemSetting.append("?item=" + gWmChk.getTag());
+
         } else if(pCheckBoxTag.equals("tm")){
             gWmChk.setChecked(false);
             gGmChk.setChecked(false);
             gSmChk.setChecked(false);
-            rItemSetting.append("?item=" + gTmChk.getTag());
+
         } else if(pCheckBoxTag.equals("gm")) {
             gWmChk.setChecked(false);
             gTmChk.setChecked(false);
             gSmChk.setChecked(false);
-            rItemSetting.append("?item=" + gGmChk.getTag());
+
         } else if(pCheckBoxTag.equals("sm")) {
             gWmChk.setChecked(false);
             gTmChk.setChecked(false);
             gGmChk.setChecked(false);
-            rItemSetting.append("?item=" + gSmChk.getTag());
         }
-        return rItemSetting.toString();
     }
 
     @Override

@@ -43,13 +43,10 @@ public interface MemberService {
     @GET("favoritesRegister.app")
     Call<MemberRepo> getFavoritesRegister(@Query("memberId") String id, @Query("bookmark") String bookmark, @Query("manageId") String manageId);
 
-    @Headers({"Accept:application/json"})
-    @GET("operationStatusRegister.app")
-    Call<MemberRepo> getOperationStatusRegister(@Query("sensorId") String id, @Query("operationStatus") String operationStatus);
-
-
-
-
-
 
 }
+
+
+
+
+

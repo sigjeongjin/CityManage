@@ -49,7 +49,6 @@ public class FavoriteAdapter extends BaseAdapter {
         FavoriteItem item = items.get(position);
         view.setAddressInfo(item.getAddressInfo());
         view.setSensorId(item.getSensorId());
-        view.setFavoriteDescripTion(item.getFavoriteDescription());
         return view;
     }
 }

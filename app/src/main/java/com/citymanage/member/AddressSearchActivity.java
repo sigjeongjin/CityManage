@@ -17,16 +17,14 @@ import android.widget.Toast;
 
 import com.citymanage.MainActivity;
 import com.citymanage.R;
+
 import com.citymanage.member.repo.CityRepo;
 import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
 import com.citymanage.member.repo.StateRepo;
+
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.common.Module;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,6 +72,7 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                 .build();
 
         MemberService service = retrofit.create(MemberService.class);
+
         final Call<CityRepo> repos = service.getCityInfo();
 
         repos.enqueue(new Callback<CityRepo>(){
@@ -103,6 +102,7 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
             @Override
             public void onFailure(Call<CityRepo> call, Throwable t) {
+
                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -122,6 +122,7 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                         .build();
 
                 MemberService service = retrofit.create(MemberService.class);
+
                 final Call<StateRepo> repos = service.getStateInfo(cityList.get(position).get("city"));
 
                 repos.enqueue(new Callback<StateRepo>() {
@@ -151,6 +152,7 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
                     @Override
                     public void onFailure(Call<StateRepo> call, Throwable t) {
+
 
                         dialog.dismiss();
                     }
@@ -238,57 +240,6 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, strArrayStateName);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSp.setAdapter(adapter);
-    }
-
-    void parseCityJsonData(String jsonString) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-
-            JSONArray jsonArray = jsonObject.getJSONArray("address");
-            strArrayCityName = new String[jsonArray.length()];
-            for (int i = 0; i < jsonArray.length(); i++){
-
-                String city = jsonArray.getJSONObject(i).getString("city");
-                String cityCode = jsonArray.getJSONObject(i).getString("cityCode");
-
-                HashMap<String,String> cityInfo = new HashMap<>();
-                cityInfo.put("city", city);
-                cityInfo.put("cityCode", cityCode);
-
-                strArrayCityName[i] = city;
-                cityNameList.add(i,city);
-                cityList.add(i, cityInfo);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
-    }
-
-    void parseStateJsonData(String jsonString) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-
-            JSONArray jsonArray = jsonObject.getJSONArray("address");
-            strArrayStateName = new String[jsonArray.length()];
-            for (int i = 0; i < jsonArray.length(); i++){
-
-                String state = jsonArray.getJSONObject(i).getString("state");
-                String stateCode = jsonArray.getJSONObject(i).getString("stateCode");
-
-                HashMap<String,String> stateInfo = new HashMap<>();
-                stateInfo.put("state", state);
-                stateInfo.put("stateCode", stateCode);
-
-                strArrayStateName[i] = state;
-                stateNameList.add(i,state);
-                stateList.add(i, stateInfo);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
     }
 
     @Override

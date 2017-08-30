@@ -1,5 +1,6 @@
 package com.citymanage.member;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -31,6 +32,12 @@ import retrofit2.Retrofit;
  */
 
 public class PasswordChangeFragment extends Fragment {
+
+    public static final String CHECK = "http://192.168.0.230:3000/check";
+    public ProgressDialog dialog; //프로그레스바 다이얼로그
+    int resultCode; //response 응답코드 변수
+    String resultMessage = ""; //계정 확인 후 메세지
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,7 +53,7 @@ public class PasswordChangeFragment extends Fragment {
 
                 DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener(){
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, int which) {
 
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(BaseActivity.BASEHOST)
@@ -61,7 +68,18 @@ public class PasswordChangeFragment extends Fragment {
 
                                 MemberRepo pwdChange = response.body();
 
+                                if (pwdChange.getResultCode().equals("200")) {
+                                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
+
+                                    SettingActivity activity = (SettingActivity) getActivity();
+                                    activity.onFragmentChanged(4);
+
+                                    dialog.dismiss();
+
+                                }
                             }
+
 
                             @Override
                             public void onFailure(Call<MemberRepo> call, Throwable t) {
@@ -69,11 +87,11 @@ public class PasswordChangeFragment extends Fragment {
                             }
                         });
 
-                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
-
-                        SettingActivity activity = (SettingActivity) getActivity();
-                        activity.onFragmentChanged(4);
+//                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
+//
+//                        SettingActivity activity = (SettingActivity) getActivity();
+//                        activity.onFragmentChanged(4);
                     }
                 };
 

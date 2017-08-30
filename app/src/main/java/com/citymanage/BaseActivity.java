@@ -16,7 +16,7 @@ public class BaseActivity extends AppCompatActivity {
 //    public static final String HOST = "http://192.168.0.2:3000"; //현진 집
 
     public static final String HOST = "http://192.168.0.2:8080"; //현진 집 톰캣
-    public static final String BASEHOST = "http://192.168.0.34:8080"; //현진 집 톰캣
+    public static final String BASEHOST = "http://192.168.0.33:8080"; //현진 집 톰캣
 
 //    public static final String BASEHOST = "http://192.168.0.2:3000/api/"; // nodejs 웹서버 baseurl
 //    public static final String HOST = "http://192.168.0.230:8080"; //현진 집 톰캣

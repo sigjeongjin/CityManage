@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.citymanage.BaseActivity;
 import com.citymanage.R;
 import com.citymanage.member.repo.MemberRepo;
@@ -26,12 +21,7 @@ import com.citymanage.member.repo.MemberService;
 import com.citymanage.setting.SettingActivity;
 import com.common.Module;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
-import java.lang.reflect.Member;
-
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
@@ -42,6 +32,9 @@ import retrofit2.Retrofit;
  */
 
 public class PasswordConfirmFragment extends Fragment {
+
+    String id;
+    String pwd;
 
     public static final String CHECK = "http://192.168.0.230:3000/check";
     public ProgressDialog dialog; //프로그레스바 다이얼로그
@@ -54,8 +47,8 @@ public class PasswordConfirmFragment extends Fragment {
 
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_password_confirm, container, false);
 
-        final String id = Module.getRecordId(getContext());
-        final String pwd = Module.getRecordPwd(getContext());
+       id = Module.getRecordId(getContext());
+       pwd = Module.getRecordPwd(getContext());
 
         final TextView idEv = (TextView) rootView.findViewById(R.id.idEv);
         idEv.setText(id); //초기 아이디 셋팅
@@ -76,15 +69,37 @@ public class PasswordConfirmFragment extends Fragment {
                         .baseUrl(BaseActivity.BASEHOST)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-
+                String pwdstr = pwdEv.getText().toString();
                 MemberService service = retrofit.create(MemberService.class);
-                final retrofit2.Call<MemberRepo> pwdConfirm = service.getMemberPwdConfirm(Module.getRecordId(getContext()), Module.getRecordPwd(getContext()));
-                pwdConfirm.enqueue(new Callback<MemberRepo>() {
+                final Call<MemberRepo> repos = service.getMemberPwdConfirm(id,pwdstr);
+
+                repos.enqueue(new Callback<MemberRepo>() {
                     @Override
-                    public void onResponse(retrofit2.Call<MemberRepo> call, Response<MemberRepo> response) {
+                    public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
 
                         MemberRepo pwdConfirm = response.body();
 
+
+
+                        if (pwdConfirm.getResultCode().equals("200")) {
+                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
+
+                            SettingActivity activity = (SettingActivity) getActivity();
+                            activity.onFragmentChanged(2);
+
+
+                            dialog.dismiss();
+
+                        } else {
+
+
+                            Toast.makeText(getActivity(), "잘못된 비밀번호 입니다.", Toast.LENGTH_SHORT).show();
+
+                            dialog.dismiss();
+
+                            return;
+                        }
 
                     }
 
@@ -93,20 +108,14 @@ public class PasswordConfirmFragment extends Fragment {
 
                     }
                 });
+//                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
+//
+//                SettingActivity activity = (SettingActivity) getActivity();
+//                activity.onFragmentChanged(2);
+//                dialog.dismiss();
+
             }
-
-            void parseJsonData(String jsonString) {
-                try {
-                    JSONObject object = new JSONObject(jsonString);
-
-                    resultCode = Integer.parseInt(object.getString("resultCode"));
-                    resultMessage = object.getString("확인되었습니다.");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                dialog.dismiss();
-            }
-
         });
 
         return rootView;

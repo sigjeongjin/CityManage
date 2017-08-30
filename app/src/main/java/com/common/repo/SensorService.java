@@ -1,5 +1,8 @@
 package com.common.repo;
 
+import com.citymanage.gm.repo.GmInfoRepo;
+import com.citymanage.sm.repo.SmInfoRepo;
+import com.citymanage.tm.repo.TmInfoRepo;
 import com.citymanage.wm.repo.WmInfoRepo;
 
 import retrofit2.Call;

@@ -28,8 +28,8 @@ public class TmInfoRepo {
     @SerializedName("generous")
     private String generous;
 
-    @SerializedName("lock")
-    private String lock;
+    @SerializedName("lockStatus")
+    private String lockStatus;
 
     @SerializedName("installationDateTime")
     private String installationDateTime;
@@ -62,8 +62,8 @@ public class TmInfoRepo {
         return generous;
     }
 
-    public String getLock() {
-        return lock;
+    public String getLockStatus() {
+        return lockStatus;
     }
 
     public String getInstallationDateTime() {

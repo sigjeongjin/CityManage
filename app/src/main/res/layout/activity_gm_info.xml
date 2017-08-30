@@ -110,7 +110,7 @@
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/pressSensorInfoTv"
+                    android:id="@+id/shockDetectionTv"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

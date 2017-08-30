@@ -18,10 +18,6 @@ import com.common.Module;
 import com.common.repo.SensorInfoRepo;
 import com.common.repo.SensorService;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +39,7 @@ public class SmListActivity extends SideNaviBaseActivity {
 
     SmListAdapter adapter; // 위의 리스트 adapter
     ListView smListView;
-    EditText streetFindEv;
+    EditText sensorIdFindEt;;
     Button searchBtn;
 
     List<HashMap<String,String>> mListHashSm = new ArrayList<HashMap<String, String>>();
@@ -56,7 +52,7 @@ public class SmListActivity extends SideNaviBaseActivity {
         setTitle(R.string.sm_title);
 
         smListView = (ListView) findViewById(R.id.smLv);
-        streetFindEv = (EditText) findViewById(R.id.sensorIdFindEv);
+        sensorIdFindEt = (EditText) findViewById(R.id.sensorIdFindEv);
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
         dialog = new ProgressDialog(this);
@@ -119,6 +115,7 @@ public class SmListActivity extends SideNaviBaseActivity {
             dialog.setMessage("Loading....");
             dialog.show();
 
+            String strSensorId = sensorIdFindEt.getText().toString();
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASEHOST)
@@ -126,7 +123,7 @@ public class SmListActivity extends SideNaviBaseActivity {
                     .build();
 
             SensorService service = retrofit.create(SensorService.class);
-            final Call<SensorInfoRepo> repos = service.getSensorList(Module.getRecordId(getApplicationContext()),ACTIVITYNAME);
+            final Call<SensorInfoRepo> repos = service.getStateSearchSensorList(Module.getRecordId(getApplicationContext()),ACTIVITYNAME,strSensorId);
 
             repos.enqueue(new Callback<SensorInfoRepo>(){
                 @Override
@@ -177,35 +174,6 @@ public class SmListActivity extends SideNaviBaseActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    //통신 후 json 파싱
-    void parseJsonData(String jsonString) {
-        try {
-            mListHashSm.clear();
-
-            JSONObject object = new JSONObject(jsonString);
-
-            //임시테스트용
-//            JSONArray smListArray = object.getJSONArray("smList");
-            JSONArray smListArray = object.getJSONArray("smList");
-
-            for(int i = 0; i < smListArray.length(); i ++ ) {
-
-                HashMap<String,String> hashTemp = new HashMap<>();
-
-                String addressInfo = smListArray.getJSONObject(i).getString("addressInfo");
-                String sensorId = smListArray.getJSONObject(i).getString("sensorId");
-
-                hashTemp.put("addressInfo",addressInfo);
-                hashTemp.put("sensorId",sensorId);
-
-                mListHashSm.add(i,hashTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
     }
 
     @Override

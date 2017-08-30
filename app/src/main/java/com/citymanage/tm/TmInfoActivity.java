@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.tm.repo.TmInfoRepo;
-import com.citymanage.wm.repo.WmInfoRepo;
 import com.common.repo.SensorService;
 
 import retrofit2.Call;
@@ -19,9 +18,6 @@ import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.citymanage.R.id.waterLevelSensorInfoTv;
-import static com.citymanage.R.id.waterQualitySensorInfoTv;
 
 public class TmInfoActivity extends SideNaviBaseActivity {
 
@@ -34,14 +30,8 @@ public class TmInfoActivity extends SideNaviBaseActivity {
     TextView installDayTv;
     TextView fireSensorInfoTv;
     TextView stinkSensorInfoTv;
-    TextView garbageSensorInfoTv;
-
-    String strSensorId;
-    String strLocation;
-    String installDay;
-    String fireSensorInfo;
-    String stinkSensorInfo;
-    String garbageSensorInfo;
+    TextView generousTv;
+    TextView lockStatusTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +43,11 @@ public class TmInfoActivity extends SideNaviBaseActivity {
         sensorIdTv          = (TextView) findViewById(R.id.sensorIdTv);
         locationTv          = (TextView) findViewById(R.id.locationTv);
         installDayTv        = (TextView) findViewById(R.id.installDayTv);
-        fireSensorInfoTv    = (TextView) findViewById(R.id.fireSensorInfoTv);
-        stinkSensorInfoTv   = (TextView) findViewById(R.id.stinkSensorInfoTv);
-        garbageSensorInfoTv = (TextView) findViewById(R.id.garbageSensorInfoTv);
+        fireSensorInfoTv   = (TextView) findViewById(R.id.fireSensorInfoTv);
+        stinkSensorInfoTv  = (TextView) findViewById(R.id.stinkSensorInfoTv);
+        generousTv          = (TextView) findViewById(R.id.generousTv);
+        lockStatusTv        = (TextView) findViewById(R.id.lockStatusTv);
+
 
         Intent intent = getIntent();
         String sensorId = intent.getStringExtra(SENSORID);
@@ -82,12 +74,14 @@ public class TmInfoActivity extends SideNaviBaseActivity {
                     sensorIdTv.setText(tmInfoRepo.getManageId());
                     locationTv.setText(tmInfoRepo.getLocationName());
                     installDayTv.setText(tmInfoRepo.getInstallationDateTime());
-                    waterLevelSensorInfoTv.setText(tmInfoRepo.getWaterLevel());
-                    waterQualitySensorInfoTv.setText(tmInfoRepo.getWaterQuality());
+                    fireSensorInfoTv.setText(tmInfoRepo.getFlameDetection());
+                    stinkSensorInfoTv.setText(tmInfoRepo.getStink());
+                    generousTv.setText(tmInfoRepo.getGenerous());
+                    lockStatusTv.setText(tmInfoRepo.getLockStatus());
 
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(TmInfoActivity.this, wmInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TmInfoActivity.this, tmInfoRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
             }

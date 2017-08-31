@@ -33,7 +33,7 @@ public interface MemberService {
 
     @Headers({"Accept:application/json"})
     @GET("memberPwdChange.app")
-    Call<MemberRepo> getMemberPwdChange(@Query("memberId") String id, @Query("memberPwd") String password);
+    Call<MemberRepo> getMemberPwdChange(@Query("memberChangePwd") String memberChangePwd,@Query("memberId") String id, @Query("memberPwd") String password);
 
     @Headers({"Accept:application/json"})
     @GET("memberProfileImageChange.app")
@@ -42,6 +42,7 @@ public interface MemberService {
     @Headers({"Accept:application/json"})
     @GET("favoritesRegister.app")
     Call<MemberRepo> getFavoritesRegister(@Query("memberId") String id, @Query("bookmark") String bookmark, @Query("manageId") String manageId);
+
 
 
 }

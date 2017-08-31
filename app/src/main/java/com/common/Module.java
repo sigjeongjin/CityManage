@@ -11,6 +11,19 @@ import android.support.v7.app.AppCompatActivity;
 
 public class Module extends AppCompatActivity{
 
+    static public void setRecordChangePwd (Context context,String pChangePwd) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("changePwd", String.valueOf(pChangePwd));
+        editor.commit();
+    }
+
+    static public String getRecordChangePwd (Context context) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        return  pref.getString("changePwd","");
+    }
+
+
     static public void setRecordId (Context context,String pId) {
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();

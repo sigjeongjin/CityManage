@@ -22,6 +22,10 @@ public class MemberRepo {
     @SerializedName("memberPwd")
     private String memberPwd;
 
+    @SerializedName("memberChangePwd")
+    private String memberChangePwd;
+
+
     @SerializedName("manageId")
     private String manageId;
 
@@ -40,7 +44,9 @@ public class MemberRepo {
         return resultCode;
     }
 
-
+    public String getmemberChangePwd() {
+        return memberChangePwd;
+    }
 
     public String getMemberName() {
         return memberName;

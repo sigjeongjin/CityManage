@@ -25,13 +25,11 @@ public class MemberRepo {
     @SerializedName("memberChangePwd")
     private String memberChangePwd;
 
-
     @SerializedName("manageId")
     private String manageId;
 
     @SerializedName("bookmark")
     private String bookmark;
-
 
     @SerializedName("memberPhoto")
     private String memberPhoto;

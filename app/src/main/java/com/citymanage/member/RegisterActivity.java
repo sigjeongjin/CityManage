@@ -219,6 +219,7 @@ public class RegisterActivity extends AppCompatActivity {
                 dialog.show();
 
 
+
                 //정보를 보내고 받음
                 StringRequest request = new StringRequest(url.toString(), new Response.Listener<String>() {
                     @Override
@@ -367,13 +368,6 @@ public class RegisterActivity extends AppCompatActivity {
             resultCode = object.getString("resultCode");
 
 
-//            JSONObject object = new JSONObject(jsonString);
-//            JSONArray fruitsArray = object.getJSONArray("fruits");
-//            ArrayList al = new ArrayList();
-//
-//            for(int i = 0; i < fruitsArray.length(); ++i) {
-//                al.add(fruitsArray.getString(i));
-//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -382,136 +376,3 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 }
-//    protected void onActivityResult(int requestCode,
-//                                    int resultCode,
-//                                    Intent data) {
-//
-
-//    }
-//}
-//   갤러리에서 이미지를 가져오는 부분
-//    private void getPhotoFromGallery(){
-//        Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-//        startActivityForResult(intent, PICK_FROM_GALLERY);
-//
-//    }
-
-
-
-
-
-
-
-
-
-
-//package com.example.android.myapplication;
-//
-//        import android.content.Intent;
-//        import android.database.Cursor;
-//        import android.graphics.Bitmap;
-//        import android.graphics.BitmapFactory;
-//        import android.media.ExifInterface;
-//        import android.net.Uri;
-//        import android.os.Bundle;
-//        import android.provider.MediaStore;
-//        import android.support.annotation.Nullable;
-//        import android.support.v7.app.AppCompatActivity;
-//
-//        import java.io.IOException;
-//
-//        import static android.R.attr.path;
-//
-//public class MainActivity extends AppCompatActivity {
-//
-//    private static final int CAMERA_CODE = 0;
-//    private static final int GALLERY_CODE = 1;
-//
-//    @Override
-//    protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//
-//    private void SelectPhoto() {
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(intent, CAMERA_CODE);
-//    }
-//
-//    @Override
-//    private void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
-//
-//            switch (requestCode) {
-//
-//                case GALLERY_CODE:
-//                    SendPicture(data);
-//                    break;
-//                case CAMERA_CODE:
-//                    SendPicture(data); //카메라에서 가져오기
-//                    break;
-//
-//                default:
-//                    break;
-//
-//            }
-//        }
-//    }
-//
-//    private void SendPicture(Intent data) {
-//        Uri imgUri = data.getData();
-//        String imagePath = getRealPathFromURI(imgUri); // path 경로
-//        ExifInterface exif = null;
-//        try {
-//            exif = new ExifInterface(imagePath);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-//        int exifDegree = exifOrientationToDegrees(exifOrientation);
-//
-//        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);//경로를 통해 비트맵으로 전환
-//        iv_receipt.setImageBitmap(rotate(bitmap, exifDegree));//이미지 뷰에 비트맵 넣기
-//
-//    }
-//
-//    ExifInterface exif = null;
-//    try
-//
-//    {
-//        exif = new ExifInterface(path);
-//    } catch(
-//    IOException e)
-//
-//    {
-//        e.printStackTrace();
-//    }
-//
-//    int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-//    int exifDegree = exifOrientationToDegrees(exifOrientation);
-//
-//    public int exifOrientationToDegrees(int exifOrientation) {
-//        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-//            return 90;
-//        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-//            return 180;
-//        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-//            return 270;
-//        }
-//        return 0;
-//    }
-//
-//    public String getRealPathFromURI(Uri contentUri) {
-//        String[] proj = {MediaStore.Images.Media.DATA};
-//        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-//        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//        cursor.moveToFirst();
-//        return cursor.getString(column_index);
-//
-//    }
-//}
-//
-//}
-
-

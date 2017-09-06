@@ -1,8 +1,12 @@
 package com.citymanage.member.repo;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -43,7 +47,10 @@ public interface MemberService {
     @GET("favoritesRegister.app")
     Call<MemberRepo> getFavoritesRegister(@Query("memberId") String id, @Query("bookmark") String bookmark, @Query("manageId") String manageId);
 
-
+    @Headers({"Accept:application/json"})
+    @Multipart
+    @POST("register.app")
+    Call<MemberRepo> setRegister(@Part("file") RequestBody song, @Part("file_path") String fileName, @Part("memberId") String id, @Part("user_id") String userId, @Part("token") String token);
 
 }
 

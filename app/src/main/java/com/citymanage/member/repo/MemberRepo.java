@@ -2,6 +2,8 @@ package com.citymanage.member.repo;
 
 import com.google.gson.annotations.SerializedName;
 
+import okhttp3.MultipartBody;
+
 /**
  * Created by park on 2017-08-06.
  */
@@ -32,7 +34,7 @@ public class MemberRepo {
     private String bookmark;
 
     @SerializedName("memberPhoto")
-    private String memberPhoto;
+    private MultipartBody.Part memberPhoto;
 
     public String getResultMessage() {
         return resultMessage;
@@ -62,7 +64,7 @@ public class MemberRepo {
         return manageId;
     }
 
-    public String getMemberPhoto() {
+    public MultipartBody.Part getMemberPhoto() {
         return memberPhoto;
     }
 

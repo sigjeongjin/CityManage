@@ -21,14 +21,13 @@ import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
 import com.common.Module;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static android.R.attr.id;
 
 public class LoginActivity extends BaseActivity {
 
@@ -38,7 +37,6 @@ public class LoginActivity extends BaseActivity {
     TextView loginTv;
     EditText idEt, password;
 
-//    StringBuilder url2= "http";
 
     ProgressDialog dialog;
 
@@ -66,21 +64,21 @@ public class LoginActivity extends BaseActivity {
 
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-            String id = idEt.getText().toString();
-            String pw = password.getText().toString();
+            String memberId = idEt.getText().toString();
+            String memberPwd = password.getText().toString();
 
             //아이디와 비밀번호가 공백일때 출력메세지
-            if(id.equals("") && pw.equals("")){
+            if(memberId.equals("") && memberPwd.equals("")){
                 Toast.makeText(LoginActivity .this,"아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
             //아이디가 공백일때 출력메세지
-            else if(id.equals("")){
+            else if(memberId.equals("")){
                 Toast.makeText(LoginActivity .this,"아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
             //비밀번호가 공백일때 출력메세지
-            else if(pw.equals("")){
+            else if(memberPwd.equals("")){
                 Toast.makeText(LoginActivity .this,"비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -95,7 +93,7 @@ public class LoginActivity extends BaseActivity {
                         .build();
 
                 MemberService service = retrofit.create(MemberService.class);
-                final Call<MemberRepo> repos = service.getMemberRepo(id,pw);
+                final Call<MemberRepo> repos = service.getMemberRepo(memberId, memberPwd);
 
                 repos.enqueue(new Callback<MemberRepo>() {
                     @Override
@@ -180,7 +178,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
      }
-
+/*
     void parseJsonData(String jsonString) {
         try {
             JSONObject object = new JSONObject(jsonString);
@@ -194,7 +192,7 @@ public class LoginActivity extends BaseActivity {
         }
 
         dialog.dismiss();
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

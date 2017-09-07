@@ -11,30 +11,38 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.citymanage.R;
+import com.citymanage.member.repo.MemberService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.citymanage.BaseActivity.BASEHOST;
+import static com.citymanage.R.id.profilShot;
 
 /**
  * Created by we25 on 2017-06-27.
@@ -49,25 +57,23 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
     private static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
     private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
-    private static final int IMAGE_WIDTH = 400;
-    private static final int IMAGE_HEIGHT = 300;
+    private static final int IMAGE_WIDTH = 150;
+    private static final int IMAGE_HEIGHT = 150;
     // 기본값
     private boolean imageDraw = false;
     private EditText snm;
     private EditText spw;
     private EditText respw;
     private EditText sid;
+    private EditText email;
     private EditText hp;
     private Button btns;
     private Button btnf;
 
+    private Uri dataUri;
+
     ImageView gProfilShot;
-
-    //cityUrl 생성 192.168.0.230.3000 으로 register 관련 정보를 보냄
-    StringBuilder url = new StringBuilder("http://192.168.0.230:3000/register?"); //?name=snm&spw=1234&respw=spw&sid=abc&hp=010
-
     ProgressDialog dialog;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,20 +84,13 @@ public class RegisterActivity extends AppCompatActivity {
         spw = (EditText) findViewById(R.id.spw);
         respw = (EditText) findViewById(R.id.respw);
         sid = (EditText) findViewById(R.id.sid);
+        email = (EditText) findViewById(R.id.email);
         hp = (EditText) findViewById(R.id.hp);
         btnf = (Button) findViewById(R.id.btnf);
-
-        // 192.168.0.230.3000 으로 register 관련 정보를 보냄
-        url.append("name=" + snm.getText().toString());
-        url.append("&email=" + sid.getText().toString());
-        url.append("&password=" + spw.getText().toString());
-        url.append("&repassword=" + respw.getText().toString());
-        url.append("&phone=" + hp.getText().toString());
-
-        gProfilShot = (ImageView) findViewById(R.id.profilShot);
+        gProfilShot = (ImageView) findViewById(profilShot);
 
         gProfilShot.setBackground(new ShapeDrawable(new OvalShape()));
-//        gProfilShot.setClipToOutline(true);
+        //gProfilShot.setClipToOutline(true);
 
         gProfilShot.setOnClickListener(new View.OnClickListener() {
 
@@ -167,7 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 //                사진 입력 확인
-                if(imageDraw == false){
+                if (imageDraw == false) {
                     Toast.makeText(RegisterActivity.this, "사진을 등록해 주세요.", Toast.LENGTH_SHORT).show();
                     gProfilShot.requestFocus();
                     return;
@@ -218,41 +217,66 @@ public class RegisterActivity extends AppCompatActivity {
                 dialog.setMessage("Loading....");
                 dialog.show();
 
+                //String memberName = snm.getText().toString();
+                //String memberId = sid.getText().toString();
+                //String memberPwd = spw.getText().toString();
+                //String memberEmail = email.getText().toString();
+                //String memberPhone = hp.getText().toString();
+                //String memberPhoto = profilShot.getText().toString();
 
 
-                //정보를 보내고 받음
-                StringRequest request = new StringRequest(url.toString(), new Response.Listener<String>() {
+               // HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+                //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+
+                File file = new File(filePath);
+
+                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+                MultipartBody.Part memberPhoto = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+                RequestBody memberName = RequestBody.create(MediaType.parse("text/plain"), snm.getText().toString());
+                RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), sid.getText().toString());
+                RequestBody memberPwd = RequestBody.create(MediaType.parse("text/plain"), spw.getText().toString());
+                RequestBody memberEmail = RequestBody.create(MediaType.parse("text/plain"), email.getText().toString());
+                RequestBody memberPhone = RequestBody.create(MediaType.parse("text/plain"), hp.getText().toString());
+
+
+
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(BASEHOST)
+                        .client(okHttpClient)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                MemberService service = retrofit.create(MemberService.class);
+                final Call<ResponseBody> repos = service.getRegister(memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
+
+                repos.enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(String string) {
-                        parseJsonData(string);
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        dialog.dismiss();
+                        // memberRepo= response.body();
 
-                        // if 문 삽입(200일때 , 400일때)
-                        // 받는  정보가 400일 경우 정보가 정확하지 않음.
-                        Log.d("RESULTCODE", "TEST");
-                        if (resultCode.equals("400")) {
-                            Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
+                        if(memberRepo != null) {
+                            if(memberRepo.getResultCode().equals("200")) {
+                                Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplication(), LoginActivity.class);
+                                startActivity(intent);
 
+                            }  else if (memberRepo.getResultCode().equals("400")) {
+                                Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
+                            }
                         }
-
-                        //받는 정보가 200일 경우 로그인 액티비티 클래스로 전환
-                        else if (resultCode.equals("200")) {
-                            Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplication(), LoginActivity.class);
-                            startActivity(intent);
-                        }
-                        // 정보통신이 제대로 되지 않는 경우
                     }
-                }, new Response.ErrorListener() {
+
                     @Override
-                    public void onErrorResponse(VolleyError volleyError) {
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
-                // RequestQueue Queue = Volley.newRequestQueue(this); 정보의 전달
-                RequestQueue rQueue = Volley.newRequestQueue(RegisterActivity.this);
-                rQueue.add(request);
             }
+
         });
 
         //취소 버튼시 화면을 종료하고 로그인 화면으로 돌아감.
@@ -302,7 +326,8 @@ public class RegisterActivity extends AppCompatActivity {
                         matrix.setRotate(90); //사진을 90도로 회전시키기 위해 matrix설정
 
                         Bitmap bm = null;
-                        Uri dataUri = data.getData();
+                        //Uri dataUri = data.getData();
+                        dataUri = data.getData();
 
                         bm = MediaStore.Images.Media.getBitmap(getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
                         Bitmap scaled = Bitmap.createScaledBitmap(bm, IMAGE_WIDTH, IMAGE_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
@@ -354,25 +379,20 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-
-                void parseJsonData(String jsonString) {
-        try {
-            //새로운 json객체 생성
-            JSONObject object = new JSONObject(jsonString);
-
-            Log.d("RESULTCODE", "TEST2");
-
-
-            //결과값을 받아옴
-
-            resultCode = object.getString("resultCode");
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        dialog.dismiss();
-    }
-
+//    @NonNull
+//    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
+//        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
+//        // use the FileUtils to get the actual file by uri
+//        File file = FileUtils.getFile(this, fileUri);
+//
+//        // create RequestBody instance from file
+//        RequestBody requestFile =
+//                RequestBody.create(
+//                        MediaType.parse(getContentResolver().getType(fileUri)),
+//                        file
+//                );
+//
+//        // MultipartBody.Part is used to send also the actual file name
+//        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+//    }
 }

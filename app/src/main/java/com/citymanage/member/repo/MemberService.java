@@ -51,7 +51,7 @@ public interface MemberService {
 
     @Multipart
     @POST("register.app")
-    Call<ResponseBody> getRegister(@Part("memberPhoto") MultipartBody.Part memberPhoto, @Part("memberName") RequestBody memberName, @Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd, @Part("memberPhone") RequestBody memberPhone, @Part("memberPhone") RequestBody memberEmail);
+    Call<MemberMuiltRepo> getRegister(@Part("memberPhoto") MultipartBody.Part memberPhoto, @Part("memberName") RequestBody memberName, @Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd, @Part("memberPhone") RequestBody memberPhone, @Part("memberPhone") RequestBody memberEmail);
 
 }
 

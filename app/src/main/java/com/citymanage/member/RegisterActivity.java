@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.citymanage.R;
+import com.citymanage.member.repo.MemberMuiltRepo;
 import com.citymanage.member.repo.MemberService;
 
 import java.io.File;
@@ -34,7 +36,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -67,7 +68,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText sid;
     private EditText email;
     private EditText hp;
-    private Button btns;
     private Button btnf;
 
     private Uri dataUri;
@@ -217,29 +217,19 @@ public class RegisterActivity extends AppCompatActivity {
                 dialog.setMessage("Loading....");
                 dialog.show();
 
-                //String memberName = snm.getText().toString();
-                //String memberId = sid.getText().toString();
-                //String memberPwd = spw.getText().toString();
-                //String memberEmail = email.getText().toString();
-                //String memberPhone = hp.getText().toString();
-                //String memberPhoto = profilShot.getText().toString();
-
 
                // HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
                 //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                 OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
-                File file = new File(filePath);
-
+                File file = new File(dataUri.getPath());
                 RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-                MultipartBody.Part memberPhoto = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+                MultipartBody.Part memberPhoto = MultipartBody.Part.createFormData("memberPhoto", file.getName(), reqFile);
                 RequestBody memberName = RequestBody.create(MediaType.parse("text/plain"), snm.getText().toString());
                 RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), sid.getText().toString());
                 RequestBody memberPwd = RequestBody.create(MediaType.parse("text/plain"), spw.getText().toString());
                 RequestBody memberEmail = RequestBody.create(MediaType.parse("text/plain"), email.getText().toString());
                 RequestBody memberPhone = RequestBody.create(MediaType.parse("text/plain"), hp.getText().toString());
-
-
 
 
                 Retrofit retrofit = new Retrofit.Builder()
@@ -249,28 +239,28 @@ public class RegisterActivity extends AppCompatActivity {
                         .build();
 
                 MemberService service = retrofit.create(MemberService.class);
-                final Call<ResponseBody> repos = service.getRegister(memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
+                final Call<MemberMuiltRepo> repos = service.getRegister(memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
 
-                repos.enqueue(new Callback<ResponseBody>() {
+                repos.enqueue(new Callback<MemberMuiltRepo>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<MemberMuiltRepo> call, Response<MemberMuiltRepo> response) {
                         dialog.dismiss();
-                        // memberRepo= response.body();
+                        MemberMuiltRepo memberMuiltRepo= response.body();
 
-                        if(memberRepo != null) {
-                            if(memberRepo.getResultCode().equals("200")) {
+                        if(memberMuiltRepo != null) {
+                            if(memberMuiltRepo.getResultCode().equals("200")) {
                                 Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplication(), LoginActivity.class);
                                 startActivity(intent);
 
-                            }  else if (memberRepo.getResultCode().equals("400")) {
+                            }  else if (memberMuiltRepo.getResultCode().equals("400")) {
                                 Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(Call<MemberMuiltRepo> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
@@ -378,21 +368,4 @@ public class RegisterActivity extends AppCompatActivity {
 
         }
     }
-
-//    @NonNull
-//    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
-//        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
-//        // use the FileUtils to get the actual file by uri
-//        File file = FileUtils.getFile(this, fileUri);
-//
-//        // create RequestBody instance from file
-//        RequestBody requestFile =
-//                RequestBody.create(
-//                        MediaType.parse(getContentResolver().getType(fileUri)),
-//                        file
-//                );
-//
-//        // MultipartBody.Part is used to send also the actual file name
-//        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
-//    }
 }

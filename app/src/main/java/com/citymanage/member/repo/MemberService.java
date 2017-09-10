@@ -2,7 +2,6 @@ package com.citymanage.member.repo;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -16,9 +15,14 @@ import retrofit2.http.Query;
  */
 
 public interface MemberService {
+
     @Headers({"Accept:application/json"})
     @GET("memberLogin.app")
     Call<MemberRepo> getMemberRepo(@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
+
+    @Multipart
+    @POST("memberRegister.app")
+    Call<MemberRepo> getRegister(@Part MultipartBody.Part filePart, @Part("memberPhoto") RequestBody memberPhoto, @Part("memberName") RequestBody memberName, @Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd, @Part("memberPhone") RequestBody memberPhone, @Part("memberEmail") RequestBody memberEmail);
 
     @Headers({"Accept:application/json"})
     @GET("cityInfo.app")
@@ -27,7 +31,6 @@ public interface MemberService {
     @Headers({"Accept:application/json"})
     @GET("stateInfo.app")
     Call<StateRepo> getStateInfo(@Query("cityCode") String cityCode);
-
 
     @Headers({"Accept:application/json"})
     @GET("cityStateInfoRegister.app")
@@ -49,9 +52,7 @@ public interface MemberService {
     @GET("favoritesRegister.app")
     Call<MemberRepo> getFavoritesRegister(@Query("memberId") String id, @Query("bookmark") String bookmark, @Query("manageId") String manageId);
 
-    @Multipart
-    @POST("register.app")
-    Call<MemberMuiltRepo> getRegister(@Part("memberPhoto") MultipartBody.Part memberPhoto, @Part("memberName") RequestBody memberName, @Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd, @Part("memberPhone") RequestBody memberPhone, @Part("memberPhone") RequestBody memberEmail);
+
 
 }
 

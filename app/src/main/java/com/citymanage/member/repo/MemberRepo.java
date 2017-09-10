@@ -2,13 +2,12 @@ package com.citymanage.member.repo;
 
 import com.google.gson.annotations.SerializedName;
 
-import okhttp3.MultipartBody;
-
 /**
  * Created by park on 2017-08-06.
  */
 
 public class MemberRepo {
+
     @SerializedName("resultCode")
     private String resultCode;
 
@@ -27,49 +26,56 @@ public class MemberRepo {
     @SerializedName("memberChangePwd")
     private String memberChangePwd;
 
-    @SerializedName("manageId")
-    private String manageId;
+    @SerializedName("memberEmail")
+    private String memberEmail;
+
+    @SerializedName("memberPhone")
+    private String memberPhone;
+
+    @SerializedName("memberPhoto")
+    private String memberPhoto;
 
     @SerializedName("bookmark")
     private String bookmark;
-
-    @SerializedName("memberPhoto")
-    private MultipartBody.Part memberPhoto;
-
-    public String getResultMessage() {
-        return resultMessage;
-    }
 
     public String getResultCode() {
         return resultCode;
     }
 
-    public String getmemberChangePwd() {
-        return memberChangePwd;
+    public String getResultMessage() {
+        return resultMessage;
     }
 
     public String getMemberName() {
         return memberName;
     }
 
-    public String getbookmark() {
-        return bookmark;
-    }
-
     public String getMemberId() {
         return memberId;
     }
 
-    public String getManageId() {
-        return manageId;
+    public String getMemberPwd() {
+        return memberPwd;
     }
 
-    public MultipartBody.Part getMemberPhoto() {
+    public String getMemberChangePwd() {
+        return memberChangePwd;
+    }
+
+    public String getMemberEmail() {
+        return memberEmail;
+    }
+
+    public String getMemberPhone() {
+        return memberPhone;
+    }
+
+    public String getMemberPhoto() {
         return memberPhoto;
     }
 
-    public String getMemberPwd() {
-        return memberPwd;
+    public String getBookmark() {
+        return bookmark;
     }
 
     //    public List<Tm> tmList = new ArrayList<>();
@@ -90,5 +96,4 @@ public class MemberRepo {
 //            return id;
 //        }
 //    }
-
 }

@@ -3,6 +3,7 @@ package com.citymanage.member;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -11,7 +12,6 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.citymanage.R;
-import com.citymanage.member.repo.MemberMuiltRepo;
+import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
 
 import java.io.File;
@@ -34,7 +34,6 @@ import java.io.IOException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email;
     private EditText hp;
     private Button btnf;
+    private Button btns;
 
     private Uri dataUri;
 
@@ -90,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
         gProfilShot = (ImageView) findViewById(profilShot);
 
         gProfilShot.setBackground(new ShapeDrawable(new OvalShape()));
+        // 사진 이미지 라운드형으로 변경(API 21이상)
         //gProfilShot.setClipToOutline(true);
 
         gProfilShot.setOnClickListener(new View.OnClickListener() {
@@ -218,55 +219,62 @@ public class RegisterActivity extends AppCompatActivity {
                 dialog.show();
 
 
-               // HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-                //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+                String path = getRealImagePath(dataUri);
+                File file = new File(path);
+                Log.d("Uri", path);
 
-                File file = new File(dataUri.getPath());
-                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-                MultipartBody.Part memberPhoto = MultipartBody.Part.createFormData("memberPhoto", file.getName(), reqFile);
+
+                RequestBody requestFile =
+                        RequestBody.create(
+                                MediaType.parse(getContentResolver().getType(dataUri)),
+                                file
+                        );
+
+                MultipartBody.Part body =
+                        MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+
+                RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
                 RequestBody memberName = RequestBody.create(MediaType.parse("text/plain"), snm.getText().toString());
                 RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), sid.getText().toString());
                 RequestBody memberPwd = RequestBody.create(MediaType.parse("text/plain"), spw.getText().toString());
                 RequestBody memberEmail = RequestBody.create(MediaType.parse("text/plain"), email.getText().toString());
                 RequestBody memberPhone = RequestBody.create(MediaType.parse("text/plain"), hp.getText().toString());
 
-
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(BASEHOST)
-                        .client(okHttpClient)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 MemberService service = retrofit.create(MemberService.class);
-                final Call<MemberMuiltRepo> repos = service.getRegister(memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
-
-                repos.enqueue(new Callback<MemberMuiltRepo>() {
+                Call<MemberRepo> repos = service.getRegister(body, memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
+                
+                repos.enqueue(new Callback<MemberRepo>() {
                     @Override
-                    public void onResponse(Call<MemberMuiltRepo> call, Response<MemberMuiltRepo> response) {
+                    public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+                        MemberRepo memberRepo = response.body();
                         dialog.dismiss();
-                        MemberMuiltRepo memberMuiltRepo= response.body();
+                        Log.d("Retrofit", "통신성공");
 
-                        if(memberMuiltRepo != null) {
-                            if(memberMuiltRepo.getResultCode().equals("200")) {
+                        if (response.isSuccessful()) {
+                            if (memberRepo.getResultCode().equals("200"))
                                 Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplication(), LoginActivity.class);
+                                Intent intent = new Intent(getApplication(), RegisterActivity.class);
                                 startActivity(intent);
-
-                            }  else if (memberMuiltRepo.getResultCode().equals("400")) {
+                                //finish();
+                            } else if (memberRepo.getResultCode().equals("400")){
                                 Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
+                                //Intent intent = new Intent(getApplication(), RegisterActivity.class);
+                                //startActivity(intent);
                             }
                         }
-                    }
-
                     @Override
-                    public void onFailure(Call<MemberMuiltRepo> call, Throwable t) {
+                    public void onFailure(Call<MemberRepo> call, Throwable t) {
+                        Log.d("Retrofit", "통신실패");
                         Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
             }
-
         });
 
         //취소 버튼시 화면을 종료하고 로그인 화면으로 돌아감.
@@ -367,5 +375,18 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    // 사진의 실제 경로를 구하는 method
+    public String getRealImagePath (Uri uriPath) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uriPath, proj, null, null, null);
+        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+        String path = cursor.getString(index);
+
+        //path = path.substring(5);
+        return path;
     }
 }

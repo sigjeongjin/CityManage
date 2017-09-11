@@ -16,14 +16,25 @@ import retrofit2.http.Query;
 
 public interface MemberService {
 
+    // 로그인
     @Headers({"Accept:application/json"})
     @GET("memberLogin.app")
-    Call<MemberRepo> getMemberRepo(@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
+    Call<MemberRepo> getMemberLogin(@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
 
+    // 회원가입
     @Multipart
     @POST("memberRegister.app")
-    Call<MemberRepo> getRegister(@Part MultipartBody.Part filePart, @Part("memberPhoto") RequestBody memberPhoto, @Part("memberName") RequestBody memberName, @Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd, @Part("memberPhone") RequestBody memberPhone, @Part("memberEmail") RequestBody memberEmail);
+    Call<MemberRepo> getMemberRegister(@Part MultipartBody.Part filePart, @Part("memberPhoto") RequestBody memberPhoto, @Part("memberName") RequestBody memberName, @Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd, @Part("memberPhone") RequestBody memberPhone, @Part("memberEmail") RequestBody memberEmail);
 
+    @Headers({"Accept:application/json"})
+    @GET("memberPwdConfirm.app")
+    Call<MemberRepo> getMemberPwdConfirm(@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
+
+    @Headers({"Accept:application/json"})
+    @GET("memberPwdChange.app")
+    Call<MemberRepo> getMemberPwdChange(@Query("memberChangePwd") String memberChangePwd,@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
+
+    //
     @Headers({"Accept:application/json"})
     @GET("cityInfo.app")
     Call<CityRepo> getCityInfo();
@@ -36,13 +47,7 @@ public interface MemberService {
     @GET("cityStateInfoRegister.app")
     Call<MemberRepo> getCityStateInfoRegister(@Query("cityCode") String citycode, @Query("stateCode") String statecode, @Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
 
-    @Headers({"Accept:application/json"})
-    @GET("memberPwdConfirm.app")
-    Call<MemberRepo> getMemberPwdConfirm(@Query("memberId") String id, @Query("memberPwd") String password);
 
-    @Headers({"Accept:application/json"})
-    @GET("memberPwdChange.app")
-    Call<MemberRepo> getMemberPwdChange(@Query("memberChangePwd") String memberChangePwd,@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
 
     @Headers({"Accept:application/json"})
     @GET("memberProfileImageChange.app")

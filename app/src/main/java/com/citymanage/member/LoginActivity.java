@@ -31,16 +31,11 @@ import static android.R.attr.id;
 
 public class LoginActivity extends BaseActivity {
 
-
-    private Button btnregister;
-    CheckBox autologin;
-    TextView loginTv;
-    EditText idEt, password;
-
-
-    ProgressDialog dialog;
-
     CheckBox autoLoginChk;
+    TextView loginTv;
+
+    EditText idEt, password;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +47,6 @@ public class LoginActivity extends BaseActivity {
         autoLoginChk = (CheckBox) findViewById(R.id.autoLoginChk);
         Button btnLogin = (Button)findViewById(R.id.btnLogin) ;
 
-        //2017.08.20 email 로그인으로 확정짓지 않아서 id로 변경
         idEt = (EditText)findViewById(R.id.idEt);
         password = (EditText)findViewById(R.id.password);
 
@@ -93,7 +87,7 @@ public class LoginActivity extends BaseActivity {
                         .build();
 
                 MemberService service = retrofit.create(MemberService.class);
-                final Call<MemberRepo> repos = service.getMemberRepo(memberId, memberPwd);
+                final Call<MemberRepo> repos = service.getMemberLogin(memberId, memberPwd);
 
                 repos.enqueue(new Callback<MemberRepo>() {
                     @Override
@@ -106,7 +100,7 @@ public class LoginActivity extends BaseActivity {
                         Log.e("TEST TEST :", memberRepo.getResultCode());
 
                         if(memberRepo != null) {
-                            if(memberRepo.getResultCode().equals("200") ) {
+                            if(memberRepo.getResultCode().equals("200")) {
                                 Intent intent;
 
                                 if(Module.getLocation(getApplicationContext()) == 1) {
@@ -117,7 +111,6 @@ public class LoginActivity extends BaseActivity {
 
                                     Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
-
 
                                 } else {
                                     Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -135,12 +128,13 @@ public class LoginActivity extends BaseActivity {
                                     Module.setAutoLogin(getApplicationContext(),0);
                                 }
 
-
                                 startActivity(intent);
                                 finish();
+                            } else if(memberRepo.getResultCode().equals("204")) {
+                                Toast.makeText(LoginActivity.this, "아이디 또는 비밀번호를 다시 확인하세요.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -153,9 +147,9 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        //자동 로그인 가능 하도록 셋팅
-        //sidenavgation에서 로그아웃을 눌렀을경우 logout플래그가 인텐트에 셋팅되어 있는지 먼저 확인 한 후 자동로그아웃 기능을
-        //실행하지 말지 선택
+        // 자동 로그인 가능 하도록 셋팅
+        // sidenavgation에서 로그아웃을 눌렀을경우 logout플래그가 인텐트에 셋팅되어 있는지 먼저 확인 한 후 자동로그아웃 기능을
+        // 실행하지 말지 선택
 
         if(intent.getStringExtra("logout") == null) {
             if(Module.getAutoLogin(getApplicationContext()) == 1 && Module.getRecordId(getApplicationContext()) != ""
@@ -178,21 +172,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
      }
-/*
-    void parseJsonData(String jsonString) {
-        try {
-            JSONObject object = new JSONObject(jsonString);
-
-            resultCode = object.getInt("resultCode");
-            String profileImageUrl = object.getString("profileImageUrl");
-            Module.setProfileImageUrl(getApplicationContext(),profileImageUrl);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        dialog.dismiss();
-    }*/
 
     @Override
     public void onBackPressed() {

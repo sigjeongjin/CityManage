@@ -50,15 +50,13 @@ import static com.citymanage.R.id.profilShot;
 
 public class RegisterActivity extends AppCompatActivity {
 
-
-    String resultCode;
-
     private static final int CANCLE_FROM_CONTENT = 0;
     private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
     private static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
     private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
     private static final int IMAGE_WIDTH = 150;
     private static final int IMAGE_HEIGHT = 150;
+
     // 기본값
     private boolean imageDraw = false;
     private EditText snm;
@@ -166,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                사진 입력 확인
+                //사진 입력 확인
                 if (imageDraw == false) {
                     Toast.makeText(RegisterActivity.this, "사진을 등록해 주세요.", Toast.LENGTH_SHORT).show();
                     gProfilShot.requestFocus();
@@ -178,7 +176,7 @@ public class RegisterActivity extends AppCompatActivity {
                     snm.requestFocus();
                     return;
                 }
-                //이메일 입력 확인
+                //아이디 입력 확인
                 if (sid.getText().toString().length() == 0) {
                     Toast.makeText(RegisterActivity.this, "이메일을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     sid.requestFocus();
@@ -246,7 +244,7 @@ public class RegisterActivity extends AppCompatActivity {
                         .build();
 
                 MemberService service = retrofit.create(MemberService.class);
-                Call<MemberRepo> repos = service.getRegister(body, memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
+                final Call<MemberRepo> repos = service.getMemberRegister(body, memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
                 
                 repos.enqueue(new Callback<MemberRepo>() {
                     @Override
@@ -256,17 +254,16 @@ public class RegisterActivity extends AppCompatActivity {
                         Log.d("Retrofit", "통신성공");
 
                         if (response.isSuccessful()) {
-                            if (memberRepo.getResultCode().equals("200"))
+                            if (memberRepo.getResultCode().equals("200")) {
                                 Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplication(), RegisterActivity.class);
-                                startActivity(intent);
-                                //finish();
-                            } else if (memberRepo.getResultCode().equals("400")){
+                                finish();
+                            } else if (memberRepo.getResultCode().equals("400")) {
                                 Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
-                                //Intent intent = new Intent(getApplication(), RegisterActivity.class);
-                                //startActivity(intent);
+                                return;
                             }
                         }
+                    }
+
                     @Override
                     public void onFailure(Call<MemberRepo> call, Throwable t) {
                         Log.d("Retrofit", "통신실패");
@@ -386,7 +383,6 @@ public class RegisterActivity extends AppCompatActivity {
         cursor.moveToFirst();
         String path = cursor.getString(index);
 
-        //path = path.substring(5);
         return path;
     }
 }

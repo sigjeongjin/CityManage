@@ -150,7 +150,6 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
                     @Override
                     public void onFailure(Call<StateRepo> call, Throwable t) {
 
-
                         dialog.dismiss();
                     }
                 });

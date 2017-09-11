@@ -33,25 +33,22 @@ import retrofit2.Retrofit;
 
 public class PasswordConfirmFragment extends Fragment {
 
-    String id;
-    String pwd;
+    String memberId;
+    String memberPwd;
 
-    public static final String CHECK = "http://192.168.0.230:3000/check";
-    public ProgressDialog dialog; //프로그레스바 다이얼로그
-    int resultCode; //response 응답코드 변수
-    String resultMessage = ""; //계정 확인 후 메세지
+    public ProgressDialog dialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_password_confirm, container, false);
 
-       id = Module.getRecordId(getContext());
-       pwd = Module.getRecordPwd(getContext());
+        memberId = Module.getRecordId(getContext());
+        memberPwd = Module.getRecordPwd(getContext());
 
+        //초기 아이디 셋팅
         final TextView idEv = (TextView) rootView.findViewById(R.id.idEv);
-        idEv.setText(id); //초기 아이디 셋팅
+        idEv.setText(memberId);
 
         final EditText pwdEv = (EditText) rootView.findViewById(R.id.pwdEv);
 
@@ -69,9 +66,10 @@ public class PasswordConfirmFragment extends Fragment {
                         .baseUrl(BaseActivity.BASEHOST)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                String pwdstr = pwdEv.getText().toString();
+
+                String memberPwdStr = pwdEv.getText().toString();
                 MemberService service = retrofit.create(MemberService.class);
-                final Call<MemberRepo> repos = service.getMemberPwdConfirm(id,pwdstr);
+                final Call<MemberRepo> repos = service.getMemberPwdConfirm(memberId, memberPwdStr);
 
                 repos.enqueue(new Callback<MemberRepo>() {
                     @Override
@@ -79,25 +77,17 @@ public class PasswordConfirmFragment extends Fragment {
 
                         MemberRepo pwdConfirm = response.body();
 
-
-
                         if (pwdConfirm.getResultCode().equals("200")) {
                             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
 
                             SettingActivity activity = (SettingActivity) getActivity();
                             activity.onFragmentChanged(2);
-
-
                             dialog.dismiss();
 
                         } else {
-
-
                             Toast.makeText(getActivity(), "잘못된 비밀번호 입니다.", Toast.LENGTH_SHORT).show();
-
                             dialog.dismiss();
-
                             return;
                         }
 
@@ -105,66 +95,12 @@ public class PasswordConfirmFragment extends Fragment {
 
                     @Override
                     public void onFailure(retrofit2.Call<MemberRepo> call, Throwable t) {
-
+                        Toast.makeText(getActivity(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                     }
                 });
-//                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
-//
-//                SettingActivity activity = (SettingActivity) getActivity();
-//                activity.onFragmentChanged(2);
-//                dialog.dismiss();
-
             }
         });
-
         return rootView;
     }
 }
-
-
-
-
-
-
-
-
-
-//                StringBuilder sb = new StringBuilder(CHECK);
-//
-//                sb.append("?loginId=");
-//                sb.append(idEv.getText().toString());
-//                sb.append("&pwd=");
-//                sb.append(pwdEv.getText().toString());
-
-//            StringRequest pushHistoryItemRequest = new StringRequest(sb.toString(), new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String string) {
-//                    parseJsonData(string);
-//
-//                    if(resultCode == 200 ) {
-//                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        imm.hideSoftInputFromWindow(pwdEv.getWindowToken(), 0);
-//
-//                        SettingActivity activity = (SettingActivity) getActivity();
-//                        activity.onFragmentChanged(2);
-//                    } else if(resultCode == 201) {
-//                        Toast.makeText(getContext(), resultMessage, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError volleyError) {
-//                    Toast.makeText(getContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                    dialog.dismiss();
-//                }
-//            });
-//            RequestQueue rQueue = Volley.newRequestQueue(getContext());
-//            rQueue.add(pushHistoryItemRequest);
-//            }
-//        });
-//
-//        return rootView;
-//    }
-
-//통신 후 json 파싱

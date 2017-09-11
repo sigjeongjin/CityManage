@@ -77,23 +77,4 @@ public class MemberRepo {
     public String getBookmark() {
         return bookmark;
     }
-
-    //    public List<Tm> tmList = new ArrayList<>();
-//    public List<Tm> getTm() {return tmList;}
-//
-//    public class Tm {
-//        @SerializedName("name")
-//        private String name;
-//
-//        @SerializedName("id")
-//        private String id;
-//
-//        public String getName() {
-//            return name;
-//        }
-//
-//        public String getId() {
-//            return id;
-//        }
-//    }
 }

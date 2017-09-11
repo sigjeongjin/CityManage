@@ -95,37 +95,36 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callCamera();
-                    }
-                };
+            DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    callCamera();
+                }
+            };
 
-                DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        selectAlbum();
-                    }
-                };
+            DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    selectAlbum();
+                }
+            };
 
-                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                };
+            DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            };
 
-                new AlertDialog.Builder(RegisterActivity.this)
-                        .setTitle("업로드할 이미지 선택")
-                        .setNeutralButton("카메라선택", cameraListener)
-                        .setPositiveButton("앨범선택", albumListener)
-                        .setNegativeButton("취소", cancelListener)
-                        .show();
+            new AlertDialog.Builder(RegisterActivity.this)
+                    .setTitle("업로드할 이미지 선택")
+                    .setNeutralButton("카메라선택", cameraListener)
+                    .setPositiveButton("앨범선택", albumListener)
+                    .setNegativeButton("취소", cancelListener)
+                    .show();
 
             }
         });
-
 
         //비밀번호가 일치하는지에 대한 검사
         respw.addTextChangedListener(new TextWatcher() {
@@ -164,116 +163,111 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //사진 입력 확인
-                if (imageDraw == false) {
-                    Toast.makeText(RegisterActivity.this, "사진을 등록해 주세요.", Toast.LENGTH_SHORT).show();
-                    gProfilShot.requestFocus();
-                    return;
-                }
-                //이름 입력 확인
-                if (snm.getText().toString().length() == 0) {
-                    Toast.makeText(RegisterActivity.this, "이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                    snm.requestFocus();
-                    return;
-                }
-                //아이디 입력 확인
-                if (sid.getText().toString().length() == 0) {
-                    Toast.makeText(RegisterActivity.this, "이메일을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                    sid.requestFocus();
-                    return;
-                }
+        // 사진 선택 안할 경우
+        if (imageDraw == false) {
+            Toast.makeText(RegisterActivity.this, "사진을 등록해 주세요.", Toast.LENGTH_SHORT).show();
+            gProfilShot.requestFocus();
+            return;
+        }
+        // 이름 입력 안할 경우
+        if (snm.getText().toString().length() == 0) {
+            Toast.makeText(RegisterActivity.this, "이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            snm.requestFocus();
+            return;
+        }
+        // 아이디 입력 안할 경우
+        if (sid.getText().toString().length() == 0) {
+            Toast.makeText(RegisterActivity.this, "아이디를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            sid.requestFocus();
+            return;
+        }
+        // 이메일 입력 안할 경우
+        if (email.getText().toString().length() == 0) {
+            Toast.makeText(RegisterActivity.this, "이메일을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            email.requestFocus();
+            return;
+        }
+        // 핸드폰 번호 입력 안할 경우
+        if (hp.getText().toString().length() == 0) {
+            Toast.makeText(RegisterActivity.this, "핸드폰 번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            hp.requestFocus();
+            return;
+        }
+        // 비밀번호가 서로 일치하지 안할 경우
+        if (!spw.getText().toString().equals(respw.getText().toString())) {
+            Toast.makeText(RegisterActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
+            spw.setText("");
+            respw.setText("");
+            spw.requestFocus();
+            return;
+        }
+        // 비밀번호의 길이가 8~20자가 아닐 경우
+        if (spw.getText().toString().length() < 8 || spw.getText().toString().length() > 20) {
+            Toast.makeText(RegisterActivity.this, "비밀번호는 8자~20자 이용이 가능합니다.", Toast.LENGTH_SHORT).show();
+            spw.setText("");
+            respw.setText("");
+            spw.requestFocus();
+            return;
+        }
 
-                //비밀번호 입력 확인
-                if (spw.getText().toString().length() == 0) {
-                    Toast.makeText(RegisterActivity.this, "비밀번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                    spw.requestFocus();
-                    return;
-                }
-                //같은 비밀번호 입력 확인
-                if (respw.getText().toString().length() == 0) {
-                    Toast.makeText(RegisterActivity.this, "똑같은 비밀번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                    respw.requestFocus();
-                    return;
-                }
+            //정보 전송중 메시지 출력
+            dialog = new ProgressDialog(RegisterActivity.this);
+            dialog.setMessage("Loading....");
+            dialog.show();
 
-                //비밀번호가 서로 일치하는지 확인.
-                if (!spw.getText().toString().equals(respw.getText().toString())) {
-                    Toast.makeText(RegisterActivity.this, "비밀번호가 일치하지 않습니다!", Toast.LENGTH_SHORT).show();
-                    spw.setText("");
-                    respw.setText("");
-                    spw.requestFocus();
-                    return;
-                }
-                //핸드폰 번호 입력 확인
-                if (hp.getText().toString().length() == 0) {
-                    Toast.makeText(RegisterActivity.this, "핸드폰 번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                    hp.requestFocus();
-                    return;
-                }
+            String path = getRealImagePath(dataUri);
+            File file = new File(path);
+            Log.d("Uri", path);
 
-                //정보 전송중 메시지 출력
-                dialog = new ProgressDialog(RegisterActivity.this);
-                dialog.setMessage("Loading....");
-                dialog.show();
+            RequestBody requestFile =
+                    RequestBody.create(
+                            MediaType.parse(getContentResolver().getType(dataUri)),
+                            file
+                    );
 
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
 
-                String path = getRealImagePath(dataUri);
-                File file = new File(path);
-                Log.d("Uri", path);
+            RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+            RequestBody memberName = RequestBody.create(MediaType.parse("text/plain"), snm.getText().toString());
+            RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), sid.getText().toString());
+            RequestBody memberPwd = RequestBody.create(MediaType.parse("text/plain"), spw.getText().toString());
+            RequestBody memberEmail = RequestBody.create(MediaType.parse("text/plain"), email.getText().toString());
+            RequestBody memberPhone = RequestBody.create(MediaType.parse("text/plain"), hp.getText().toString());
 
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASEHOST)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-                RequestBody requestFile =
-                        RequestBody.create(
-                                MediaType.parse(getContentResolver().getType(dataUri)),
-                                file
-                        );
+            MemberService service = retrofit.create(MemberService.class);
+            final Call<MemberRepo> repos = service.getMemberRegister(body, memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
 
-                MultipartBody.Part body =
-                        MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+            repos.enqueue(new Callback<MemberRepo>() {
+                @Override
+                public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+                    MemberRepo memberRepo = response.body();
+                    dialog.dismiss();
 
-                RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-                RequestBody memberName = RequestBody.create(MediaType.parse("text/plain"), snm.getText().toString());
-                RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), sid.getText().toString());
-                RequestBody memberPwd = RequestBody.create(MediaType.parse("text/plain"), spw.getText().toString());
-                RequestBody memberEmail = RequestBody.create(MediaType.parse("text/plain"), email.getText().toString());
-                RequestBody memberPhone = RequestBody.create(MediaType.parse("text/plain"), hp.getText().toString());
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(BASEHOST)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                MemberService service = retrofit.create(MemberService.class);
-                final Call<MemberRepo> repos = service.getMemberRegister(body, memberPhoto, memberName,  memberId,  memberPwd, memberPhone,  memberEmail);
-                
-                repos.enqueue(new Callback<MemberRepo>() {
-                    @Override
-                    public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
-                        MemberRepo memberRepo = response.body();
-                        dialog.dismiss();
-                        Log.d("Retrofit", "통신성공");
-
-                        if (response.isSuccessful()) {
-                            if (memberRepo.getResultCode().equals("200")) {
-                                Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else if (memberRepo.getResultCode().equals("400")) {
-                                Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
+                    if (response.isSuccessful()) {
+                        if (memberRepo.getResultCode().equals("200")) {
+                            Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else if (memberRepo.getResultCode().equals("400")) {
+                            Toast.makeText(RegisterActivity.this, "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<MemberRepo> call, Throwable t) {
-                        Log.d("Retrofit", "통신실패");
-                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                });
+                @Override
+                public void onFailure(Call<MemberRepo> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
             }
         });
-
         //취소 버튼시 화면을 종료하고 로그인 화면으로 돌아감.
         btnf.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,7 +367,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         }
     }
-
     // 사진의 실제 경로를 구하는 method
     public String getRealImagePath (Uri uriPath) {
         String[] proj = {MediaStore.Images.Media.DATA};

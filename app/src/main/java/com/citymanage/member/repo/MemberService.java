@@ -26,10 +26,12 @@ public interface MemberService {
     @POST("memberRegister.app")
     Call<MemberRepo> getMemberRegister(@Part MultipartBody.Part filePart, @Part("memberPhoto") RequestBody memberPhoto, @Part("memberName") RequestBody memberName, @Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd, @Part("memberPhone") RequestBody memberPhone, @Part("memberEmail") RequestBody memberEmail);
 
+    // 비밀번호 확인
     @Headers({"Accept:application/json"})
     @GET("memberPwdConfirm.app")
     Call<MemberRepo> getMemberPwdConfirm(@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
 
+    // 비밀번호 변경
     @Headers({"Accept:application/json"})
     @GET("memberPwdChange.app")
     Call<MemberRepo> getMemberPwdChange(@Query("memberChangePwd") String memberChangePwd,@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);

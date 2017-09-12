@@ -122,38 +122,6 @@ public class RegisterActivity extends AppCompatActivity {
                     .setPositiveButton("앨범선택", albumListener)
                     .setNegativeButton("취소", cancelListener)
                     .show();
-
-            }
-        });
-
-        //비밀번호가 일치하는지에 대한 검사
-        respw.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                String password = spw.getText().toString();
-                String confirm = respw.getText().toString();
-
-                // 패스워드가 일치하는 경우 녹색 표시
-                if (password.equals(confirm)) {
-                    spw.setBackgroundColor(Color.GREEN);
-                    respw.setBackgroundColor(Color.GREEN);
-
-                    // 패스워드가 불일치 하는경우 적색 표시
-                } else {
-                    spw.setBackgroundColor(Color.RED);
-                    respw.setBackgroundColor(Color.RED);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
         });
 

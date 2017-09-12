@@ -36,6 +36,11 @@ public interface MemberService {
     @GET("memberPwdChange.app")
     Call<MemberRepo> getMemberPwdChange(@Query("memberChangePwd") String memberChangePwd,@Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
 
+    // 프로필 사진 변경
+    @Multipart
+    @POST("memberProfileImageChange.app")
+    Call<MemberRepo> getMemberProfileImageChange(@Part MultipartBody.Part filePart, @Part("memberPhoto") RequestBody memberPhoto,@Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd);
+
     //
     @Headers({"Accept:application/json"})
     @GET("cityInfo.app")

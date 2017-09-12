@@ -2,6 +2,7 @@ package com.citymanage.setting;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.ShapeDrawable;
@@ -12,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,21 @@ import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 import com.citymanage.R;
+import com.citymanage.member.repo.MemberService;
 import com.common.Module;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
+
 import static android.app.Activity.RESULT_OK;
+import static com.citymanage.BaseActivity.BASEHOST;
 
 /**
  * Created by we25 on 2017-07-04.
@@ -46,6 +57,7 @@ public class SettingFragment extends Fragment {
     ToggleButton gAutoLoginOnOffBtn;
     Button gPwdConfirmGoBtn;
     ImageView gProfileChangeIv;
+    Uri dataUri;
 
     @Nullable
     @Override
@@ -57,7 +69,7 @@ public class SettingFragment extends Fragment {
         gProfileChangeIv = (ImageView) rootView.findViewById(R.id.profileChangeIv);
 
         gProfileChangeIv.setBackground(new ShapeDrawable(new OvalShape()));
-        gProfileChangeIv.setClipToOutline(true);
+        //gProfileChangeIv.setClipToOutline(true);
 
         gAutoLoginOnOffBtn.setChecked((0 == Module.getAutoLogin(getContext())) ?  false : true);
 
@@ -94,6 +106,28 @@ public class SettingFragment extends Fragment {
                         .show();
             }
         });
+
+        String path = getRealImagePath(dataUri);
+        File file = new File(path);
+        Log.d("Uri", path);
+
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse(getActivity().getContentResolver().getType(dataUri)),
+                        file
+                );
+
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+
+        RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        MemberService service = retrofit.create(MemberService.class);
 
         gAutoLoginOnOffBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -156,7 +190,8 @@ public class SettingFragment extends Fragment {
                         matrix.setRotate(90); //사진을 90도로 회전시키기 위해 matrix설정
 
                         Bitmap bm = null;
-                        Uri dataUri = data.getData();
+                        //Uri dataUri = data.getData();
+                        dataUri = data.getData();
 
                         bm = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
                         Bitmap scaled = Bitmap.createScaledBitmap(bm, IMAGE_WIDTH, IMAGE_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
@@ -188,6 +223,17 @@ public class SettingFragment extends Fragment {
             }
 
         }
+    }
+    // 사진의 실제 경로를 구하는 method
+    public String getRealImagePath (Uri uriPath) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor =  getActivity().managedQuery(uriPath, proj, null, null, null);
+        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+        String path = cursor.getString(index);
+
+        return path;
     }
 }
 

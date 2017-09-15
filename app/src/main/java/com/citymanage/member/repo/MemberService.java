@@ -39,7 +39,7 @@ public interface MemberService {
     // 프로필 사진 변경
     @Multipart
     @POST("memberProfileImageChange.app")
-    Call<MemberRepo> getMemberProfileImageChange(@Part MultipartBody.Part filePart, @Part("memberPhoto") RequestBody memberPhoto,@Part("memberId") RequestBody memberId, @Part("memberPwd") RequestBody memberPwd);
+    Call<MemberRepo> getMemberProfileImageChange(@Part MultipartBody.Part filePart, @Part("memberPhoto") RequestBody memberPhoto,@Part("memberId") RequestBody memberId);
 
     //
     @Headers({"Accept:application/json"})
@@ -54,18 +54,9 @@ public interface MemberService {
     @GET("cityStateInfoRegister.app")
     Call<MemberRepo> getCityStateInfoRegister(@Query("cityCode") String citycode, @Query("stateCode") String statecode, @Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
 
-
-
-    @Headers({"Accept:application/json"})
-    @GET("memberProfileImageChange.app")
-    Call<MemberRepo> getMemberProfileImageChange(@Query("memberId") String id, @Query("memberPhoto") String memberPhoto);
-
     @Headers({"Accept:application/json"})
     @GET("favoritesRegister.app")
     Call<MemberRepo> getFavoritesRegister(@Query("memberId") String id, @Query("bookmark") String bookmark, @Query("manageId") String manageId);
-
-
-
 }
 
 

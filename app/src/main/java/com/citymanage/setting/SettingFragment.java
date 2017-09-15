@@ -1,5 +1,6 @@
 package com.citymanage.setting;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,9 +21,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.citymanage.R;
+import com.citymanage.member.RegisterActivity;
+import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
 import com.common.Module;
 
@@ -33,7 +37,10 @@ import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
@@ -57,6 +64,7 @@ public class SettingFragment extends Fragment {
     ToggleButton gAutoLoginOnOffBtn;
     Button gPwdConfirmGoBtn;
     ImageView gProfileChangeIv;
+    ProgressDialog dialog;
     Uri dataUri;
 
     @Nullable
@@ -107,6 +115,13 @@ public class SettingFragment extends Fragment {
             }
         });
 
+/*        //정보 전송중 메시지 출력
+       // dialog = new ProgressDialog(SettingFragment.this);
+        dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Loading....");
+        dialog.show();
+
+        String Id = Module.getRecordId(getContext());
         String path = getRealImagePath(dataUri);
         File file = new File(path);
         Log.d("Uri", path);
@@ -121,6 +136,7 @@ public class SettingFragment extends Fragment {
                 MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
 
         RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+        RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), Module.getRecordId(getContext()));
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASEHOST)
@@ -128,6 +144,31 @@ public class SettingFragment extends Fragment {
                 .build();
 
         MemberService service = retrofit.create(MemberService.class);
+        final Call<MemberRepo> repos = service.getMemberProfileImageChange(body, memberPhoto, memberId);
+
+        repos.enqueue(new Callback<MemberRepo>() {
+            @Override
+            public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+                MemberRepo memberRepo = response.body();
+                dialog.dismiss();
+
+                if (response.isSuccessful()) {
+                    if (memberRepo.getResultCode().equals("200")) {
+                        Toast.makeText(getActivity(), "프로필사진이 변경되었습니다.", Toast.LENGTH_SHORT).show();
+
+                    } else if (memberRepo.getResultCode().equals("400")) {
+                        Toast.makeText(getActivity(), "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MemberRepo> call, Throwable t) {
+                Toast.makeText(getActivity(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });*/
 
         gAutoLoginOnOffBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

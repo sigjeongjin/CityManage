@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
-        android:icon="@drawable/btn_favorite_ov"
+        android:icon="@drawable/btn_favorite"
         app:showAsAction="always" />
 </menu>

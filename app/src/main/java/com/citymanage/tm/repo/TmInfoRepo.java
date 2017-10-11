@@ -34,6 +34,9 @@ public class TmInfoRepo {
     @SerializedName("installationDateTime")
     private String installationDateTime;
 
+    @SerializedName("bookmark")
+    private String bookmark;
+
     public String getResultCode() {
         return resultCode;
     }
@@ -69,4 +72,6 @@ public class TmInfoRepo {
     public String getInstallationDateTime() {
         return installationDateTime;
     }
+
+    public String getBookmark() { return bookmark; }
 }

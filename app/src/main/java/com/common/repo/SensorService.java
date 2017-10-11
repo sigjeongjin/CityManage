@@ -38,4 +38,8 @@ public interface SensorService {
     @Headers({"Accept:application/json"})
     @GET("/gmInfo.app")
     Call<GmInfoRepo> getGmInfo(@Query("manageId") String manageId);
+
+    @Headers({"Accept:application/json"})
+    @GET("/favoritesWhether.app")
+    Call<SensorInfoRepo> getFavoritesWhether(@Query("memberId") String memberId, @Query("manageId") String manageId);
 }

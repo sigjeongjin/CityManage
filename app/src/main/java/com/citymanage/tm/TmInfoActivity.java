@@ -1,8 +1,10 @@
 package com.citymanage.tm;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -11,6 +13,8 @@ import android.widget.Toast;
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.tm.repo.TmInfoRepo;
+import com.common.Module;
+import com.common.repo.SensorInfoRepo;
 import com.common.repo.SensorService;
 
 import retrofit2.Call;
@@ -18,6 +22,8 @@ import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static com.citymanage.R.id.action_settings;
 
 public class TmInfoActivity extends SideNaviBaseActivity {
 
@@ -88,7 +94,7 @@ public class TmInfoActivity extends SideNaviBaseActivity {
 
             @Override
             public void onFailure(Call<TmInfoRepo> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "네트워크 연결을 확인해 주세요.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -103,6 +109,65 @@ public class TmInfoActivity extends SideNaviBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case action_settings :
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(BASEHOST)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                String memberId = Module.getRecordId(getApplicationContext());
+                String manageId = sensorIdTv.getText().toString();
+
+                SensorService service = retrofit.create(SensorService.class);
+                final Call<SensorInfoRepo> repos = service.getFavoritesWhether(memberId, manageId);
+
+                repos.enqueue(new Callback<SensorInfoRepo>() {
+                    @Override
+                    public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
+                        SensorInfoRepo sensorInfoRepo = response.body();
+                        dialog.dismiss();
+
+                        if (response.isSuccessful()) {
+                            if (sensorInfoRepo.getResultCode().equals("200")) {
+
+
+                            } else if (sensorInfoRepo.getResultCode().equals("400")) {
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                final MenuItem menuItem = item;
+
+                DialogInterface.OnClickListener favoritesConfirm = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        menuItem.setIcon(R.drawable.btn_favorite_ov);
+                    }
+                };
+
+                DialogInterface.OnClickListener favoritesCancel = new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        menuItem.setIcon(R.drawable.btn_favorite_ov);
+                    }
+                };
+
+                new AlertDialog.Builder(TmInfoActivity.this)
+                        .setTitle("즐겨찾기로 설정하시겠습니까?")
+                        .setPositiveButton("확인",favoritesConfirm)
+                        .setNegativeButton("취소",favoritesCancel)
+                        .show();
+
+                break;
             case android.R.id.home:
                 openDrawer();
                 return true;
@@ -111,7 +176,5 @@ public class TmInfoActivity extends SideNaviBaseActivity {
     }
 
     @Override
-    public boolean providesActivityToolbar() {
-        return true;
-    }
+    public boolean providesActivityToolbar() {return true;}
 }

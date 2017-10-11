@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,8 +25,6 @@ import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static android.R.attr.id;
 
 public class LoginActivity extends BaseActivity {
 
@@ -96,9 +93,6 @@ public class LoginActivity extends BaseActivity {
 
                         MemberRepo memberRepo= response.body();
 
-                        Log.e("TEST TEST :", memberRepo.getResultMessage());
-                        Log.e("TEST TEST :", memberRepo.getResultCode());
-
                         if(memberRepo != null) {
                             if(memberRepo.getResultCode().equals("200")) {
                                 Intent intent;
@@ -140,7 +134,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(Call<MemberRepo> call, Throwable t) {
-                        Toast.makeText(LoginActivity.this, "등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "네트워크 연결을 확인해 주세요.", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });

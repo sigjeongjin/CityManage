@@ -26,16 +26,18 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3Bi6rtPt24vp1VB93_kjavLhrVuEVxJ8" />
-        <activity android:name=".member.LoginActivity">LoginActivity
 
+
+        <activity android:name=".member.LoginActivity">
+            LoginActivity
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".member.AddressSearchActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".member.AddressSearchActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".member.RegisterActivity" />
         <activity android:name=".gm.GmMapActivity" />
         <activity android:name=".wm.WmListActivity" />
@@ -44,14 +46,33 @@
         <activity android:name=".tm.TmListActivity" />
         <activity android:name=".tm.TmMapActivity" />
         <activity android:name=".sm.SmInfoActivity" />
-        <activity android:name=".wm.WmInfoActivity"/>
-        <activity android:name=".tm.TmInfoActivity"/>
-        <activity android:name=".sm.SmListActivity"/>
+        <activity android:name=".wm.WmInfoActivity" />
+        <activity android:name=".tm.TmInfoActivity" />
+        <activity android:name=".sm.SmListActivity" />
         <activity android:name=".sm.SmMapActivity" />
-        <activity android:name=".gm.GmListActivity"/>
-        <activity android:name=".gm.GmInfoActivity"/>
-        <activity android:name=".favorite.FavoriteActivity"/>
-        <activity android:name=".push.PushHistoryActivity"/>
+        <activity android:name=".gm.GmListActivity" />
+        <activity android:name=".gm.GmInfoActivity" />
+        <activity android:name=".favorite.FavoriteActivity" />
+        <activity android:name=".push.PushHistoryActivity" />
+
+        <service
+            android:name=".push.FirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".push.FirebaseInstanceIDService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_ID_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

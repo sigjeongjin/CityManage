@@ -49,11 +49,12 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
                 .build();
 
         PushService service = retrofit.create(PushService.class);
-        final Call<PushInfoRepo> repos = service.getPushTokenRegister(memberId, pushToken);
+        final Call<PushInfoRepo> repos = service.getPushTokenRegister(pushToken);
 
         repos.enqueue(new Callback<PushInfoRepo>() {
             @Override
             public void onResponse(Call<PushInfoRepo> call, Response<PushInfoRepo> response) {
+                Log.d(TAG, "Server up Token");
                 PushInfoRepo pushInfoRepo = response.body();
             }
 

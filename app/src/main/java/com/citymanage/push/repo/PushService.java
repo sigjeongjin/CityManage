@@ -17,5 +17,9 @@ public interface PushService {
 
     @Headers({"Accept:application/json"})
     @POST("pushTokenRegister.app")
-    Call<PushInfoRepo> getPushTokenRegister(@Query("memberId") String memberId, @Query("pushToken") String pushToken);
+    Call<PushInfoRepo> getPushTokenRegister(@Query("pushToken") String pushToken);
+
+    @Headers({"Accept:application/json"})
+    @POST("pushTokenUpdate.app")
+    Call<PushInfoRepo> getPushTokenUpdate(@Query("memberId") String memberId, @Query("pushToken") String pushToken);
 }

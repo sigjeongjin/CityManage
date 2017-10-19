@@ -47,9 +47,6 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
     static final String GM = "gm";
     static final String SM = "sm";
 
-    //super 클래스에서 favoritehistoryurl 받아오기
-    String gFavoriteHistoryUrl = FAVORITE_HOST; // URL 변경
-
     ListView gFavoriteHistoryLv; //통신 후 받은 데이터 표현할 리스트
     FavoriteAdapter adapter; // 위의 리스트 adapter
 
@@ -57,11 +54,9 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
+
         super.setupToolbar();
         setTitle(R.string.navigation_favorite);
 
@@ -98,38 +93,6 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         FavoritesService service = retrofit.create(FavoritesService.class);
         final Call<FavoritesInfoRepo> repos = service.getFavoritesInfo(Module.getRecordId(getApplicationContext()),"wm");
 
-//<<<<<<< HEAD
-//
-//
-//                Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(BASEHOST)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        FavoriteService service = retrofit.create(FavoriteService.class);
-//        final Call<FavoriteRepo> favoritesRegister = service.getFavoritesRegister(Module.getRecordId(getApplicationContext()), "bookmark", "manageId");
-//
-//        favoritesRegister.enqueue(new Callback<FavoriteRepo>() {
-//            @Override
-//            public void onResponse(Call<FavoriteRepo> call, retrofit2.Response<FavoriteRepo> response) {
-//
-//                FavoriteRepo favoriteRegister = response.body();
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<FavoriteRepo> call, Throwable t) {
-//
-//            }
-//        });
-//
-//
-//
-//
-//
-//
-//        StringRequest favoriteHistoryRequest = new StringRequest(gFavoriteHistoryUrl, new Response.Listener<String>() {
-//=======
         repos.enqueue(new Callback<FavoritesInfoRepo>(){
 
             @Override

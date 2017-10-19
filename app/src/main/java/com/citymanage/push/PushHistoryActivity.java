@@ -48,9 +48,6 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
     static final String SM = "sm";
     static final String ALL = "all";
 
-    //super 클래스에서 pushhistoryurl 받아오기
-    String gPushHistoryUrl = PUSH_HISTORY_HOST;
-
     ListView gPushHistoryLv; //통신 후 받은 데이터 표현할 리스트
     PushHistoryAdapter adapter; // 위의 리스트 adapter
 
@@ -158,8 +155,6 @@ public class PushHistoryActivity extends SideNaviBaseActivity implements View.On
         dialog = new ProgressDialog(PushHistoryActivity.this);
         dialog.setMessage("Loading....");
         dialog.show();
-
-        StringBuilder sb = new StringBuilder(gPushHistoryUrl);
 
         checkedSettingUrl(v.getTag().toString());
 

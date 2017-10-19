@@ -20,7 +20,6 @@ import com.citymanage.R;
 import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
 import com.common.Module;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -136,6 +135,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(Call<MemberRepo> call, Throwable t) {
+                        Log.e("DEBUG Message : " , t.getMessage());
                         Toast.makeText(LoginActivity.this, "네트워크 연결을 확인해 주세요.", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }

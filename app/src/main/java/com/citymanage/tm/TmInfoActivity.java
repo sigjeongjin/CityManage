@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -111,45 +112,45 @@ public class TmInfoActivity extends SideNaviBaseActivity {
         switch (item.getItemId()) {
             case action_settings :
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(BASEHOST)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                String memberId = Module.getRecordId(getApplicationContext());
-                String manageId = sensorIdTv.getText().toString();
-
-                SensorService service = retrofit.create(SensorService.class);
-                final Call<SensorInfoRepo> repos = service.getFavoritesWhether(memberId, manageId);
-
-                repos.enqueue(new Callback<SensorInfoRepo>() {
-                    @Override
-                    public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
-                        SensorInfoRepo sensorInfoRepo = response.body();
-                        dialog.dismiss();
-
-                        if (response.isSuccessful()) {
-                            if (sensorInfoRepo.getResultCode().equals("200")) {
-
-
-                            } else if (sensorInfoRepo.getResultCode().equals("400")) {
-
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                });
-
                 final MenuItem menuItem = item;
 
                 DialogInterface.OnClickListener favoritesConfirm = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(BASEHOST)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        String memberId = Module.getRecordId(getApplicationContext());
+                        String manageId = sensorIdTv.getText().toString();
+
+                        SensorService service = retrofit.create(SensorService.class);
+                        final Call<SensorInfoRepo> repos = service.getFavoritesWhether(memberId, manageId);
+
+                        repos.enqueue(new Callback<SensorInfoRepo>() {
+                            @Override
+                            public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
+                                SensorInfoRepo sensorInfoRepo = response.body();
+
+                                if (response.isSuccessful()) {
+                                    if (sensorInfoRepo.getResultCode().equals("200")) {
+
+
+                                    } else if (sensorInfoRepo.getResultCode().equals("400")) {
+
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                                Log.e("TmInfoActivity DEBUG : ", t.getMessage());
+                            }
+                        });
+
                         menuItem.setIcon(R.drawable.btn_favorite_ov);
                     }
                 };
@@ -157,7 +158,7 @@ public class TmInfoActivity extends SideNaviBaseActivity {
                 DialogInterface.OnClickListener favoritesCancel = new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        menuItem.setIcon(R.drawable.btn_favorite_ov);
+                        menuItem.setIcon(R.drawable.btn_favorite_v);
                     }
                 };
 

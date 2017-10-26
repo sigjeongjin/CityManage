@@ -4,22 +4,37 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.citymanage.favorite.FavoriteActivity;
 import com.citymanage.gm.GmListActivity;
 import com.citymanage.member.LoginActivity;
+import com.citymanage.member.repo.MemberService;
+import com.citymanage.member.repo.PushInfoRepo;
 import com.citymanage.push.PushHistoryActivity;
+import com.citymanage.push.repo.PushService;
 import com.citymanage.setting.SettingActivity;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.sm.SmListActivity;
 import com.citymanage.tm.TmListActivity;
 import com.citymanage.wm.WmListActivity;
+import com.common.Module;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends SideNaviBaseActivity{
+
+    private static final String TAG = "MainAcivity";
 
     Button wmListActivityGo;
     Button gmListActivityGo;
@@ -75,6 +90,35 @@ public class MainActivity extends SideNaviBaseActivity{
             }
         });
 
+
+        // 로그인 후 메인 화면 이동하면 Push 값을 등록한다.
+        String memberId = Module.getRecordId(getApplicationContext());
+        String Token = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
+
+        Log.d(TAG, Token);
+        Log.d(TAG, memberId);
+        // Retrofit를 이용해 웹서버로 토큰값을 날려준다.
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        MemberService service = retrofit.create(MemberService.class);
+        final Call<PushInfoRepo> repos = service.getPushTokenRegister(Token, memberId);
+
+        repos.enqueue(new Callback<PushInfoRepo>() {
+            @Override
+            public void onResponse(Call<PushInfoRepo> call, Response<PushInfoRepo> response) {
+                Log.d(TAG, "Server up Token");
+                PushInfoRepo pushInfoRepo = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<PushInfoRepo> call, Throwable t) {
+                Log.d(TAG, "Server up fail");
+                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

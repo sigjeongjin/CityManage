@@ -13,7 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 public class BaseActivity extends AppCompatActivity {
 
 //    public static final String BASEHOST = "http://172.30.1.2:8080"; //민정 집 톰캣
-    public static final String BASEHOST = "http://192.168.0.2:8080"; // 현진 집 톰캣
+//    public static final String BASEHOST = "http://192.168.0.2:8080"; // 현진 집 톰캣
+    public static final String BASEHOST = "http://192.168.0.18:8080"; // 현진 집 톰캣
 
 
     /******** 프로그램 실행 후 필요한 상수 값들 정의 시작 ********/

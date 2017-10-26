@@ -57,6 +57,15 @@ public interface MemberService {
     @Headers({"Accept:application/json"})
     @GET("favoritesRegister.app")
     Call<MemberRepo> getFavoritesRegister(@Query("memberId") String id, @Query("bookmark") String bookmark, @Query("manageId") String manageId);
+
+    // Push 등록 및 업데이트
+    @Headers({"Accept:application/json"})
+    @POST("pushTokenRegister.app")
+    Call<PushInfoRepo> getPushTokenRegister(@Query("pushToken") String pushToken, @Query("memberId") String memberId);
+
+    @Headers({"Accept:application/json"})
+    @GET("pushTokenUpdate.app")
+    Call<PushInfoRepo> getPushTokenUpdate(@Query("memberId") String memberId, @Query("pushToken") String pushToken);
 }
 
 

@@ -1,4 +1,4 @@
-package com.citymanage.push.repo;
+package com.citymanage.member.repo;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
 import com.citymanage.sm.repo.SmInfoRepo;
+import com.common.Module;
 import com.common.repo.SensorService;
 
 import retrofit2.Call;
@@ -65,7 +66,7 @@ public class SmInfoActivity extends SideNaviBaseActivity {
                 .build();
 
         SensorService service = retrofit.create(SensorService.class);
-        final Call<SmInfoRepo> repos = service.getSmInfo(sensorId);
+        final Call<SmInfoRepo> repos = service.getSmInfo(sensorId, Module.getRecordId(getApplicationContext()));
 
         repos.enqueue(new Callback<SmInfoRepo>(){
             @Override

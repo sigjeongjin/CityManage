@@ -25,21 +25,17 @@ public interface SensorService {
 
     @Headers({"Accept:application/json"})
     @GET("/wmInfo.app")
-    Call<WmInfoRepo> getWmInfo(@Query("manageId") String manageId);
+    Call<WmInfoRepo> getWmInfo(@Query("manageId") String manageId, @Query("memberId") String memberId);
 
     @Headers({"Accept:application/json"})
     @GET("/tmInfo.app")
-    Call<TmInfoRepo> getTmInfo(@Query("manageId") String manageId);
+    Call<TmInfoRepo> getTmInfo(@Query("manageId") String manageId, @Query("memberId") String memberId);
 
     @Headers({"Accept:application/json"})
     @GET("/smInfo.app")
-    Call<SmInfoRepo> getSmInfo(@Query("manageId") String manageId);
+    Call<SmInfoRepo> getSmInfo(@Query("manageId") String manageId, @Query("memberId") String memberId);
 
     @Headers({"Accept:application/json"})
     @GET("/gmInfo.app")
-    Call<GmInfoRepo> getGmInfo(@Query("manageId") String manageId);
-
-    @Headers({"Accept:application/json"})
-    @GET("/favoritesWhether.app")
-    Call<SensorInfoRepo> getFavoritesWhether(@Query("memberId") String memberId, @Query("manageId") String manageId);
+    Call<GmInfoRepo> getGmInfo(@Query("manageId") String manageId, @Query("memberId") String memberId);
 }

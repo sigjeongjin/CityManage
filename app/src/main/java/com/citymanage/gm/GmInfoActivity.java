@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.citymanage.R;
 import com.citymanage.gm.repo.GmInfoRepo;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
+import com.common.Module;
 import com.common.repo.SensorService;
 
 import retrofit2.Call;
@@ -57,7 +58,7 @@ public class GmInfoActivity extends SideNaviBaseActivity {
                 .build();
 
         SensorService service = retrofit.create(SensorService.class);
-        final Call<GmInfoRepo> repos = service.getGmInfo(sensorId);
+        final Call<GmInfoRepo> repos = service.getGmInfo(sensorId, Module.getRecordId(getApplicationContext()));
 
         repos.enqueue(new Callback<GmInfoRepo>(){
             @Override

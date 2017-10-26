@@ -13,4 +13,12 @@ public interface FavoritesService {
     @Headers({"Accept:application/json"})
     @GET("favoritesList.app")
     Call<FavoritesInfoRepo> getFavoritesInfo(@Query("memberId") String memberId, @Query("manageType") String manageType);
+
+    @Headers({"Accept:application/json"})
+    @GET("/favoritesRegister.app")
+    Call<FavoritesInfoRepo> setFavoritesRegister(@Query("memberId") String memberId, @Query("manageId") String manageId);
+
+    @Headers({"Accept:application/json"})
+    @GET("/favoritesRelease.app")
+    Call<FavoritesInfoRepo> setFavoritesRelease(@Query("memberId") String memberId, @Query("manageId") String manageId);
 }

@@ -32,11 +32,5 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
-        // 생성한 토큰을 서버로 날려서 저장하기 위해서 만듬
-        // sendRegistrationToServer(refreshedToken);
-    }
-
-    private void sendRegistrationToServer(String token) {
-
     }
 }

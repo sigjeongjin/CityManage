@@ -34,8 +34,6 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends SideNaviBaseActivity{
 
-    private static final String TAG = "MainAcivity";
-
     Button wmListActivityGo;
     Button gmListActivityGo;
     Button tmListActivityGo;
@@ -87,36 +85,6 @@ public class MainActivity extends SideNaviBaseActivity{
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SmListActivity.class);
                 startActivity(intent);
-            }
-        });
-
-
-        // 로그인 후 메인 화면 이동하면 Push 값을 등록한다.
-        String memberId = Module.getRecordId(getApplicationContext());
-        String Token = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
-
-        Log.d(TAG, Token);
-        Log.d(TAG, memberId);
-        // Retrofit를 이용해 웹서버로 토큰값을 날려준다.
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASEHOST)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        MemberService service = retrofit.create(MemberService.class);
-        final Call<PushInfoRepo> repos = service.getPushTokenRegister(Token, memberId);
-
-        repos.enqueue(new Callback<PushInfoRepo>() {
-            @Override
-            public void onResponse(Call<PushInfoRepo> call, Response<PushInfoRepo> response) {
-                Log.d(TAG, "Server up Token");
-                PushInfoRepo pushInfoRepo = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<PushInfoRepo> call, Throwable t) {
-                Log.d(TAG, "Server up fail");
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
             }
         });
     }

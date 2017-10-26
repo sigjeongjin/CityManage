@@ -19,7 +19,9 @@ import com.citymanage.MainActivity;
 import com.citymanage.R;
 import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
+import com.citymanage.member.repo.PushInfoRepo;
 import com.common.Module;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +30,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class LoginActivity extends BaseActivity {
+
+    private static final String TAG = "LoginActivityTest";
 
     CheckBox autoLoginChk;
     TextView loginTv;
@@ -97,6 +101,12 @@ public class LoginActivity extends BaseActivity {
                         if(memberRepo != null) {
                             if(memberRepo.getResultCode().equals("200")) {
                                 Intent intent;
+
+                                String token = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
+
+                                    Log.d(TAG, token);
+                                    sendRegistrationToServer(token);
+
 
                                 if(Module.getLocation(getApplicationContext()) == 1) {
                                     Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -194,5 +204,34 @@ public class LoginActivity extends BaseActivity {
                 .setNegativeButton("취소",cancelListener)
                 .show();
 
+    }
+
+    // Token을 서버에 등록
+    private void sendRegistrationToServer(String token) {
+
+        String memberId = Module.getRecordId(getApplicationContext());
+
+        // Retrofit를 이용해 웹서버로 토큰값을 날려준다.
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        MemberService service = retrofit.create(MemberService.class);
+        final Call<PushInfoRepo> repos = service.getPushTokenRegister(token, memberId);
+
+        repos.enqueue(new Callback<PushInfoRepo>() {
+            @Override
+            public void onResponse(Call<PushInfoRepo> call, Response<PushInfoRepo> response) {
+                Log.d(TAG, "Server up Token");
+                PushInfoRepo pushInfoRepo = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<PushInfoRepo> call, Throwable t) {
+                Log.d(TAG, "Server up fail");
+                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

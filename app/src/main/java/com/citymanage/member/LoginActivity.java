@@ -31,7 +31,7 @@ import retrofit2.Retrofit;
 
 public class LoginActivity extends BaseActivity {
 
-    private static final String TAG = "LoginActivityTest";
+    private static final String TAG = "TokenTest";
 
     CheckBox autoLoginChk;
     TextView loginTv;

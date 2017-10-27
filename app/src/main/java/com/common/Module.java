@@ -30,6 +30,18 @@ public class Module extends AppCompatActivity{
         editor.commit();
     }
 
+    static public String getRecordToken(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        return  pref.getString("token","");
+    }
+
+    static public void setRecordToken(Context context,String ptoken) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("token", String.valueOf(ptoken));
+        editor.commit();
+    }
+
     static public String getRecordPwd (Context context) {
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         return  pref.getString("pwd","");

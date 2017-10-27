@@ -65,7 +65,7 @@ public interface MemberService {
 
     @Headers({"Accept:application/json"})
     @GET("pushTokenUpdate.app")
-    Call<PushInfoRepo> getPushTokenUpdate(@Query("memberId") String memberId, @Query("pushToken") String pushToken);
+    Call<PushInfoRepo> getPushTokenUpdate(@Query("pushToken") String pushToken, @Query("memberId") String memberId);
 }
 
 

@@ -102,11 +102,24 @@ public class LoginActivity extends BaseActivity {
                             if(memberRepo.getResultCode().equals("200")) {
                                 Intent intent;
 
-                                String token = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
 
-                                    Log.d(TAG, token);
-                                    sendRegistrationToServer(token);
+                                String token = FirebaseInstanceId.getInstance().getToken();  // 토큰 값을 가져옴
+                                String tokenMemberId = idEt.getText().toString();           // 입력한 아이디 값을 가져옴
+                                 Log.d(TAG, token);
 
+
+                                // token 정보가 바뀌면 토큰 업데이트
+                                if(!token.equals(Module.getRecordToken(getApplicationContext()))) {
+                                    sendUadateToServer(token, tokenMemberId);
+                                }
+
+                                // 기존에 저장된 아이디와 다르면 토큰 생성 (다중로그인 구현 하지 못함)
+                                if (!tokenMemberId.equals(Module.getRecordId(getApplicationContext()))) {
+                                    sendRegistrationToServer(token, tokenMemberId);
+                                }
+
+                                // 바뀐 토큰 값과 비교 하기 위해 저장
+                               Module.setRecordToken(getApplicationContext(), token);
 
                                 if(Module.getLocation(getApplicationContext()) == 1) {
                                     Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -207,9 +220,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     // Token을 서버에 등록
-    private void sendRegistrationToServer(String token) {
-
-        String memberId = Module.getRecordId(getApplicationContext());
+    private void sendRegistrationToServer(String token,  String tokenMemberId) {
 
         // Retrofit를 이용해 웹서버로 토큰값을 날려준다.
         Retrofit retrofit = new Retrofit.Builder()
@@ -218,20 +229,46 @@ public class LoginActivity extends BaseActivity {
                 .build();
 
         MemberService service = retrofit.create(MemberService.class);
-        final Call<PushInfoRepo> repos = service.getPushTokenRegister(token, memberId);
+        final Call<PushInfoRepo> repos = service.getPushTokenRegister(token, tokenMemberId);
 
         repos.enqueue(new Callback<PushInfoRepo>() {
             @Override
             public void onResponse(Call<PushInfoRepo> call, Response<PushInfoRepo> response) {
-                Log.d(TAG, "Server up Token");
+                Log.d(TAG, "Server insert Token");
                 PushInfoRepo pushInfoRepo = response.body();
             }
 
             @Override
             public void onFailure(Call<PushInfoRepo> call, Throwable t) {
-                Log.d(TAG, "Server up fail");
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Server insert fail");
             }
         });
     }
+
+    // Token을 서버에 업데이트
+    private void sendUadateToServer(String refreshedToken, String tokenMemberId) {
+
+        // Retrofit를 이용해 웹서버로 토큰값을 날려준다.
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        MemberService service = retrofit.create(MemberService.class);
+        final Call<PushInfoRepo> repos = service.getPushTokenUpdate(refreshedToken, tokenMemberId);
+
+        repos.enqueue(new Callback<PushInfoRepo>() {
+            @Override
+            public void onResponse(Call<PushInfoRepo> call, Response<PushInfoRepo> response) {
+                Log.d(TAG, "Server update Token");
+                PushInfoRepo pushInfoRepo = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<PushInfoRepo> call, Throwable t) {
+                Log.d(TAG, "Server update fail");
+            }
+        });
+    }
+
 }

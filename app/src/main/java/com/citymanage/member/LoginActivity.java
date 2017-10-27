@@ -107,6 +107,8 @@ public class LoginActivity extends BaseActivity {
                                     Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
 
+                                    Module.setProfileImageUrl(getApplicationContext(), memberRepo.getMemberPhotoOriginal());
+
                                 } else {
                                     Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                                     intent = new Intent(getApplication(), AddressSearchActivity.class);
@@ -115,6 +117,8 @@ public class LoginActivity extends BaseActivity {
 
                                     Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
+
+                                    Module.setProfileImageUrl(getApplicationContext(), memberRepo.getMemberPhotoOriginal());
                                 }
 
                                 if(autoLoginChk.isChecked()){

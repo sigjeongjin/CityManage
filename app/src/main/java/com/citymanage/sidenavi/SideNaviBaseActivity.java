@@ -24,6 +24,7 @@ import com.citymanage.push.PushHistoryActivity;
 import com.citymanage.sm.SmListActivity;
 import com.citymanage.tm.TmListActivity;
 import com.citymanage.wm.WmListActivity;
+import com.common.Module;
 
 /**
  * Created by we25 on 2017-07-11.
@@ -189,7 +190,9 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
         if(profilShot ==  null) {
             Log.i("null 입니다","null 입니다.");
         } else {
-            profilShot.setImageResource(R.drawable.bearbang);
+            profilShot.setImageURI(Module.getProfileImageUrl(getApplicationContext()));
+
+
             profilShot.setBackground(new ShapeDrawable(new OvalShape()));
 //            profilShot.setClipToOutline(true);
         }

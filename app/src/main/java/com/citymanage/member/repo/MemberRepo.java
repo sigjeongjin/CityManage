@@ -35,6 +35,9 @@ public class MemberRepo {
     @SerializedName("memberPhoto")
     private String memberPhoto;
 
+    @SerializedName("memberPhotoOriginal")
+    private String memberPhotoOriginal;
+
     @SerializedName("bookmark")
     private String bookmark;
 
@@ -72,6 +75,10 @@ public class MemberRepo {
 
     public String getMemberPhoto() {
         return memberPhoto;
+    }
+
+    public String getMemberPhotoOriginal() {
+        return memberPhotoOriginal;
     }
 
     public String getBookmark() {

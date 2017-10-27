@@ -70,7 +70,7 @@ public class Module extends AppCompatActivity{
     static public void setProfileImageUrl(Context context, String profileImageUrl) {
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("context",profileImageUrl);
+        editor.putString("profileImageUrl",profileImageUrl);
         editor.commit();
     }
 }

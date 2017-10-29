@@ -24,11 +24,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
+        sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("contents"));
 
     }
 
-    private void sendNotification(String title, String message) {
+    private void sendNotification(String title, String contents) {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -37,9 +37,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.citymanage_img)
+                //.setColor(00000000)
                 .setContentTitle(title)
-                .setContentText(message)
+                .setContentText(contents)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

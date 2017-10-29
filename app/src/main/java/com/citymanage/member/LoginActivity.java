@@ -103,19 +103,18 @@ public class LoginActivity extends BaseActivity {
                                 Intent intent;
 
 
-                                String token = FirebaseInstanceId.getInstance().getToken();  // 토큰 값을 가져옴
+                                String token = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
                                 String tokenMemberId = idEt.getText().toString();           // 입력한 아이디 값을 가져옴
                                  Log.d(TAG, token);
-
-
-                                // token 정보가 바뀌면 토큰 업데이트
-                                if(!token.equals(Module.getRecordToken(getApplicationContext()))) {
-                                    sendUadateToServer(token, tokenMemberId);
-                                }
 
                                 // 기존에 저장된 아이디와 다르면 토큰 생성 (다중로그인 구현 하지 못함)
                                 if (!tokenMemberId.equals(Module.getRecordId(getApplicationContext()))) {
                                     sendRegistrationToServer(token, tokenMemberId);
+                                }
+
+                                // token 정보가 바뀌면 토큰 업데이트
+                                if(!token.equals(Module.getRecordToken(getApplicationContext()))) {
+                                    sendUadateToServer(token, tokenMemberId);
                                 }
 
                                 // 바뀐 토큰 값과 비교 하기 위해 저장

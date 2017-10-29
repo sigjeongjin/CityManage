@@ -107,6 +107,8 @@ public class LoginActivity extends BaseActivity {
                                     Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
 
+                                    Log.e("DEBUG LoginActivity : ", memberRepo.getMemberPhotoOriginal());
+
                                     Module.setProfileImageUrl(getApplicationContext(), memberRepo.getMemberPhotoOriginal());
 
                                 } else {

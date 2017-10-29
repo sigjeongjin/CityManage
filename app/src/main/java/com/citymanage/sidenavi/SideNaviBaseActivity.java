@@ -192,7 +192,6 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
         } else {
             profilShot.setImageURI(Module.getProfileImageUrl(getApplicationContext()));
 
-
             profilShot.setBackground(new ShapeDrawable(new OvalShape()));
 //            profilShot.setClipToOutline(true);
         }

@@ -98,6 +98,8 @@ public class LoginActivity extends BaseActivity {
 
                         MemberRepo memberRepo= response.body();
 
+
+
                         if(memberRepo != null) {
                             if(memberRepo.getResultCode().equals("200")) {
                                 Intent intent;
@@ -129,6 +131,14 @@ public class LoginActivity extends BaseActivity {
                                     Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
 
+                                    Log.e("DEBUG LoginActivity : ", memberRepo.getMemberPhotoOriginal());
+
+                                    Module.setProfileImageUrl(getApplicationContext(), memberRepo.getMemberPhotoOriginal());
+
+                                    Log.e("DEBUG LoginActivity : ", memberRepo.getMemberName());
+
+                                    Module.setProfileName(getApplicationContext(), memberRepo.getMemberName());
+
                                 } else {
                                     Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                                     intent = new Intent(getApplication(), AddressSearchActivity.class);
@@ -137,6 +147,9 @@ public class LoginActivity extends BaseActivity {
 
                                     Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
+
+                                    Module.setProfileImageUrl(getApplicationContext(), memberRepo.getMemberPhotoOriginal());
+                                    Module.setProfileName(getApplicationContext(), memberRepo.getMemberName());
                                 }
 
                                 if(autoLoginChk.isChecked()){

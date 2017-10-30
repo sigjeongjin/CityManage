@@ -2,8 +2,10 @@ package com.citymanage.sidenavi;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,17 +15,22 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.citymanage.BaseActivity;
-import com.citymanage.member.LoginActivity;
 import com.citymanage.R;
-import com.citymanage.setting.SettingActivity;
 import com.citymanage.favorite.FavoriteActivity;
 import com.citymanage.gm.GmListActivity;
+import com.citymanage.member.LoginActivity;
 import com.citymanage.push.PushHistoryActivity;
+import com.citymanage.setting.SettingActivity;
 import com.citymanage.sm.SmListActivity;
 import com.citymanage.tm.TmListActivity;
 import com.citymanage.wm.WmListActivity;
+import com.common.ImageRound;
+import com.common.Module;
+
+import java.io.InputStream;
 
 /**
  * Created by we25 on 2017-07-11.
@@ -39,10 +46,8 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
 
     protected static final int NAV_DRAWER_ITEM_INVALID = -1;
 
-    private DrawerLayout drawerLayout;
-    private Toolbar actionBarToolbar;
-
-    ImageView profilShot;
+    public DrawerLayout drawerLayout;
+    public Toolbar actionBarToolbar;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -178,21 +183,30 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
     }
 
     protected void openDrawer() {
+
+        /* 사이드 네비게이션바 프로필 이미지 셋팅*/
+        profileShot = (ImageView) findViewById(R.id.profileShot);
+        profileName = (TextView) findViewById(R.id.profileName);
+
         if(drawerLayout == null)
             return;
 
         drawerLayout.openDrawer(GravityCompat.START);
 
-        /* 사이드 네비게이션바 프로필 이미지 셋팅*/
-        profilShot = (ImageView) findViewById(R.id.profilShot);
+        profileName.setText(Module.getProfileName(getApplicationContext()));
 
-        if(profilShot ==  null) {
-            Log.i("null 입니다","null 입니다.");
-        } else {
-            profilShot.setImageResource(R.drawable.bearbang);
-            profilShot.setBackground(new ShapeDrawable(new OvalShape()));
-//            profilShot.setClipToOutline(true);
+        try {
+            new DownloadImageTask(profileShot)
+                    .execute("http://kukjae.iptime.org:8085/upload/20171027_104402.jpg");
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        //두개가 한세트로 이미지뷰 라운딩
+//        profileShot.setBackground(new ShapeDrawable(new OvalShape()));
+//        profileShot.setClipToOutline(true);
+
     }
 
     protected void closeDrawer() {
@@ -213,5 +227,37 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
         final ActionBar ab = getActionBarToolbar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.btn_list);
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            Matrix matrix = new Matrix();
+            matrix.setRotate(90); //사진을 90도로 회전시키기 위해 matrix설정
+            int IMAGE_WIDTH = 150;
+            int IMAGE_HEIGHT = 150;
+            Bitmap scaled = Bitmap.createScaledBitmap(result, IMAGE_WIDTH, IMAGE_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
+            Bitmap resized = Bitmap.createBitmap(scaled,0,0, IMAGE_WIDTH, IMAGE_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
+            resized = ImageRound.getRoundedCornerBitmap(resized,90);
+            bmImage.setImageBitmap(resized);
+        }
     }
 }

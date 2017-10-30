@@ -29,6 +29,9 @@ public class SmInfoRepo {
     @SerializedName("installationDateTime")
     private String installationDateTime;
 
+    @SerializedName("bookmark")
+    private String bookmark;
+
     public String getResultCode() {
         return resultCode;
     }
@@ -56,4 +59,6 @@ public class SmInfoRepo {
     public String getInstallationDateTime() {
         return installationDateTime;
     }
+
+    public String getBookmark() { return bookmark; }
 }

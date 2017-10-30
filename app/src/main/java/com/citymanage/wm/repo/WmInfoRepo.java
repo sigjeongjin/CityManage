@@ -28,6 +28,9 @@ public class WmInfoRepo {
     @SerializedName("installationDateTime")
     private String installationDateTime;
 
+    @SerializedName("bookmark")
+    private String bookmark;
+
     public String getResultCode() {
         return resultCode;
     }
@@ -55,4 +58,6 @@ public class WmInfoRepo {
     public String getInstallationDateTime() {
         return installationDateTime;
     }
+
+    public String getBookmark() { return bookmark; }
 }

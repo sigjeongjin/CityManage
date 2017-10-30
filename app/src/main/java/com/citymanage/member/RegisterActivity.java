@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +22,7 @@ import android.widget.Toast;
 import com.citymanage.R;
 import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
+import com.common.ImageRound;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,7 +38,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static com.citymanage.BaseActivity.BASEHOST;
-import static com.citymanage.R.id.profilShot;
 
 /**
  * Created by we25 on 2017-06-27.
@@ -67,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Uri dataUri;
 
-    ImageView gProfilShot;
+    ImageView gProfileShot;
     ProgressDialog dialog;
 
     @Override
@@ -82,13 +80,13 @@ public class RegisterActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         hp = (EditText) findViewById(R.id.hp);
         btnf = (Button) findViewById(R.id.btnf);
-        gProfilShot = (ImageView) findViewById(profilShot);
+        gProfileShot = (ImageView) findViewById(R.id.registerProfileShot);
 
-        gProfilShot.setBackground(new ShapeDrawable(new OvalShape()));
-        // 사진 이미지 라운드형으로 변경(API 21이상)
-        //gProfilShot.setClipToOutline(true);
+        //두개가 한세트로 이미지뷰 라운딩 api 21부터 가능한 코드
+//        gProfileShot.setBackground(new ShapeDrawable(new OvalShape()));
+//        gProfileShot.setClipToOutline(true);
 
-        gProfilShot.setOnClickListener(new View.OnClickListener() {
+        gProfileShot.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -131,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
         // 사진 선택 안할 경우
         if (imageDraw == false) {
             Toast.makeText(RegisterActivity.this, "사진을 등록해 주세요.", Toast.LENGTH_SHORT).show();
-            gProfilShot.requestFocus();
+            gProfileShot.requestFocus();
             return;
         }
         // 이름 입력 안할 경우
@@ -287,8 +285,8 @@ public class RegisterActivity extends AppCompatActivity {
                         bm = MediaStore.Images.Media.getBitmap(getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
                         Bitmap scaled = Bitmap.createScaledBitmap(bm, IMAGE_WIDTH, IMAGE_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
                         Bitmap resized = Bitmap.createBitmap(scaled,0,0, IMAGE_WIDTH, IMAGE_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
-
-                        gProfilShot.setImageBitmap(resized);
+                        resized = ImageRound.getRoundedCornerBitmap(resized,90);
+                        gProfileShot.setImageBitmap(resized);
 
                         imageDraw = true;
 
@@ -309,20 +307,20 @@ public class RegisterActivity extends AppCompatActivity {
                     Bundle extras = data.getExtras();
                     if (extras != null) {
                         Bitmap photo = extras.getParcelable("data");
-                        gProfilShot.setImageBitmap(photo);
+                        gProfileShot.setImageBitmap(photo);
                     }
                     if (requestCode == PICK_FROM_CAMERA) {
                         Bundle extras1 = data.getExtras();
                         if (extras1 != null) {
                             Bitmap photo = extras1.getParcelable("data");
-                            gProfilShot.setImageBitmap(photo);
+                            gProfileShot.setImageBitmap(photo);
                         }
                     }
                     if (requestCode == PICK_FROM_ALBUM) {
                         Bundle extras2 = data.getExtras();
                         if (extras2 != null) {
                             Bitmap photo = extras2.getParcelable("data");
-                            gProfilShot.setImageBitmap(photo);
+                            gProfileShot.setImageBitmap(photo);
                         }
                     }
 

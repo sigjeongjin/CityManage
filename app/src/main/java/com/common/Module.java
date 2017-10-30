@@ -48,12 +48,13 @@ public class Module extends AppCompatActivity{
         editor.commit();
     }
 
-    // 값 불러오기
+    // 처음 앱 로그인시 지역 선택 여부
     static public int getLocation(Context context){
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         return pref.getInt("location", 0);
     }
 
+    // 처음 앱 로그인시 지역 선택 저장
     static public void setLocation(Context context, int pAutoLogin) {
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -71,6 +72,20 @@ public class Module extends AppCompatActivity{
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("profileImageUrl",profileImageUrl);
+        editor.commit();
+    }
+
+    //로그인한 유저 이름 가져오기
+    static public String getProfileName(Context context){
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        return pref.getString("profileName", "");
+    }
+
+    //로그인한 유저 이름 셋팅하기
+    static public void setProfileName(Context context, String profileImageUrl) {
+        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("profileName",profileImageUrl);
         editor.commit();
     }
 }

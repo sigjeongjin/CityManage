@@ -128,15 +128,13 @@ public class LoginActivity extends BaseActivity {
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+                                    //아이디, 패스워드, 프로필 이미지, 이름 저장
+                                    if(memberRepo.getMemberPhotoOriginal() != null) {
+                                        Module.setProfileImageUrl(getApplicationContext(), memberRepo.getMemberPhotoOriginal());
+                                    }
+
                                     Module.setRecordId(getApplicationContext(),idEt.getText().toString());
                                     Module.setRecordPwd(getApplicationContext(), password.getText().toString());
-
-                                    Log.e("DEBUG LoginActivity : ", memberRepo.getMemberPhotoOriginal());
-
-                                    Module.setProfileImageUrl(getApplicationContext(), memberRepo.getMemberPhotoOriginal());
-
-                                    Log.e("DEBUG LoginActivity : ", memberRepo.getMemberName());
-
                                     Module.setProfileName(getApplicationContext(), memberRepo.getMemberName());
 
                                 } else {

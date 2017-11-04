@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,13 +85,35 @@ public class TmInfoActivity extends SideNaviBaseActivity {
                 TmInfoRepo tmInfoRepo = response.body();
 
                 if(tmInfoRepo != null) {
+
+
                     sensorIdTv.setText(tmInfoRepo.getManageId());
                     locationTv.setText(tmInfoRepo.getLocationName());
                     installDayTv.setText(tmInfoRepo.getInstallationDateTime());
-                    fireSensorInfoTv.setText(tmInfoRepo.getFlameDetection());
-                    stinkSensorInfoTv.setText(tmInfoRepo.getStink());
-                    generousTv.setText(tmInfoRepo.getGenerous());
-                    lockStatusTv.setText(tmInfoRepo.getLockStatus());
+
+                    //불꽃감지 정보 없을때
+                    if(TextUtils.isEmpty(tmInfoRepo.getFlameDetection()))
+                        fireSensorInfoTv.setText("정보 없음");
+                    else
+                        fireSensorInfoTv.setText(tmInfoRepo.getFlameDetection());
+
+                    //악취 정보 없을때
+                    if(TextUtils.isEmpty(tmInfoRepo.getStink()))
+                        stinkSensorInfoTv.setText("정보 없음");
+                    else
+                        stinkSensorInfoTv.setText(tmInfoRepo.getStink());
+
+                    //쓰레기량 정보 없을때
+                    if(TextUtils.isEmpty(tmInfoRepo.getGenerous()))
+                        generousTv.setText("정보 없음");
+                    else
+                        generousTv.setText(tmInfoRepo.getGenerous());
+
+                    //잠금 정보 없을때
+                    if(TextUtils.isEmpty(tmInfoRepo.getLockStatus()))
+                        lockStatusTv.setText("정보 없음");
+                    else
+                        lockStatusTv.setText(tmInfoRepo.getLockStatus());
 
                     MenuItem favoritesIcon = menu.findItem(R.id.action_settings);
 
@@ -132,8 +155,6 @@ public class TmInfoActivity extends SideNaviBaseActivity {
 
                 //즐겨찾기 해제 로직
                 if(menuIconClickState.equals("Y")) {
-                    Log.e("DEBUGING " , "해제");
-
                     DialogInterface.OnClickListener favoritesConfirm = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

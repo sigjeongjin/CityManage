@@ -23,9 +23,6 @@ public class FavoriteRepo {
     @SerializedName("bookmark")
     private String bookmark;
 
-
-
-
     public String getResultMessage() {
         return resultMessage;
     }
@@ -33,9 +30,6 @@ public class FavoriteRepo {
     public String getResultCode() {
         return resultCode;
     }
-
-
-
 
     public String getbookmark() {
         return bookmark;
@@ -48,25 +42,4 @@ public class FavoriteRepo {
     public String getManageId() {
         return manageId;
     }
-
-
-    //    public List<Tm> tmList = new ArrayList<>();
-//    public List<Tm> getTm() {return tmList;}
-//
-//    public class Tm {
-//        @SerializedName("name")
-//        private String name;
-//
-//        @SerializedName("id")
-//        private String id;
-//
-//        public String getName() {
-//            return name;
-//        }
-//
-//        public String getId() {
-//            return id;
-//        }
-//    }
-
 }

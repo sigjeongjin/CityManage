@@ -41,7 +41,6 @@ public class SmInfoActivity extends SideNaviBaseActivity {
     TextView fireSensorInfoTv;
     TextView smokeSensorInfoTv;
 
-
     String strSensorId;
     String strLocation;
     String installDay;

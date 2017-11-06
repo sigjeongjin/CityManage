@@ -18,10 +18,6 @@ import com.common.Module;
 import com.common.repo.SensorInfoRepo;
 import com.common.repo.SensorService;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -183,33 +179,6 @@ public class GmListActivity extends SideNaviBaseActivity {
         });
     }
 
-    //통신 후 json 파싱
-    void parseJsonData(String jsonString) {
-        try {
-            mListHashGm.clear();
-
-            JSONObject object = new JSONObject(jsonString);
-
-            JSONArray tmListArray = object.getJSONArray("tmList");
-
-            for(int i = 0; i < tmListArray.length(); i ++ ) {
-
-                HashMap<String,String> hashTemp = new HashMap<>();
-
-                String addressInfo = tmListArray.getJSONObject(i).getString("addressInfo");
-                String sensorId = tmListArray.getJSONObject(i).getString("sensorId");
-
-                hashTemp.put("addressInfo",addressInfo);
-                hashTemp.put("sensorId",sensorId);
-
-                mListHashGm.add(i,hashTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.map_actions, menu);
@@ -218,8 +187,6 @@ public class GmListActivity extends SideNaviBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
         switch (item.getItemId()) {
             case action_settings :
                 Intent intent = new Intent(getApplicationContext(), GmMapActivity.class);

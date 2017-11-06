@@ -98,16 +98,12 @@ public class LoginActivity extends BaseActivity {
 
                         MemberRepo memberRepo= response.body();
 
-
-
                         if(memberRepo != null) {
                             if(memberRepo.getResultCode().equals("200")) {
                                 Intent intent;
 
-
                                 String token = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
                                 String tokenMemberId = idEt.getText().toString();           // 입력한 아이디 값을 가져옴
-                                 Log.d(TAG, token);
 
                                 // 기존에 저장된 아이디와 다르면 토큰 생성 (다중로그인 구현 하지 못함)
                                 if (!tokenMemberId.equals(Module.getRecordId(getApplicationContext()))) {
@@ -122,7 +118,7 @@ public class LoginActivity extends BaseActivity {
                                 // 바뀐 토큰 값과 비교 하기 위해 저장
                                Module.setRecordToken(getApplicationContext(), token);
 
-                                if(Module.getLocation(getApplicationContext()) == 1) {
+                                if(memberRepo.getMemberRegisterComplete().equals("Y")) {
                                     Toast.makeText(LoginActivity.this, memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
                                     intent = new Intent(getApplication(), MainActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

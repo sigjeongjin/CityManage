@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,6 @@ import com.citymanage.favorite.repo.FavoritesInfoRepo;
 import com.citymanage.favorite.repo.FavoritesService;
 import com.citymanage.gm.repo.GmInfoRepo;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
-import com.citymanage.sm.SmInfoActivity;
 import com.common.Module;
 import com.common.repo.SensorService;
 
@@ -83,8 +83,18 @@ public class GmInfoActivity extends SideNaviBaseActivity {
                     sensorIdTv.setText(gmInfoRepo.getManageId());
                     locationTv.setText(gmInfoRepo.getLocationName());
                     installDayTv.setText(gmInfoRepo.getInstallationDateTime());
-                    gasDensitySensorInfoTv.setText(gmInfoRepo.getGasDensity());
-                    shockDetectionTv.setText(gmInfoRepo.getShockDetection());
+
+                    //압력(농도)센서 정보 없을때
+                    if(TextUtils.isEmpty(gmInfoRepo.getGasDensity()))
+                        gasDensitySensorInfoTv.setText("정보 없음");
+                    else
+                        gasDensitySensorInfoTv.setText(gmInfoRepo.getGasDensity());
+
+                    //충격감지 센서 정보 없을때
+                    if(TextUtils.isEmpty(gmInfoRepo.getShockDetection()))
+                        shockDetectionTv.setText("정보 없음");
+                    else
+                        shockDetectionTv.setText(gmInfoRepo.getShockDetection());
 
                     MenuItem favoritesIcon = menu.findItem(action_settings);
 

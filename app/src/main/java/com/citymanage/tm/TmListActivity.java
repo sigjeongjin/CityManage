@@ -18,10 +18,6 @@ import com.common.Module;
 import com.common.repo.SensorInfoRepo;
 import com.common.repo.SensorService;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -180,33 +176,6 @@ public class TmListActivity extends SideNaviBaseActivity {
 
             }
         });
-    }
-
-    //통신 후 json 파싱
-    void parseJsonData(String jsonString) {
-        try {
-            mListHashTm.clear();
-
-            JSONObject object = new JSONObject(jsonString);
-
-            JSONArray tmListArray = object.getJSONArray("tmList");
-
-            for(int i = 0; i < tmListArray.length(); i ++ ) {
-
-                HashMap<String,String> hashTemp = new HashMap<>();
-
-                String addressInfo = tmListArray.getJSONObject(i).getString("addressInfo");
-                String sensorId = tmListArray.getJSONObject(i).getString("sensorId");
-
-                hashTemp.put("addressInfo",addressInfo);
-                hashTemp.put("sensorId",sensorId);
-
-                mListHashTm.add(i,hashTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
     }
 
     @Override

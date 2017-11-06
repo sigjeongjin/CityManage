@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -89,8 +90,18 @@ public class SmInfoActivity extends SideNaviBaseActivity {
                     sensorIdTv.setText(smInfoRepo.getManageId());
                     locationTv.setText(smInfoRepo.getLocationName());
                     installDayTv.setText(smInfoRepo.getInstallationDateTime());
-                    fireSensorInfoTv.setText(smInfoRepo.getFlameDetection());
-                    smokeSensorInfoTv.setText(smInfoRepo.getSmokeDetection());
+
+                    //불꽃감지 센서 정보 없을때
+                    if(TextUtils.isEmpty(smInfoRepo.getFlameDetection()))
+                        fireSensorInfoTv.setText("정보 없음");
+                    else
+                        fireSensorInfoTv.setText(smInfoRepo.getFlameDetection());
+
+                    //연기감지 센서 정보 없을때
+                    if(TextUtils.isEmpty(smInfoRepo.getSmokeDetection()))
+                        smokeSensorInfoTv.setText("정보 없음");
+                    else
+                        smokeSensorInfoTv.setText(smInfoRepo.getSmokeDetection());
 
                     MenuItem favoritesIcon = menu.findItem(action_settings);
 

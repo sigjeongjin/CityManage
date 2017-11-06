@@ -41,6 +41,9 @@ public class MemberRepo {
     @SerializedName("bookmark")
     private String bookmark;
 
+    @SerializedName("memberRegisterComplete")
+    private String memberRegisterComplete;
+
     public String getResultCode() {
         return resultCode;
     }
@@ -83,5 +86,9 @@ public class MemberRepo {
 
     public String getBookmark() {
         return bookmark;
+    }
+
+    public String getMemberRegisterComplete() {
+        return memberRegisterComplete;
     }
 }

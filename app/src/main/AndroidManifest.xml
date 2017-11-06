@@ -27,7 +27,7 @@
         android:theme="@style/Theme.Main">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA3Bi6rtPt24vp1VB93_kjavLhrVuEVxJ8" />
+            android:value="AIzaSyDyHMFjvHYH5rk3P6kolhKuDDaxALv5zLI" />
 
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
         See README(https://goo.gl/l4GJaQ) for more. -->

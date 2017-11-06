@@ -18,10 +18,6 @@ import com.common.Module;
 import com.common.repo.SensorInfoRepo;
 import com.common.repo.SensorService;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,30 +106,6 @@ public class WmListActivity extends SideNaviBaseActivity {
             }
         });
 
-//        StringRequest pushHistoryRequest = new StringRequest(TM_LIST_URL, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String string) {
-//                parseJsonData(string);
-//                adapter = new WmListAdapter(getApplicationContext());
-//
-//                for(int i = 0; i < mListHashWm.size(); i ++ ) {
-//                    adapter.addItem(new WmListItem(mListHashWm.get(i).get("addressInfo"),
-//                            mListHashWm.get(i).get("sensorId")));
-//                }
-//                wmListView.setAdapter(adapter);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-//                Log.i("volley error : ",volleyError.toString());
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        RequestQueue rQueue = Volley.newRequestQueue(WmListActivity.this);
-//        rQueue.add(pushHistoryRequest);
-
         searchBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -203,33 +175,6 @@ public class WmListActivity extends SideNaviBaseActivity {
             startActivity(intent);
             }
         });
-    }
-
-    //통신 후 json 파싱
-    void parseJsonData(String jsonString) {
-        try {
-            mListHashWm.clear();
-
-            JSONObject object = new JSONObject(jsonString);
-
-            JSONArray tmListArray = object.getJSONArray("tmList");
-
-            for(int i = 0; i < tmListArray.length(); i ++ ) {
-
-                HashMap<String,String> hashTemp = new HashMap<>();
-
-                String addressInfo = tmListArray.getJSONObject(i).getString("addressInfo");
-                String sensorId = tmListArray.getJSONObject(i).getString("sensorId");
-
-                hashTemp.put("addressInfo",addressInfo);
-                hashTemp.put("sensorId",sensorId);
-
-                mListHashWm.add(i,hashTemp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        dialog.dismiss();
     }
 
     @Override

@@ -64,7 +64,7 @@ public class TmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
                 .build();
 
         SensorService service = retrofit.create(SensorService.class);
-        final Call<SensorInfoRepo> repos = service.getSensorMapInfoList(Module.getRecordId(getApplicationContext()), "TM");
+        final Call<SensorInfoRepo> repos = service.getSensorMapInfoList(Module.getRecordId(getApplicationContext()), "tm");
 
         repos.enqueue(new Callback<SensorInfoRepo>(){
             @Override
@@ -139,9 +139,6 @@ public class TmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
                         marker.getTitle() + " 클릭했음"
                         , Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
-
-                Log.e("DEBUG ", marker.getTitle());
-
                 intent.putExtra("sensorId",marker.getTitle());
                 startActivity(intent);
                 return false;
@@ -151,7 +148,6 @@ public class TmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
     }
 
     private void sersorMarker() {
-
         Marker aSensor;
 
         for(int i =0; i < manageIdList.size(); i ++ ) {

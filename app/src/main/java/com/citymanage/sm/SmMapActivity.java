@@ -1,19 +1,35 @@
 package com.citymanage.sm;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
+import com.common.Module;
+import com.common.repo.SensorInfoRepo;
+import com.common.repo.SensorService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static com.citymanage.R.id.action_settings;
 
@@ -23,12 +39,67 @@ public class SmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
     SupportMapFragment mapFragment;
     GoogleMap map;
 
+    private static final String LATITUDE = "latitude";
+    private static final String LONGITUDE = "longitude";
+
+    HashMap<String, HashMap<String,Double>> locationList = new HashMap<String, HashMap<String,Double>>();
+
+    List<String> manageIdList = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sm_map);
         super.setupToolbar();
         setTitle(R.string.sm_title);
+
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading....");
+        dialog.show();
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SensorService service = retrofit.create(SensorService.class);
+        final Call<SensorInfoRepo> repos = service.getSensorMapInfoList(Module.getRecordId(getApplicationContext()), "sm");
+
+        repos.enqueue(new Callback<SensorInfoRepo>(){
+            @Override
+            public void onResponse(Call<SensorInfoRepo> call, Response<SensorInfoRepo> response) {
+
+                SensorInfoRepo sensorInfoRepo = response.body();
+
+                if(sensorInfoRepo != null) {
+                    for(int i = 0; i < sensorInfoRepo.getSensorList().size(); i ++ ) {
+
+                        Log.e("DEBUG ", String.valueOf(sensorInfoRepo.getSensorList().size()));
+
+                        HashMap<String,Double> location = new HashMap<String, Double>();
+
+                        location.put(LATITUDE, Double.parseDouble(sensorInfoRepo.getSensorList().get(i).getLatitude()));
+                        location.put(LONGITUDE, Double.parseDouble(sensorInfoRepo.getSensorList().get(i).getLongitude()));
+
+                        locationList.put(sensorInfoRepo.getSensorList().get(i).getManageId().toString(), location);
+
+                        manageIdList.add(sensorInfoRepo.getSensorList().get(i).getManageId());
+                    }
+                }
+
+                sersorMarker();
+
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "맵 정보를 받아오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("DEBUG ", t.getMessage());
+                dialog.dismiss();
+            }
+        });
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().
                        findFragmentById(R.id.map);
@@ -51,7 +122,6 @@ public class SmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
 //        map.addMarker(marker);   // maker click 시 보여줌
 //        //map.addMarker(marker).showInfoWindow(); 화면에 바로 보여줌
 
-        sersorMarker();
         //movecamera 좌표를 설정한 곳으로 이동
         //Google 지도는 zoom은 1~23까지 가능
         map.moveCamera(CameraUpdateFactory.newLatLng(Sensor));
@@ -68,6 +138,7 @@ public class SmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
                         marker.getTitle() + " 클릭했음"
                         , Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), SmInfoActivity.class);
+                intent.putExtra("sensorId",marker.getTitle());
                 startActivity(intent);
                 return false;
             }
@@ -77,30 +148,20 @@ public class SmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
 
     private void sersorMarker() {
         Marker aSensor;
-        Marker bSensor;
-        Marker cSensor;
 
-        LatLng aSensorlocation = new LatLng(37.573974, 127.023666);
-        LatLng bSensorlocation = new LatLng(37.423144, 126.908034);
-        LatLng cSensorlocation = new LatLng(37.586906, 126.703245);
+        for(int i =0; i < manageIdList.size(); i ++ ) {
 
-//        aSensor =  map.addMarker(new MarkerOptions()
-//                .position(aSensorlocation)
-//                .title("수질A")
-//        );
-//        aSensor.showInfoWindow();
-//
-//        bSensor =  map.addMarker(new MarkerOptions()
-//                .position(bSensorlocation)
-//                .title("수질B")
-//        );
-//        bSensor.showInfoWindow();
-//
-//        cSensor =  map.addMarker(new MarkerOptions()
-//                .position(cSensorlocation)
-//                .title("수질C")
-//        );
-//        cSensor.showInfoWindow();
+            double latitude = locationList.get(manageIdList.get(i)).get(LATITUDE);
+            double longitude = locationList.get(manageIdList.get(i)).get(LONGITUDE);
+
+            LatLng aSensorlocation = new LatLng(latitude, longitude);
+
+            aSensor = map.addMarker(new MarkerOptions()
+                    .position(aSensorlocation)
+                    .title(manageIdList.get(i))
+            );
+            aSensor.showInfoWindow();
+        }
     }
 
     @Override

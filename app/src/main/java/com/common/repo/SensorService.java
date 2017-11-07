@@ -16,11 +16,11 @@ import retrofit2.http.Query;
 
 public interface SensorService {
     @Headers({"Accept:application/json"})
-    @GET("sensorList.app")
+    @GET("/sensorList.app")
     Call<SensorInfoRepo> getSensorList(@Query("memberId") String memberId, @Query("manageType") String manageType);
 
     @Headers({"Accept:application/json"})
-    @GET("stateSearchSensorList.app")
+    @GET("/stateSearchSensorList.app")
     Call<SensorInfoRepo> getStateSearchSensorList(@Query("memberId") String memberId, @Query("manageType") String manageType, @Query("searchText") String searchText);
 
     @Headers({"Accept:application/json"})
@@ -41,5 +41,5 @@ public interface SensorService {
 
     @Headers({"Accept:application/json"})
     @GET("/sensorMapInfoList.app")
-    Call<GmInfoRepo> getMapInfoList(@Query("manageId") String manageId, @Query("memberId") String memberId);
+    Call<SensorInfoRepo> getSensorMapInfoList(@Query("memberId") String memberId, @Query("manageType") String manageType );
 }

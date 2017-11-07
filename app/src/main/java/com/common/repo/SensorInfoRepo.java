@@ -38,12 +38,26 @@ public class SensorInfoRepo {
         @SerializedName("locationName")
         private String locationName;
 
+        @SerializedName("longitude")
+        private String longitude;
+
+        @SerializedName("latitude")
+        private String latitude;
+
         public String getManageId() {
             return manageId;
         }
 
         public String getLocationName() {
             return locationName;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public String getLatitude() {
+            return latitude;
         }
     }
 }

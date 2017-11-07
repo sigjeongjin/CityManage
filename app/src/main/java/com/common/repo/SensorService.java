@@ -38,4 +38,8 @@ public interface SensorService {
     @Headers({"Accept:application/json"})
     @GET("/gmInfo.app")
     Call<GmInfoRepo> getGmInfo(@Query("manageId") String manageId, @Query("memberId") String memberId);
+
+    @Headers({"Accept:application/json"})
+    @GET("/sensorMapInfoList.app")
+    Call<GmInfoRepo> getMapInfoList(@Query("manageId") String manageId, @Query("memberId") String memberId);
 }

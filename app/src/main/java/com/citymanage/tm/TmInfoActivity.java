@@ -85,8 +85,6 @@ public class TmInfoActivity extends SideNaviBaseActivity {
                 TmInfoRepo tmInfoRepo = response.body();
 
                 if(tmInfoRepo != null) {
-
-
                     sensorIdTv.setText(tmInfoRepo.getManageId());
                     locationTv.setText(tmInfoRepo.getLocationName());
                     installDayTv.setText(tmInfoRepo.getInstallationDateTime());

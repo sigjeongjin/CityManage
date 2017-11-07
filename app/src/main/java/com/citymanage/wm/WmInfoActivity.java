@@ -132,8 +132,6 @@ public class WmInfoActivity extends SideNaviBaseActivity {
 
                 //즐겨찾기 해제 로직
                 if(menuIconClickState.equals("Y")) {
-                    Log.e("DEBUGING " , "해제");
-
                     DialogInterface.OnClickListener favoritesConfirm = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

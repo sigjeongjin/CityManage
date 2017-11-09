@@ -52,7 +52,7 @@ public interface MemberService {
 
     @Headers({"Accept:application/json"})
     @GET("cityStateInfoRegister.app")
-    Call<MemberRepo> getCityStateInfoRegister(@Query("cityCode") String citycode, @Query("stateCode") String statecode, @Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
+    Call<MemberRepo> setCityStateInfoRegister(@Query("cityCode") String citycode, @Query("stateCode") String statecode, @Query("memberId") String memberId, @Query("memberPwd") String memberPwd);
 
     @Headers({"Accept:application/json"})
     @GET("favoritesRegister.app")

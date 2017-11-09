@@ -184,18 +184,15 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
 
                         MemberService service = retrofit.create(MemberService.class);
-                        final Call<MemberRepo> cityStateInfo = service.getCityStateInfoRegister(cityCode, stateCode, Module.getRecordId(getApplicationContext()),Module.getRecordPwd(getApplicationContext()));
+                        final Call<MemberRepo> cityStateInfo = service.setCityStateInfoRegister(cityCode, stateCode, Module.getRecordId(getApplicationContext()),Module.getRecordPwd(getApplicationContext()));
 
                         cityStateInfo.enqueue(new Callback<MemberRepo>() {
 
                             public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
-
                                 MemberRepo cityStateInfo = response.body();
-
 
                                 setStateAdapater();
                                 dialog.dismiss();
-
                             }
 
                             @Override

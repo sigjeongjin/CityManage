@@ -53,6 +53,11 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
 
     String checkBtnTagSave = "";
 
+    Class<TmInfoActivity> tmClass;
+    Class<SmInfoActivity> smClass;
+    Class<GmInfoActivity> gmClass;
+    Class<WmInfoActivity> wmClass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,21 +144,22 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         gFavoriteHistoryLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent;
 
                 if(checkBtnTagSave.equals("wm")) {
-                    Intent intent = new Intent(getApplicationContext(), WmInfoActivity.class);
+                    intent = new Intent(getApplicationContext(), WmInfoActivity.class);
                     intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
                     startActivity(intent);
                 } else if(checkBtnTagSave.equals("tm")) {
-                    Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
+                    intent = new Intent(getApplicationContext(), TmInfoActivity.class);
                     intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
                     startActivity(intent);
                 } else if(checkBtnTagSave.equals("gm")) {
-                    Intent intent = new Intent(getApplicationContext(), GmInfoActivity.class);
+                    intent = new Intent(getApplicationContext(), GmInfoActivity.class);
                     intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
                     startActivity(intent);
                 } else if(checkBtnTagSave.equals("sm")) {
-                    Intent intent = new Intent(getApplicationContext(), SmInfoActivity.class);
+                    intent = new Intent(getApplicationContext(), SmInfoActivity.class);
                     intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
                     startActivity(intent);
                 }

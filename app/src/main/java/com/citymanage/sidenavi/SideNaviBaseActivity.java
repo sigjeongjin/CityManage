@@ -196,17 +196,15 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
         profileName.setText(Module.getProfileName(getApplicationContext()));
 
         try {
+
+            Log.e("DEBUG : " , Module.getProfileImageUrl(getApplicationContext()));
+
             new DownloadImageTask(profileShot)
-                    .execute("http://kukjae.iptime.org:8085/upload/20171027_104402.jpg");
+                    .execute(Module.getProfileImageUrl(getApplicationContext()));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //두개가 한세트로 이미지뷰 라운딩
-//        profileShot.setBackground(new ShapeDrawable(new OvalShape()));
-//        profileShot.setClipToOutline(true);
-
     }
 
     protected void closeDrawer() {

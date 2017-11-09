@@ -2,7 +2,6 @@ package com.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -75,9 +74,9 @@ public class Module extends AppCompatActivity{
     }
 
     // 값 불러오기
-    static public Uri getProfileImageUrl(Context context){
+    static public String getProfileImageUrl(Context context){
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
-        return Uri.parse(pref.getString("profileImageUrl", ""));
+        return pref.getString("profileImageUrl", "");
     }
 
     static public void setProfileImageUrl(Context context, String profileImageUrl) {

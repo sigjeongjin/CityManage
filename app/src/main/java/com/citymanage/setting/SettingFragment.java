@@ -25,7 +25,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.citymanage.R;
-import com.citymanage.member.RegisterActivity;
 import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
 import com.common.Module;
@@ -70,7 +69,7 @@ public class SettingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_setting, container, false);
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_setting, container, false);
 
         gAutoLoginOnOffBtn = (ToggleButton) rootView.findViewById(R.id.autoLoginOnOffButton);
         gPwdConfirmGoBtn = (Button) rootView.findViewById(R.id.gPwdConfirmGoBtn);
@@ -115,61 +114,6 @@ public class SettingFragment extends Fragment {
             }
         });
 
-/*        //정보 전송중 메시지 출력
-       // dialog = new ProgressDialog(SettingFragment.this);
-        dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Loading....");
-        dialog.show();
-
-        String Id = Module.getRecordId(getContext());
-        String path = getRealImagePath(dataUri);
-        File file = new File(path);
-        Log.d("Uri", path);
-
-        RequestBody requestFile =
-                RequestBody.create(
-                        MediaType.parse(getActivity().getContentResolver().getType(dataUri)),
-                        file
-                );
-
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
-
-        RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-        RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), Module.getRecordId(getContext()));
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASEHOST)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        MemberService service = retrofit.create(MemberService.class);
-        final Call<MemberRepo> repos = service.getMemberProfileImageChange(body, memberPhoto, memberId);
-
-        repos.enqueue(new Callback<MemberRepo>() {
-            @Override
-            public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
-                MemberRepo memberRepo = response.body();
-                dialog.dismiss();
-
-                if (response.isSuccessful()) {
-                    if (memberRepo.getResultCode().equals("200")) {
-                        Toast.makeText(getActivity(), "프로필사진이 변경되었습니다.", Toast.LENGTH_SHORT).show();
-
-                    } else if (memberRepo.getResultCode().equals("400")) {
-                        Toast.makeText(getActivity(), "정보가 정확하지 않습니다", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MemberRepo> call, Throwable t) {
-                Toast.makeText(getActivity(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });*/
-
         gAutoLoginOnOffBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -191,6 +135,53 @@ public class SettingFragment extends Fragment {
             }
         });
 
+        String path = getRealImagePath(dataUri);
+        File file = new File(path);
+        Log.d("Uri", path);
+
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse(getActivity().getContentResolver().getType(dataUri)),
+                        file
+                );
+
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+
+        RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+        RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), Module.getRecordId(rootView.getContext()));
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEHOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        MemberService service = retrofit.create(MemberService.class);
+        final Call<MemberRepo> repos = service.getMemberProfileImageChange(body, memberPhoto, memberId);
+
+        repos.enqueue(new Callback<MemberRepo>() {
+            @Override
+            public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+                MemberRepo memberRepo = response.body();
+                dialog.dismiss();
+
+                if (response.isSuccessful()) {
+                    if (memberRepo.getResultCode().equals("200")) {
+                        Toast.makeText(rootView.getContext(), memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    } else if (memberRepo.getResultCode().equals("400")) {
+                        Toast.makeText(rootView.getContext(), memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MemberRepo> call, Throwable t) {
+                Log.e("REGISTER DEBUG ", t.getMessage());
+                Toast.makeText(rootView.getContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
         return rootView;
     }
     public void selectAlbum() {
@@ -277,28 +268,3 @@ public class SettingFragment extends Fragment {
         return path;
     }
 }
-
-
-//buttonCamera.setOnClickListener(new View.OnClickListener(){
-//@Override
-//public void onClick(View v) {
-//        //카메라 호출
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT,
-//        MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
-//
-//        //이미지 사이즈 변경
-//        intent.putExtra("crop", "true");
-//        intent.putExtra("aspectX", 0);
-//        intent.putExtra("aspectY", 0);
-//        intent.putExtra("outputX", 200);
-//        intent.putExtra("outputY", 250);
-//
-//        try {
-//        intent.putExtra("return-data", true);
-//        startActivityForResult(intent, PICK_FROM_CAMERA);
-//        }catch (ActivityNotFoundException e) {
-//        }
-//
-//        }
-//        });

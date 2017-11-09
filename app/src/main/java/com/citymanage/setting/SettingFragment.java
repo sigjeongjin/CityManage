@@ -37,10 +37,10 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
-import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.citymanage.BaseActivity.BASEHOST;
@@ -66,6 +66,8 @@ public class SettingFragment extends Fragment {
     ProgressDialog dialog;
     Uri dataUri;
 
+    Button imageChangeBtn;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class SettingFragment extends Fragment {
         gAutoLoginOnOffBtn = (ToggleButton) rootView.findViewById(R.id.autoLoginOnOffButton);
         gPwdConfirmGoBtn = (Button) rootView.findViewById(R.id.gPwdConfirmGoBtn);
         gProfileChangeIv = (ImageView) rootView.findViewById(R.id.profileChangeIv);
+        imageChangeBtn = (Button) rootView.findViewById(R.id.imageChangeBtn);
 
         gProfileChangeIv.setBackground(new ShapeDrawable(new OvalShape()));
         //gProfileChangeIv.setClipToOutline(true);
@@ -135,53 +138,57 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        String path = getRealImagePath(dataUri);
-        File file = new File(path);
-        Log.d("Uri", path);
-
-        RequestBody requestFile =
-                RequestBody.create(
-                        MediaType.parse(getActivity().getContentResolver().getType(dataUri)),
-                        file
-                );
-
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
-
-        RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-        RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), Module.getRecordId(rootView.getContext()));
-
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASEHOST)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        MemberService service = retrofit.create(MemberService.class);
-        final Call<MemberRepo> repos = service.getMemberProfileImageChange(body, memberPhoto, memberId);
-
-        repos.enqueue(new Callback<MemberRepo>() {
+        imageChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
-                MemberRepo memberRepo = response.body();
-                dialog.dismiss();
+            public void onClick(View v) {
+                String path = getRealImagePath(dataUri);
+                File file = new File(path);
+                Log.e("Uri", path);
 
-                if (response.isSuccessful()) {
-                    if (memberRepo.getResultCode().equals("200")) {
-                        Toast.makeText(rootView.getContext(), memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
-                    } else if (memberRepo.getResultCode().equals("400")) {
-                        Toast.makeText(rootView.getContext(), memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                RequestBody requestFile =
+                        RequestBody.create(
+                                MediaType.parse(getActivity().getContentResolver().getType(dataUri)),
+                                file
+                        );
+
+                MultipartBody.Part body =
+                        MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+
+                RequestBody memberPhoto = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+                RequestBody memberId = RequestBody.create(MediaType.parse("text/plain"), Module.getRecordId(rootView.getContext()));
+
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(BASEHOST)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                MemberService service = retrofit.create(MemberService.class);
+                final Call<MemberRepo> repos = service.getMemberProfileImageChange(body, memberPhoto, memberId);
+
+                repos.enqueue(new Callback<MemberRepo>() {
+                    @Override
+                    public void onResponse(Call<MemberRepo> call, Response<MemberRepo> response) {
+                        MemberRepo memberRepo = response.body();
+
+                        if (response.isSuccessful()) {
+                            if (memberRepo.getResultCode().equals("200")) {
+                                Toast.makeText(rootView.getContext(), memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                            } else if (memberRepo.getResultCode().equals("400")) {
+                                Toast.makeText(rootView.getContext(), memberRepo.getResultMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<MemberRepo> call, Throwable t) {
-                Log.e("REGISTER DEBUG ", t.getMessage());
-                Toast.makeText(rootView.getContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                    @Override
+                    public void onFailure(Call<MemberRepo> call, Throwable t) {
+                        Log.e("REGISTER DEBUG ", t.getMessage());
+                        Toast.makeText(rootView.getContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
+
         return rootView;
     }
     public void selectAlbum() {

@@ -12,14 +12,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.citymanage.R;
-
-
 import com.citymanage.favorite.repo.FavoritesInfoRepo;
 import com.citymanage.favorite.repo.FavoritesService;
+import com.citymanage.gm.GmInfoActivity;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
+import com.citymanage.sm.SmInfoActivity;
 import com.citymanage.tm.TmInfoActivity;
+import com.citymanage.wm.WmInfoActivity;
 import com.common.Module;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
-
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -51,6 +50,8 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
     FavoriteAdapter adapter; // 위의 리스트 adapter
 
     List<HashMap<String,String>> gListFavoriteHistory = new ArrayList<HashMap<String, String>>();
+
+    String checkBtnTagSave = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,10 +140,23 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
-                intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
-                startActivity(intent);
-
+                if(checkBtnTagSave.equals("wm")) {
+                    Intent intent = new Intent(getApplicationContext(), WmInfoActivity.class);
+                    intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
+                    startActivity(intent);
+                } else if(checkBtnTagSave.equals("tm")) {
+                    Intent intent = new Intent(getApplicationContext(), TmInfoActivity.class);
+                    intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
+                    startActivity(intent);
+                } else if(checkBtnTagSave.equals("gm")) {
+                    Intent intent = new Intent(getApplicationContext(), GmInfoActivity.class);
+                    intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
+                    startActivity(intent);
+                } else if(checkBtnTagSave.equals("sm")) {
+                    Intent intent = new Intent(getApplicationContext(), SmInfoActivity.class);
+                    intent.putExtra(SENSORID,gListFavoriteHistory.get(position).get(SENSORID));
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -163,6 +177,8 @@ public class FavoriteActivity extends SideNaviBaseActivity implements View.OnCli
         FavoritesService service = retrofit.create(FavoritesService.class);
 
         CheckBox temp = (CheckBox)v.findViewWithTag(v.getTag());
+
+        checkBtnTagSave = v.getTag().toString();
 
         if(!temp.isChecked()){
             dialog.dismiss();

@@ -77,4 +77,14 @@
 
     </LinearLayout>
 
+
+    <Button
+        android:id="@+id/imageChangeBtn"
+        style="@style/ButtonStyleNxt"
+        android:layout_width="147.33dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="이미지 저장" />
+
 </LinearLayout>

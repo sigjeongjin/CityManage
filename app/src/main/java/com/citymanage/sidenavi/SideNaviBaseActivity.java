@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -30,6 +31,8 @@ import com.citymanage.wm.WmListActivity;
 import com.common.ImageRound;
 import com.common.Module;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -235,6 +238,17 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
         }
 
         protected Bitmap doInBackground(String... urls) {
+
+
+            File file;
+            String fileName = "";
+            try {
+                fileName = Uri.parse(urls[0]).getLastPathSegment();
+                file = File.createTempFile(fileName, null, getApplicationContext().getCacheDir());
+            } catch (IOException e) {
+                Log.e("DEBUG : " , e.getMessage());
+            }
+
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
             try {

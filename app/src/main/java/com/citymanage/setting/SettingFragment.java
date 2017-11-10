@@ -1,6 +1,5 @@
 package com.citymanage.setting;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,6 +26,7 @@ import android.widget.ToggleButton;
 import com.citymanage.R;
 import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
+import com.common.ImageRound;
 import com.common.Module;
 
 import java.io.File;
@@ -37,10 +37,10 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.GsonConverterFactory;
-import retrofit2.Retrofit;
 import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
 import static com.citymanage.BaseActivity.BASEHOST;
@@ -55,15 +55,12 @@ public class SettingFragment extends Fragment {
     private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
     private static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
     private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
-    private static final int autoLoginTrue = 1;
-    private static final int autoLoginFalse = 0;
-    private static final int IMAGE_WIDTH = 400;
-    private static final int IMAGE_HEIGHT = 300;
+    private static final int IMAGE_WIDTH = 150;
+    private static final int IMAGE_HEIGHT = 150;
 
     ToggleButton gAutoLoginOnOffBtn;
     Button gPwdConfirmGoBtn;
     ImageView gProfileChangeIv;
-    ProgressDialog dialog;
     Uri dataUri;
 
     Button imageChangeBtn;
@@ -235,7 +232,7 @@ public class SettingFragment extends Fragment {
                         bm = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), dataUri); //앨범에서 가져온 uri로 비트맵 셋팅
                         Bitmap scaled = Bitmap.createScaledBitmap(bm, IMAGE_WIDTH, IMAGE_HEIGHT, false); //앨범 사진의 경우 크기가 너무 커서 scale 조정
                         Bitmap resized = Bitmap.createBitmap(scaled,0,0, IMAGE_WIDTH, IMAGE_HEIGHT,matrix,false); //크기가 조정된 사진의 회전 정보를 수정
-
+                        resized = ImageRound.getRoundedCornerBitmap(resized,90);
                         gProfileChangeIv.setImageBitmap(resized);
 
                     } catch (FileNotFoundException e) {

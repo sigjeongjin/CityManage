@@ -11,7 +11,7 @@ public class BaseActivity extends AppCompatActivity {
 
 //    public static final String BASEHOST = "http://172.30.1.18:8080"; //민정 집 톰캣
 //    public static final String BASEHOST = "http://192.168.0.2:8080"; // 현진 집 톰캣
-    public static final String BASEHOST = "http://192.168.0.155:8080"; // 현진 집 톰캣
+    public static final String BASEHOST = "http://192.168.0.30:8080"; // 현진 집 톰캣
 
 //    public static final String BASEHOST = "http://kukjae.iptime.org:8085"; // 현진 집 톰캣
 
@@ -38,4 +38,9 @@ public class BaseActivity extends AppCompatActivity {
     public TextView profileName;
 
     /******** 사이드 네비게이션바 사진 이름 셋팅하기 위한 변수 정의 끝 ********/
+
+    public static final String RESULT_SUCCESS = "200";
+    public static final String RESULT_FAIL = "204";
+    public static final String RESULT_FAIL_MESSAGE = "서버와 통신중 오류가 발생 하였습니다.";
+    public static final String NETWORK_DISCONNECT_MESSAGE = "네트워크 연결을 확인해 주세요.";
 }

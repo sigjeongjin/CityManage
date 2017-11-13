@@ -11,13 +11,6 @@ import java.util.List;
 
 public class CityRepo {
 
-    @SerializedName("resultCode")
-    private String resultCode;
-
-    @SerializedName("resultMessage")
-    private String resultMessage;
-
-
     List<City> city = new ArrayList<>();
 
     public List<City> getCity() {

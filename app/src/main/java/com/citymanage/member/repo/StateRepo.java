@@ -12,7 +12,7 @@ import java.util.List;
 public class StateRepo {
 
     @SerializedName("resultCode")
-private String resultCode;
+    private String resultCode;
 
     @SerializedName("resultMessage")
     private String resultMessage;
@@ -40,7 +40,6 @@ private String resultCode;
             return stateName;
 
         }
-
 
         public String getResultCode() {
             return resultCode;

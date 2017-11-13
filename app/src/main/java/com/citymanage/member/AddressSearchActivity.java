@@ -78,29 +78,34 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
                 CityRepo cityInfo = response.body();
 
-                strArrayCityName = new String[cityInfo.getCity().size()];
-                for (int i = 0; i < cityInfo.getCity().size(); i++){
+                if(cityInfo.equals(RESULT_SUCCESS)) {
+                    strArrayCityName = new String[cityInfo.getCity().size()];
+                    for (int i = 0; i < cityInfo.getCity().size(); i++){
 
-                    String city = cityInfo.getCity().get(i).getCityName();
-                    String cityCode = cityInfo.getCity().get(i).getCityCode();
+                        String city = cityInfo.getCity().get(i).getCityName();
+                        String cityCode = cityInfo.getCity().get(i).getCityCode();
 
-                    HashMap<String,String> cityHashMap = new HashMap<>();
-                    cityHashMap.put("city", city);
-                    cityHashMap.put("cityCode", cityCode);
+                        HashMap<String,String> cityHashMap = new HashMap<>();
+                        cityHashMap.put("city", city);
+                        cityHashMap.put("cityCode", cityCode);
 
-                    strArrayCityName[i] = city;
-                    cityNameList.add(i,city);
-                    cityList.add(i, cityHashMap);
+                        strArrayCityName[i] = city;
+                        cityNameList.add(i,city);
+                        cityList.add(i, cityHashMap);
+                    }
+                    setCityAdapter();
+                } else if(cityInfo.equals(RESULT_FAIL)){
+                    Toast.makeText(getApplicationContext(), RESULT_FAIL_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), NETWORK_DISCONNECT_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
-
-                setCityAdapter();
                 dialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<CityRepo> call, Throwable t) {
 
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), NETWORK_DISCONNECT_MESSAGE, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -128,28 +133,32 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
                         StateRepo stateInfo = response.body();
 
-                        strArrayStateName = new String[stateInfo.getState().size()];
-                        for (int i = 0; i < stateInfo.getState().size(); i++) {
-                            String state = stateInfo.getState().get(i).getStateName();
-                            String stateCode = stateInfo.getState().get(i).getStateCode();
+                        if(stateInfo.equals(RESULT_SUCCESS)) {
+                            strArrayStateName = new String[stateInfo.getState().size()];
+                            for (int i = 0; i < stateInfo.getState().size(); i++) {
+                                String state = stateInfo.getState().get(i).getStateName();
+                                String stateCode = stateInfo.getState().get(i).getStateCode();
 
-                            HashMap<String, String> stateHashMap = new HashMap<>();
-                            stateHashMap.put("state", state);
-                            stateHashMap.put("stateCode", stateCode);
+                                HashMap<String, String> stateHashMap = new HashMap<>();
+                                stateHashMap.put("state", state);
+                                stateHashMap.put("stateCode", stateCode);
 
-                            strArrayStateName[i] = state;
-                            stateNameList.add(i, state);
-                            stateList.add(i, stateHashMap);
+                                strArrayStateName[i] = state;
+                                stateNameList.add(i, state);
+                                stateList.add(i, stateHashMap);
+                            }
+                            setStateAdapater();
+                        } else if(stateInfo.equals(RESULT_FAIL)){
+                            Toast.makeText(getApplicationContext(), RESULT_FAIL_MESSAGE, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), NETWORK_DISCONNECT_MESSAGE, Toast.LENGTH_SHORT).show();
                         }
-                        setStateAdapater();
                         dialog.dismiss();
-
                     }
-
 
                     @Override
                     public void onFailure(Call<StateRepo> call, Throwable t) {
-
+                        Toast.makeText(getApplicationContext(), NETWORK_DISCONNECT_MESSAGE, Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
@@ -157,8 +166,6 @@ public class AddressSearchActivity extends SideNaviBaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
-
 
             }
         });

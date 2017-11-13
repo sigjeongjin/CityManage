@@ -98,7 +98,7 @@ public class LoginActivity extends BaseActivity {
                         MemberRepo memberRepo= response.body();
 
                         if(memberRepo != null) {
-                            if(memberRepo.getResultCode().equals("200")) {
+                            if(memberRepo.getResultCode().equals(RESULT_SUCCESS)) {
                                 Intent intent;
 
                                 String token = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
@@ -163,7 +163,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(Call<MemberRepo> call, Throwable t) {
-                        Toast.makeText(LoginActivity.this, "네트워크 연결을 확인해 주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, NETWORK_DISCONNECT_MESSAGE, Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });

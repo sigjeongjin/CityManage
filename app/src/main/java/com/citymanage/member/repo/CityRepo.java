@@ -11,6 +11,12 @@ import java.util.List;
 
 public class CityRepo {
 
+    @SerializedName("resultCode")
+    private String resultCode;
+
+    @SerializedName("resultMessage")
+    private String resultMessage;
+
     List<City> city = new ArrayList<>();
 
     public List<City> getCity() {
@@ -31,5 +37,13 @@ public class CityRepo {
         public String getCityName() {
             return cityName;
         }
+    }
+
+    public String getResultCode() {
+        return resultCode;
+    }
+
+    public String getResultMessage() {
+        return resultMessage;
     }
 }

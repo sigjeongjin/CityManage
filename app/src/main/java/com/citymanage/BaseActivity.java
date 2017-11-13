@@ -17,14 +17,16 @@ public class BaseActivity extends AppCompatActivity {
 
     /******** 프로그램 실행 후 필요한 상수 값들 정의 시작 ********/
 
-    private static final int CANCLE_FROM_CONTENT = 0;
-    private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
-    private static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
-    private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
-    private static final int autoLoginTrue = 1;
-    private static final int autoLoginFalse = 0;
-    private static final int ALBUM_WIDTH = 400;
-    private static final int ALBUM_HEIGHT = 300;
+    public static final int CANCLE_FROM_CONTENT = 0;
+    public static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
+    public static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
+    public static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
+    public static final int autoLoginTrue = 1;
+    public static final int autoLoginFalse = 0;
+    public static final int ALBUM_WIDTH = 400;
+    public static final int ALBUM_HEIGHT = 300;
+    public static final int IMAGE_WIDTH = 150;
+    public static final int IMAGE_HEIGHT = 150;
 
     /******** 프로그램 실행 후 필요한 상수 값들 정의 끝 ********/
 

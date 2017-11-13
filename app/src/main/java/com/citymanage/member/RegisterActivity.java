@@ -11,13 +11,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.citymanage.BaseActivity;
 import com.citymanage.R;
 import com.citymanage.member.repo.MemberRepo;
 import com.citymanage.member.repo.MemberService;
@@ -36,20 +36,11 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.citymanage.BaseActivity.BASEHOST;
-
 /**
  * Created by we25 on 2017-06-27.
  */
 
-public class RegisterActivity extends AppCompatActivity {
-
-    private static final int CANCLE_FROM_CONTENT = 0;
-    private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
-    private static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
-    private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
-    private static final int IMAGE_WIDTH = 150;
-    private static final int IMAGE_HEIGHT = 150;
+public class RegisterActivity extends BaseActivity {
 
     // 기본값
     private boolean imageDraw = false;
@@ -211,7 +202,7 @@ public class RegisterActivity extends AppCompatActivity {
                     dialog.dismiss();
 
                     if (response.isSuccessful()) {
-                        if (memberRepo.getResultCode().equals("200")) {
+                        if (memberRepo.getResultCode().equals(RESULT_SUCCESS)) {
                             Toast.makeText(RegisterActivity.this, "회원가입을 환영합니다", Toast.LENGTH_SHORT).show();
                             finish();
                         } else if (memberRepo.getResultCode().equals("400")) {

@@ -40,13 +40,12 @@ public class StateRepo {
             return stateName;
 
         }
+    }
+    public String getResultCode() {
+        return resultCode;
+    }
 
-        public String getResultCode() {
-            return resultCode;
-        }
-
-        public String getResultMessage() {
-            return resultMessage;
-        }
+    public String getResultMessage() {
+        return resultMessage;
     }
 }

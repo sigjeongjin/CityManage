@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -180,7 +179,6 @@ public class RegisterActivity extends AppCompatActivity {
 
             String path = getRealImagePath(dataUri);
             File file = new File(path);
-            Log.d("Uri", path);
 
             RequestBody requestFile =
                     RequestBody.create(
@@ -225,7 +223,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<MemberRepo> call, Throwable t) {
-                    Log.e("REGISTER DEBUG ", t.getMessage());
                     Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }

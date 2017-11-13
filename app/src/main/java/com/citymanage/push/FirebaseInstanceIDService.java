@@ -1,7 +1,5 @@
 package com.citymanage.push;
 
-import android.util.Log;
-
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -18,7 +16,6 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         // 설치할때나 주기적으로 토큰을 생성
         String refreshedToken = FirebaseInstanceId.getInstance().getToken(); // 토큰 값을 가져옴
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
 
     }
 }

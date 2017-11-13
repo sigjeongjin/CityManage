@@ -6,12 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-/**
- * Created by we25 on 2017-06-30.
- * 2017.10.19 - 기존 volley로 쓰던 URL 삭제 HOST 관련 URL 모두 삭제
- */
-
 public class BaseActivity extends AppCompatActivity {
 
 

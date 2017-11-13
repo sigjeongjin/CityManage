@@ -75,7 +75,6 @@ public class TmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
                 if(sensorInfoRepo != null) {
                     for(int i = 0; i < sensorInfoRepo.getSensorList().size(); i ++ ) {
 
-                        Log.e("DEBUG ", String.valueOf(sensorInfoRepo.getSensorList().size()));
 
                         HashMap<String,Double> location = new HashMap<String, Double>();
 
@@ -96,7 +95,6 @@ public class TmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
             @Override
             public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "맵 정보를 받아오지 못했습니다.", Toast.LENGTH_SHORT).show();
-                Log.e("DEBUG ", t.getMessage());
                 dialog.dismiss();
             }
         });

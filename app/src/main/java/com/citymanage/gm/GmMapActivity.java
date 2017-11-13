@@ -3,7 +3,6 @@ package com.citymanage.gm;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import com.citymanage.R;
 import com.citymanage.sidenavi.SideNaviBaseActivity;
-import com.citymanage.tm.TmInfoActivity;
 import com.common.Module;
 import com.common.repo.SensorInfoRepo;
 import com.common.repo.SensorService;
@@ -98,7 +96,6 @@ public class GmMapActivity extends SideNaviBaseActivity implements OnMapReadyCal
             @Override
             public void onFailure(Call<SensorInfoRepo> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "맵 정보를 받아오지 못했습니다.", Toast.LENGTH_SHORT).show();
-                Log.e("DEBUG ", t.getMessage());
                 dialog.dismiss();
             }
         });

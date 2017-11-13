@@ -187,7 +187,6 @@ public class TmInfoActivity extends SideNaviBaseActivity {
                             @Override
                             public void onFailure(Call<FavoritesInfoRepo> call, Throwable t) {
                                 Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                                Log.e("TmInfoActivity DEBUG : ", t.getMessage());
                             }
                         });
                         }
@@ -221,7 +220,6 @@ public class TmInfoActivity extends SideNaviBaseActivity {
 
                             FavoritesService service = retrofit.create(FavoritesService.class);
                             final Call<FavoritesInfoRepo> repos = service.setFavoritesRegister(memberId, manageId);
-                            Log.e("fv register DEBUG : ", "즐겨찾기등록");
                             repos.enqueue(new Callback<FavoritesInfoRepo>() {
                                 @Override
                                 public void onResponse(Call<FavoritesInfoRepo> call, Response<FavoritesInfoRepo> response) {
@@ -241,7 +239,6 @@ public class TmInfoActivity extends SideNaviBaseActivity {
                                 @Override
                                 public void onFailure(Call<FavoritesInfoRepo> call, Throwable t) {
                                     Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                                    Log.e("TmInfoActivity DEBUG : ", t.getMessage());
                                 }
                             });
                         }

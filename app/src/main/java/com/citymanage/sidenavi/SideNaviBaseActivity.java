@@ -13,7 +13,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -200,8 +199,6 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
 
         try {
 
-            Log.e("DEBUG : " , Module.getProfileImageUrl(getApplicationContext()));
-
             new DownloadImageTask(profileShot)
                     .execute(Module.getProfileImageUrl(getApplicationContext()));
 
@@ -246,7 +243,6 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
                 fileName = Uri.parse(urls[0]).getLastPathSegment();
                 file = File.createTempFile(fileName, null, getApplicationContext().getCacheDir());
             } catch (IOException e) {
-                Log.e("DEBUG : " , e.getMessage());
             }
 
             String urldisplay = urls[0];
@@ -255,7 +251,6 @@ public abstract class SideNaviBaseActivity extends BaseActivity {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
             return mIcon11;

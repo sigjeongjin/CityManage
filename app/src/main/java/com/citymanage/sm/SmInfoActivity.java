@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -143,7 +142,6 @@ public class SmInfoActivity extends SideNaviBaseActivity {
 
                 //즐겨찾기 해제 로직
                 if(menuIconClickState.equals("Y")) {
-                    Log.e("DEBUGING " , "해제");
 
                     DialogInterface.OnClickListener favoritesConfirm = new DialogInterface.OnClickListener() {
                         @Override
@@ -179,7 +177,6 @@ public class SmInfoActivity extends SideNaviBaseActivity {
                                 @Override
                                 public void onFailure(Call<FavoritesInfoRepo> call, Throwable t) {
                                     Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                                    Log.e("TmInfoActivity DEBUG : ", t.getMessage());
                                 }
                             });
                         }
@@ -213,7 +210,6 @@ public class SmInfoActivity extends SideNaviBaseActivity {
 
                             FavoritesService service = retrofit.create(FavoritesService.class);
                             final Call<FavoritesInfoRepo> repos = service.setFavoritesRegister(memberId, manageId);
-                            Log.e("fv register DEBUG : ", "즐겨찾기등록");
                             repos.enqueue(new Callback<FavoritesInfoRepo>() {
                                 @Override
                                 public void onResponse(Call<FavoritesInfoRepo> call, Response<FavoritesInfoRepo> response) {
@@ -233,7 +229,6 @@ public class SmInfoActivity extends SideNaviBaseActivity {
                                 @Override
                                 public void onFailure(Call<FavoritesInfoRepo> call, Throwable t) {
                                     Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                                    Log.e("TmInfoActivity DEBUG : ", t.getMessage());
                                 }
                             });
                         }

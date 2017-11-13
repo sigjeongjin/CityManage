@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,7 +139,6 @@ public class SettingFragment extends Fragment {
             public void onClick(View v) {
                 String path = getRealImagePath(dataUri);
                 File file = new File(path);
-                Log.e("Uri", path);
 
                 RequestBody requestFile =
                         RequestBody.create(
@@ -179,7 +177,6 @@ public class SettingFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<MemberRepo> call, Throwable t) {
-                        Log.e("REGISTER DEBUG ", t.getMessage());
                         Toast.makeText(rootView.getContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
                     }
                 });

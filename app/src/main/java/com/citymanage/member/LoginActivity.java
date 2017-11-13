@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -164,7 +163,6 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(Call<MemberRepo> call, Throwable t) {
-                        Log.e("DEBUG Message : " , t.getMessage());
                         Toast.makeText(LoginActivity.this, "네트워크 연결을 확인해 주세요.", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
@@ -240,13 +238,11 @@ public class LoginActivity extends BaseActivity {
         repos.enqueue(new Callback<PushInfoRepo>() {
             @Override
             public void onResponse(Call<PushInfoRepo> call, Response<PushInfoRepo> response) {
-                Log.d(TAG, "Server insert Token");
                 PushInfoRepo pushInfoRepo = response.body();
             }
 
             @Override
             public void onFailure(Call<PushInfoRepo> call, Throwable t) {
-                Log.d(TAG, "Server insert fail");
             }
         });
     }
@@ -266,13 +262,11 @@ public class LoginActivity extends BaseActivity {
         repos.enqueue(new Callback<PushInfoRepo>() {
             @Override
             public void onResponse(Call<PushInfoRepo> call, Response<PushInfoRepo> response) {
-                Log.d(TAG, "Server update Token");
                 PushInfoRepo pushInfoRepo = response.body();
             }
 
             @Override
             public void onFailure(Call<PushInfoRepo> call, Throwable t) {
-                Log.d(TAG, "Server update fail");
             }
         });
     }
